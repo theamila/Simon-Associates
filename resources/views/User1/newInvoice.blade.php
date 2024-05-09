@@ -1,0 +1,50 @@
+@extends('sidebar.sub1')
+
+@section('title', 'New Invoice')
+
+@section('pageTitle', 'New Invoice')
+@section('content')
+
+@section('Ttopic', 'New Invoice')
+@section('thead')
+            <th class="text-center">ID</th>
+            <th class="text-center">Company Name</th>
+            <th class="text-center">Address</th>
+            <th class="text-center">Action</th>
+
+@endsection
+@section('tbody')
+@if ($data->count() > 0)
+        @foreach($data as $get)
+
+        <tr>
+            <td class="text-center">{{ $get->id }}</td>
+            <td class="text-center">{{ $get->companyName }}</td>
+            <td>{{ $get->address }}</td>
+            <td class="text-center">
+
+        <a href="{{ Route('generateInvoice', $get->id) }}" class="btn btn-sm btn-success"  onclick="disableButton(this)">
+        <i class="material-symbols-outlined">
+navigate_next
+</i>
+        </a>
+        </td>
+        </tr>
+        @endforeach
+    @else
+    <tr>
+        <td colspan="4" class="text-center fw-bold">
+          No Records Found...
+        </td>
+      </tr>
+      @endif
+@endsection
+
+@endsection
+
+<script>
+    function disableButton(button) {
+        button.classList.add('disabled');
+        button.setAttribute('disabled', 'disabled');
+    }
+</script>

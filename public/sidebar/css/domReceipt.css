@@ -1,0 +1,30 @@
+*{
+    font-family: "Poppins", sans-serif;
+}
+
+table
+{
+    width: 100%;
+
+}
+
+thead
+{
+    background: rgb(56, 55, 55);
+    color: #fff;
+}
+thead tr th{
+    padding: 10px;
+}
+
+tbody tr td
+{
+    padding: 10px;
+}
+.balance
+{
+    width: 250px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
