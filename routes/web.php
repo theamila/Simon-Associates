@@ -49,6 +49,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
+        Route::get('/search/customer', [invoiceController::class, 'SearchCustomer'])->name('search.customer');
+
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_FINANCE]], function () {

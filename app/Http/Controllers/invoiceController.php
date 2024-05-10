@@ -13,6 +13,7 @@ use Alert;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Dompdf\Dompdf;
 use Carbon\Carbon;
+use Exception;
 
 class invoiceController extends Controller
 {
@@ -20,7 +21,9 @@ class invoiceController extends Controller
     {
         $data = CompanyDetails::all();
 
-        return view('User1.newInvoice', compact('data'));
+        $name = "";
+
+        return view('User1.newInvoice', compact('data', 'name'));
     }
 
     public function RegisterCompanySave(Request $request)
@@ -430,5 +433,33 @@ class invoiceController extends Controller
         $data->bankId = $id;
         $data->save();
         return back();
+    }
+
+    public function SearchCustomer(Request $request)
+    {
+        try
+        {
+            $request->validate([
+                'name' => 'required',
+            ]);
+
+            $name = $request->input('name');
+           $data = CompanyDetails::where('companyName', 'like', "%$name%")->get();
+
+            if ($data->isEmpty()) {
+
+                toast('No company found with the given name.', 'error');
+
+                return back();
+            }
+
+            return view('User1.newInvoice', compact('data', 'name'));
+
+        }
+        catch(\Exception $e)
+        {
+            toast('Something went wrong. Please try again later.', 'error');
+            return back();
+        }
     }
 }

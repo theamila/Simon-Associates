@@ -200,6 +200,7 @@
               <div class="card shadow" style="border-radius: 15px;">
                 <div class="card-body">
                   <h4 class="card-title">@yield('Ttopic')</h4>
+                  @yield('search')
                   <div class="table-responsive">
                     <table class="table">
                       <thead>

@@ -4,8 +4,20 @@
 
 @section('pageTitle', 'New Invoice')
 @section('content')
+@include('sweetalert::alert')
 
 @section('Ttopic', 'New Invoice')
+@section('search')
+<form action="{{Route('search.customer')}}" method="get">
+
+<div class="row">
+<div class="col d-flex flex-inline">
+    <input type="text" name="name" class="form-control" placeholder="Customer Name..." value="{{$name}}" required>
+    <input type="submit" value="Search" class="btn btn-sm btn-danger">
+</div>
+</div>
+</form>
+@endsection
 @section('thead')
             <th class="text-center">ID</th>
             <th class="text-center">Company Name</th>
