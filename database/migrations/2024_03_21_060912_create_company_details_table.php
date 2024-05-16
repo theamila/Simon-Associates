@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('to');
             $table->string('email')->unique();
             $table->string('companyName');
-            $table->text('address')->unique();
+            $table->string('address')->unique();
             $table->string('handleBy');
             $table->decimal('outstanding', 10, 2)->default(0.0);
             $table->timestamps();
