@@ -23,11 +23,11 @@
 </div>
     <div class="main">
         <div class="container">
-            
+
             <div class="row">
                 <div class="col login-text">
                     Login
-                   
+
                 </div>
                 <div class="col login-form">
                     <form action="{{ Route('login') }}" class="signin-form" method="post">
@@ -46,13 +46,13 @@
                     </form>
                     @if ($errors->any())
                             <div class="row mt-2">
-                            
+
                                 <ul>
                                     @foreach ($errors->all() as $error)
                                         <li class="text-danger">{{ $error }}</li>
                                     @endforeach
                                 </ul>
-                        
+
                             </div>
                         @endif
                 </div>
@@ -66,6 +66,10 @@
         <div class="col text-end">
         <i class="fa-solid fa-bars text-light"></i>
         </div>
+        <div class="version text-light text-muted" style="position: absolute; top: 100%; left: 2%;">
+            0.0.2
+        </div>
+
     </div>
 </body>
 
