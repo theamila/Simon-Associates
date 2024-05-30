@@ -416,8 +416,11 @@ class invoiceController extends Controller
         try {
             $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
             $invoice_data = InvoiceDetails::where('invoiceNumber', $company_data->invoiceNumber)->get();
+            $outdata = CompanyDetails::findOrFail($company_data->refID);
+            $bank = payment::all();
 
-            return view('User1.generateInvoice', compact('invoice_data', 'company_data', 'invoiceNumber'));
+
+            return view('User1.generateInvoice', compact('invoice_data', 'company_data', 'invoiceNumber', 'outdata', 'bank'));
         } catch (\Exception $e) {
             return back()->with('bad', 'Something Wrong.');
         }
