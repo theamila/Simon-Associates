@@ -275,17 +275,32 @@ class invoiceController extends Controller
 
             $dompdf->render();
 
-            $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
+            // $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
 
-            file_put_contents(public_path('pdfs/invoices/' . $filename), $dompdf->output());
 
+
+    $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
+    $directoryPath = public_path('pdfs/invoices');
+
+            // file_put_contents(public_path('pdfs/invoices/' . $filename), $dompdf->output());
+
+
+            if (!is_dir($directoryPath)) {
+                mkdir($directoryPath, 0755, true); // Ensure the directory exists
+            }
+
+
+    $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
+    $directoryPath = public_path('pdfs/invoices');
+
+    file_put_contents($directoryPath . '/' . $filename, $dompdf->output());
             // =================================================================
 
             return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr'));
 
             // return view('Invoice.Invoice', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data'));
         } catch (\Exception $e) {
-            Alert::error('Error', 'Something went wrong.');
+            Alert::error('Error', 'Something went wrong.' . $e);
 
             return back();
         }
