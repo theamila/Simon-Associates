@@ -179,6 +179,8 @@
                     </table>
                     @yield('paginate')
 
+                    @yield('bankDetails')
+
                   </div>
                 </div>
               </div>

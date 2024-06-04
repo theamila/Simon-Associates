@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <link rel="stylesheet" href="{{ asset('sidebar/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('sidebar/css/receipt.css') }}">
+    <link rel="stylesheet" href="{{ asset('sidebar/css/.bank-box {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 15px;
+    }.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -109,9 +113,11 @@
 <body>
 
     <div class="container mt-2 mb-2">
-        <a href="{{ Route('Outstanding-invoice') }}" class="btn btn-danger"><i
+
+        <a href="{{ Route('new-invoice-user') }}" class="btn btn-danger"><i
                 class="fa-solid fa-angle-left"></i>Back</a>
-        <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
+
+            <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
         <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button>
     </div>
 
@@ -171,18 +177,18 @@
                     <h4>TO</h4>
                 </div>
                 <div class="b-address">
-                    <span class="text-start">
+                    <span class="text-start" contenteditable="true" >
                         {!! $company_data->to !!} <br>
                         {!! $company_data->companyName . ',' !!} <br>
                         {!! str_replace(',', ',<br>', $company_data->address) !!}<br>
-                        {{ $company_data->email }}
+                        {!! str_replace(',', '<br>', $company_data->email) !!}
                     </span>
                 </div>
             </div>
         </div>
 
         <div class="table-area">
-            <table>
+            <table style="width: 100%">
                 <thead>
                     <tr style="background: #00008B">
                         <th class="text-center text-light" style="width: 70px;">
@@ -309,7 +315,6 @@
                                 <div class="line">: {{ $bank->swiftCode }}</div>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
@@ -327,7 +332,10 @@
     <script src="{{ asset('assets/js/numberToWords.min.js') }}"></script>
     <script src="{{ asset('assets/js/html2pdf.bundle.min.js') }}"></script>
 
+@php
 
+$invoiceNumber = str_replace('/', '-', $invoiceNumber);
+@endphp
     <script>
         // Add click event listener to the download button
         document.getElementById("downloadPdfBtn").addEventListener("click", function() {
@@ -361,27 +369,30 @@
 
     <script>
         window.onload = function() {
-            var container = document.querySelector('.main');
+    var container = document.querySelector('.main');
 
-            // Use html2pdf to generate PDF from the container
-            html2pdf(container, {
-                margin: 10,
-                filename: "{{ $invoiceNumber }}",
-                image: {
-                    type: 'jpeg',
-                    quality: 0.98
-                },
-                html2canvas: {
-                    dpi: 192,
-                    letterRendering: true
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            });
-        }
+    html2pdf().from(container).set({
+        margin: 10,
+        filename: "{{ $invoiceNumber }}.pdf",
+        image: { type: 'jpeg', quality: 0.98 },
+        html2canvas: { dpi: 192, letterRendering: true },
+        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+    }).outputPdf('blob').then(function (pdfBlob) {
+        var formData = new FormData();
+        formData.append('pdf', pdfBlob, "{{ $invoiceNumber }}.pdf");
+
+        fetch('{{ route("upload-invoice") }}', {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            body: formData
+        }).then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error('Error uploading PDF:', error));
+    });
+}
+
     </script>
 
     <script>

@@ -74,21 +74,32 @@
                     <td class="text-center">-</td>
                 @endif --}}
 
+
+
                 <td class="text-center">{{ $durationInDays }}</td>
                 @php $invoiceNumber = str_replace("/", "-", $get->invoiceNumber); @endphp
-                <td class="text-center d-flex align-items-center justify-content-center">
-                    <a href="{{ Route('invoiceGenForm', $invoiceNumber) }}" class="me-2 btn btn-sm btn-info">
+                <td class="text-center d-flex align-items-center justify-content-around">
+
+
+                    <a href="{{ Storage::url('invoices/' . $invoiceNumber.'.pdf') }}" target="_blank" class="btn btn-sm btn-success me-1">
+                        <i class="material-symbols-outlined">visibility</i>
+                    </a>
+
+
+                    <a href="{{ Route('invoiceGenForm', $invoiceNumber) }}" class=" btn btn-sm btn-info me-1">
                         <i class="material-symbols-outlined">edit_square</i>
                     </a>
-                    <a href="{{ Route('re.send', $get->id) }}" title="Re Send"
+                    {{-- <a href="{{ Route('re.send', $get->id) }}" title="Re Send"
                         class="btn btn-sm btn-danger me-2 {{ $get->currency == 'USD' ? '' : '' }} ">
                         <i class="material-symbols-outlined">
                             sync
                         </i>
-                    </a>
+                    </a> --}}
                     <a href="{{ Route('generateReceiptForm', $get->id) }}" class="btn btn-sm btn-primary">
                         <i class="material-symbols-outlined">navigate_next</i>
                     </a>
+
+
                 </td>
             </tr>
         @endforeach

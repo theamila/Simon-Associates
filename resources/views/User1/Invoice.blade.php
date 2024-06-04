@@ -1,4 +1,8 @@
-@extends('sidebar.sub1')
+@if ( Auth::user()->roleName() == 'User')
+    @extends('sidebar.user2sub1')
+@else
+    {{-- @extends('sidebar.sub1') --}}
+@endif
 
 @section('title', 'Send Invoioce')
 
@@ -22,7 +26,7 @@
     </span>
     </div>
 
-    
+
     <form action="{{ Route('lastGenerate') }}" method="post">
       @csrf
 

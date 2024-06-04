@@ -1,4 +1,4 @@
-@extends('sidebar.sub1')
+@extends('sidebar.user2sub1')
 
 @section('title', 'Finalizing Invoice')
 
@@ -188,10 +188,12 @@
     $invoiceNumber = str_replace('/', '-', $invoiceNumber);
 @endphp
 
-@if ($issu_count == 0 && $invoice->status == 5)
-    <a href="{{ Route('send-invoice', $invoiceNumber) }} " class="btn btn-primary mb-3">Send Invoice</a>
-@elseif($issu_count == 0 && $invoice->status == 7)
-    <a href="{{ Route('send-invoice', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
+@if ($issu_count == 0 && $invoice->status == 4)
+    <a href="{{ Route('send-invoice', $invoiceNumber) }} " class="btn btn-primary mb-3">Finalize Invoice</a>
+@elseif($issu_count == 0 && $invoice->status == 6)
+    <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
+    @elseif($issu_count == 0 && $invoice->status == 7)
+    <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
 @elseif($issu_count != 0)
     <p>Fix all issues.</p>
 @else

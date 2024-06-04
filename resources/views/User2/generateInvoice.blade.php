@@ -10,15 +10,23 @@
 @php
   $invoiceNumber = str_replace('/', '-', $invoiceNumber);
   @endphp
-
   @if($invoice->status == '4')
-  <a href="{{ Route('send-to-user-1', $invoiceNumber) }}" class="btn btn-danger">Send To Finance</a>
-  @else
-  <a href="{{ Route('send-to-user-3', $invoiceNumber) }}" class="btn btn-success">Send To Approver</a>
 
+  <span class="text-danger">
+    waiting for finalizing..
+  </span>
+  {{-- <a href="{{ Route('send-to-user-1', $invoiceNumber) }}" class="btn btn-danger">Send To Finance</a> --}}
+
+
+  {{-- @elseif ($invoice->status == '4')
+  <span>status 4</span> --}}
+  @elseif ($invoice->status == '6')
+  <a href="{{ Route('send-invoice-last', $invoiceNumber) }}" class="btn btn-danger">Send Invoice</a>
+@else
+<a href="{{ Route('send-to-user-3', $invoiceNumber) }}" class="btn btn-success">Send To Approver</a>
   @endif
 
-<span class="text-primary">
+<span class="text-primary float-end">
     Bank Account No : {{ $bankAccount->accountNo }}
 </span>
 @endsection
