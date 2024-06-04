@@ -11,6 +11,34 @@
         cursor: not-allowed;
         pointer-events: none;
     }
+
+    .bank-details {
+            display: flex;
+            justify-content: space-between;
+            font-size: 10pt;
+            background: rgba(255, 255, 255, 0.5);
+            padding-left: 10px;
+            background: white;
+            border-radius: 15px;
+            margin-top: -10px;
+            /* margin-top: 10px; */
+        }
+
+        .bank-intern-box {
+            padding-left: 5px;
+        }
+        .gray,
+        .bank-details {
+            font-size: 11pt;
+            margin-left: 10px;
+        }
+
+        .bank-box {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
 </style>
 
 @section('content')
@@ -205,10 +233,41 @@
     @php
         $invoiceNumber = str_replace('/', '-', $invoiceNumber);
     @endphp
-    <a href="{{ Route('send-to-user-back', $invoiceNumber) }}" class="btn btn-success mb-3">Send To Approver</a>
-    <span class="text-primary">
-        Bank Account No : {{ $bankAccount->accountNo }}
+    <a href="{{ Route('send-to-user-back', $invoiceNumber) }}" class="btn btn-success mb-3 float-end">Send To Approver</a>
+
+<div class="b-address">
+    <span class="text-start fw-bold">
+        Invoice No:  {{ $company_data->invoiceNumber }} <br> <br>
+        {!! $company_data->to !!} <br>
+        {!! $company_data->companyName . ',' !!} <br>
+        {!! str_replace(',', ',<br>', $company_data->address) !!}<br>
+        {!! str_replace(',', '<br>', $company_data->email) !!}
     </span>
+</div>
+
+<br>
+
+@endsection
+
+@section('bankDetails')
+<div class="bank-details text-secondary py-3">
+    <div class="bank-box fs-6">
+        <div class="box-1">
+            <div class="text-purple line">A/C Name</div>
+            <div class="text-purple line">Account No</div>
+            <div class="text-purple line">Bank Name</div>
+            <div class="text-purple line">Bank Address</div>
+            <div class="text-purple line">Swift Code</div>
+        </div>
+        <div class="box-2 bank-intern-box">
+            <div class="line">: {{ $bank->acName }}</div>
+            <div class="line">: {{ $bank->accountNo }}</div>
+            <div class="line">: {{ $bank->bankName }}</div>
+            <div class="line">: {{ $bank->bankAddress }}</div>
+            <div class="line">: {{ $bank->swiftCode }}</div>
+        </div>
+    </div>
+</div>
 @endsection
 
 @endsection
