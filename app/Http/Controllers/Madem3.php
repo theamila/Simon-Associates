@@ -34,9 +34,11 @@ class Madem3 extends Controller
 
         $invoice = Invoice::where('invoiceNumber', $invoiceNumberModify)->first();
 
-        $bankAccount = payment::where('id', $invoice->bankId)->first();
+        $bank = payment::where('id', $invoice->bankId)->first();
 
-        return view('User3.generateInvoice', compact('invoice_data', 'invoiceNumber', 'bankAccount'));
+        $company_data = Invoice::where('invoiceNumber', $invoiceNumberModify)->firstOrFail();
+
+        return view('User3.generateInvoice', compact('invoice_data', 'invoiceNumber', 'bank', 'company_data'));
     }
 
     public function sentBack($invoiceNumber)

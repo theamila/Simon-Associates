@@ -1,4 +1,4 @@
-@extends('sidebar.sub1')
+@extends('sidebar.user2sub1')
 
 @section('title', 'Generate Receipt')
 
@@ -14,7 +14,7 @@
             To : {!! $company_data->to . ',' !!} <br>
             {!! $company_data->companyName . ',' !!} <br>
             {!! str_replace(',', ',<br>', $company_data->address) !!} <br>
-            {{ $company_data->email }}
+            {!! str_replace(',', '<br>', $company_data->email) !!}
 
         </span>
     </div>

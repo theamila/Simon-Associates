@@ -56,7 +56,21 @@ $totalPrice = 0;
     @php
     $invoiceNumber = str_replace('/', '-', $get->invoiceNumber)
     @endphp
-    <a href="{{ asset('pdfs/invoices/' . $invoiceNumber . '.pdf') }}" download="{{ $invoiceNumber . '.pdf' }}" class="btn btn-sm btn-danger align-items-center"><i class="material-symbols-outlined">download</i>PDF</a>
+
+<a href="{{ Storage::url('invoices/' . $invoiceNumber.'.pdf') }}" class="btn btn-sm btn-primary" download><i class="material-symbols-outlined">download</i></a>
+    {{-- <a href="{{ asset('pdfs/invoices/' . $invoiceNumber . '.pdf') }}" download="{{ $invoiceNumber . '.pdf' }}" class="btn btn-sm btn-danger align-items-center"><i class="material-symbols-outlined">download</i>PDF</a> --}}
+    <a href="{{ Storage::url('invoices/' . $invoiceNumber.'.pdf') }}" target="_blank" class="btn btn-sm btn-info">
+        <i class="material-symbols-outlined">visibility</i>
+    </a>
+
+
+    <a href="{{ Route('re.send', $get->id) }}" title="Re Send"
+        class="btn btn-sm btn-danger me-2 {{ $get->currency == 'USD' ? '' : '' }} ">
+        <i class="material-symbols-outlined">
+            sync
+        </i>
+    </a>
+
 
     </td>
 </tr>

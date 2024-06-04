@@ -10,7 +10,7 @@ use App\Models\payment;
 use App\Models\User;
 use App\Models\Modelreceipt;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class NavisionController extends Controller
@@ -73,7 +73,6 @@ class NavisionController extends Controller
     }
     public function Receipt()
     {
-        // $data = Invoice::where('status', '7')->get();
 
         $data = Modelreceipt::orderByDesc('id')->paginate(30);
         $ComData = Invoice::all();
@@ -83,7 +82,7 @@ class NavisionController extends Controller
 
     public function dashboardUserTwo()
     {
-        $apr_cnt = where('status', 7)->count();
+        $apr_cnt = Invoice::where('status', 7)->count();
         return view('User2.Home', compact('apr_cnt'));
     }
 

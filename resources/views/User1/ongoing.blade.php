@@ -1,4 +1,5 @@
 @extends('sidebar.sub1')
+@include('sweetalert::alert')
 
 @section('title', 'Ongoing Invoice')
 

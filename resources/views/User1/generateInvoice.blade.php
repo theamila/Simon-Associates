@@ -9,26 +9,25 @@
     @include('sweetalert::alert')
 
     <div class="container border rounded">
-
-        <div class="row m-1 p-2 bg-light align-items-center">
-            <div class="col">
-                <span class="text-danger">Outstanding Amount : <span class="fw-bold">
-                        {{ $outdata->outstanding }}
-                    </span></span>
-            </div>
-
-            <div class="col">
-                <select id="bank" name="Selectbank" class="form-select">
-                    @foreach ($bank as $get)
-                        <option value="{{ $get->id }}" {{ $get->default == 1 ? 'selected' : '' }}>
-                            {{ $get->accountNo }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
-
         <form action="{{ Route('invoiceDataAdd') }}" method="post" class="mt-3">
+
+            <div class="row m-1 p-2 bg-light align-items-center">
+                <div class="col">
+                    <span class="text-danger">Outstanding Amount : <span class="fw-bold">
+                            {{ $outdata->outstanding }}
+                        </span></span>
+                </div>
+                <div class="col">
+                    <select id="bank" name="Selectbank" class="form-select">
+                        @foreach ($bank as $get)
+                            <option value="{{ $get->id }}" {{ $get->default == 1 ? 'selected' : '' }}>
+                                {{ $get->accountNo }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
+
             @csrf
             <div class="row mb-3">
                 <div class="col">
@@ -315,7 +314,7 @@
                         To
                         Approver</a> --}}
 
-                        <a id="sendToApproverBtn" href="#" class="btn btn-inverse-success btn-fw">Send To Approver</a>
+                    <a id="sendToApproverBtn" href="#" class="btn btn-inverse-success btn-fw">Send To Approver</a>
                 </div>
             </div>
 
@@ -327,7 +326,8 @@
                 var selectElement = document.getElementById('bank');
                 var defaultBankId = selectElement.value;
 
-                var url = "{{ route('sendToApprover', ['invoiceNumber' => $invoiceNumber, 'bankId' => 'jsvariable']) }}";
+                var url =
+                    "{{ route('sendToApprover', ['invoiceNumber' => $invoiceNumber, 'bankId' => 'jsvariable']) }}";
                 url = url.replace('jsvariable', defaultBankId);
 
                 document.getElementById('sendToApproverBtn').href = url;
@@ -335,14 +335,15 @@
                 selectElement.addEventListener('change', function() {
                     var selectedBankId = this.value;
 
-                    var url = "{{ route('sendToApprover', ['invoiceNumber' => $invoiceNumber, 'bankId' => 'jsvariable']) }}";
+                    var url =
+                        "{{ route('sendToApprover', ['invoiceNumber' => $invoiceNumber, 'bankId' => 'jsvariable']) }}";
                     url = url.replace('jsvariable', selectedBankId);
 
                     document.getElementById('sendToApproverBtn').href = url;
                 });
             });
         </script>
-        
+
         <script>
             document.addEventListener("DOMContentLoaded", function() {
                 document.getElementById("sdate").addEventListener("change", updateDescription);

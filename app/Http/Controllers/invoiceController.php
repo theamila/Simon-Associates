@@ -14,6 +14,8 @@ use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Dompdf\Dompdf;
 use Carbon\Carbon;
 use Exception;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
 
 class invoiceController extends Controller
 {
@@ -50,7 +52,7 @@ class invoiceController extends Controller
 
             return back();
         } catch (\Exception $e) {
-            Alert::error('Error', 'An error occurred while registering the company.');
+            Alert::error('Error', 'An error occurred while registering the company.' . $e);
 
             return back();
         }
@@ -65,6 +67,10 @@ class invoiceController extends Controller
         ]);
 
         try {
+
+            DB::beginTransaction();
+
+
             $data = new InvoiceDetails();
 
             if ($request->input('toggle')) {
@@ -80,7 +86,13 @@ class invoiceController extends Controller
             $data->pom = $request->input('POM');
             $data->sdate = $request->input('sdate');
 
+            $bankinvoice = Invoice::where('invoiceNumber', $request->input('invoiceNumber'))->first();
+            $bankinvoice->refID = $request->input('Selectbank');
+
             $data->save();
+            $bankinvoice->save();
+
+            DB::commit();
 
             toast('Invoice Data added successfully.', 'success');
 
@@ -167,7 +179,7 @@ class invoiceController extends Controller
 
     public function NewInvoiceUser()
     {
-        $data = Invoice::where('status', '2')->orWhere('status', '4')->get();
+        $data = Invoice::where('status', '2')->orWhere('status', '4')->orWhere('status', '6')->get();
 
         return view('User2.newinvoice', compact('data'));
     }
@@ -334,7 +346,7 @@ class invoiceController extends Controller
             return back()->with('bad', 'Something wrong.');
         }
     }
-    public function sendInvoice($invoiceNumber)
+    public function sendInvoiceLast($invoiceNumber)
     {
         try {
             $invoiceNumber = str_replace('-', '/', $invoiceNumber);
@@ -370,6 +382,54 @@ class invoiceController extends Controller
             return back()->with('bad', 'Something went wrong.');
         }
     }
+
+
+    public function sendInvoice($invoiceNumber)
+    {
+        try {
+            $invoiceNumber = str_replace('-', '/', $invoiceNumber);
+
+            $invoice = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+
+            if (!$invoice) {
+                return back()->with('error', 'Invoice not found.');
+            }
+
+            $invoice->status = '6';
+            $invoice->save();
+
+            toast('Success', 'success');
+
+            Alert::success('Success', 'success');
+
+
+                return redirect('/ongoing/invoice');
+
+    
+
+            // $outPriceTotal = 0.00; // Accumulator for total outstanding price
+            // $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceNumber)->get();
+
+            // foreach ($invoiceDetails as $invoiceDetail) {
+            //     $dollarRate = $invoiceDetail->currency === 1 ? $invoiceDetail->dollarRate : 1.0;
+            //     $outPrice = $invoiceDetail->price - $invoiceDetail->price * ($invoiceDetail->discount / 100);
+            //     $outPrice = $outPrice / $dollarRate;
+            //     $outPriceTotal += $outPrice;
+            // }
+
+            // Update company outstanding amount
+            // $company = CompanyDetails::findOrFail($invoice->refID);
+            // $company->outstanding += $outPriceTotal;
+            // $company->save();
+
+            // return redirect()->route('generate-Invoice', $invoice->id);
+        } catch (\Exception $e) {
+            // Log the full exception for debugging
+            \Log::error('Exception occurred while sending invoice: ' . $e->getMessage());
+            return back()->with('bad', 'Something went wrong.');
+        }
+    }
+
 
 
     // public function sendInvoice($invoiceNumber)
@@ -418,7 +478,9 @@ class invoiceController extends Controller
             $invoiceNumber = $invoice->invoiceNumber;
             $invoice_data = InvoiceDetails::where('invoiceNumber', $invoiceNumber)->get();
 
-            return view('User1.editInvoicer', compact('invoice', 'invoice_data', 'invoiceNumber'));
+            $bank = payment::all();
+
+            return view('User1.editInvoicer', compact('invoice', 'invoice_data', 'invoiceNumber', 'bank'));
         } else {
             Alert::error('Error', 'Unble to find Invoice.');
         }

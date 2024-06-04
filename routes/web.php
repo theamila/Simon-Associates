@@ -37,10 +37,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/RegisterCompanySave', [invoiceController::class, 'RegisterCompanySave'])->name('RegisterCompanySave');
 
-        Route::get('/invoice/generate/{id}', [InvoiceController::class, 'generateInvoiceFinal'])->name('generate-Invoice');
-
-        Route::post('/invoice/generate/pdf', [InvoiceController::class, 'generateInvoicePdf'])->name('lastGenerate');
-
         Route::get('/fixed/{id}', [invoiceController::class, 'fixed'])->name('fixed');
 
         Route::get('/recent/home/{invoiceNumber}', [invoiceController::class, 'recentHome'])->name('recent.home');
@@ -51,6 +47,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/search/customer', [invoiceController::class, 'SearchCustomer'])->name('search.customer');
 
+        Route::get('/generate/Reciept/form/{id}', [Receipt::class, 'generateReceiptForm'])->name('generateReceiptForm');
+
+        Route::match(['get', 'post'], '/custom/Reciept', [Receipt::class, 'CustomReceipt'])->name('CustomReceipt');
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_FINANCE]], function () {
@@ -73,6 +72,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('2/Reports', [userTwoController::class, 'Reports'])->name('Reports');
 
         Route::get('/filter-invoices', [userTwoController::class, 'filterInvoices'])->name('filter.invoices');
+
+        Route::get('/invoiceNumber/last/{id}', [invoiceController::class, 'sendInvoiceLast'])->name('send-invoice-last');
+
+        Route::get('/invoice/generate/{id}', [InvoiceController::class, 'generateInvoiceFinal'])->name('generate-Invoice');
+
+        Route::post('/invoice/generate/pdf', [InvoiceController::class, 'generateInvoicePdf'])->name('lastGenerate');
+
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
@@ -86,8 +92,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/view/user/tree/{invoiceNumber}', [Madem3::class, 'viewUser3'])->name('view-user-3');
     });
-
-    Route::get('/reSend/{id}', [invoiceController::class, 'reSend'])->name('re.send');
 
     // Route::get('2/outstanding/view' ,[userTwoController::class, 'OutstandingInvoiceView'])->name('two-Outstanding-view');
 
@@ -109,14 +113,9 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/generate/Reciept/{id}', [NavisionController::class, 'generateReciept'])->name('generateReciept');
 
-    Route::get('/generate/Reciept/form/{id}', [Receipt::class, 'generateReceiptForm'])->name('generateReceiptForm');
-
     Route::get('/invoiceNumber/{id}', [invoiceController::class, 'sendInvoice'])->name('send-invoice');
 
     Route::post('/generate/Reciept', [Receipt::class, 'generateReceipt'])->name('generateReceipt');
-
-    Route::match(['get', 'post'], '/custom/Reciept', [Receipt::class, 'CustomReceipt'])->name('CustomReceipt');
-
 
     // ====================End Sidebar======================================
 
@@ -157,5 +156,12 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/receipt/settlement', [Receipt::class, 'receiptSettlement'])->name('receipt.settlement');
 
     Route::get('/cus-receipt/{id}', [Receipt::class, 'showReceipt'])->name('customer.receipt');
+
+    // routes/web.php
+    Route::post('/upload-pdf', [App\Http\Controllers\PDFController::class, 'upload'])->name('upload-pdf');
+
+    Route::post('/upload-invoice', [App\Http\Controllers\PDFController::class, 'uploadInvoice'])->name('upload-invoice');
+
+    Route::get('/reSend/{id}', [invoiceController::class, 'reSend'])->name('re.send');
 
 });

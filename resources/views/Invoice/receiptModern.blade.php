@@ -25,6 +25,7 @@
             color: #00008B;
             font-size: 10pt;
         }
+
         @page {
             size: A4;
         }
@@ -33,7 +34,8 @@
             margin-right: 10px;
             color: white;
         }
-        th{
+
+        th {
             color: white;
             background: #00008B;
         }
@@ -166,7 +168,8 @@
                             @if ($loop->last || $get->invoiceNumber != $invoice_data[$loop->index + 1]->invoiceNumber)
                                 <tr>
                                     <td class="text-center">{{ $get->invoiceNumber }}</td>
-                                    <td class="text-start" contenteditable="true" style="color: #00008B">{{ $get->description }}</td>
+                                    <td class="text-start" contenteditable="true" style="color: #00008B">
+                                        {{ $get->description }}</td>
                                     <td class="text-center">
                                         {{ $method == 'online Transfer' ? 'TRF' : ($method == 'Cheque' ? 'Chq' : $method) }}
                                     </td>
@@ -182,7 +185,8 @@
         <div class="row">
             <div class="form-group mb-3">
                 <!-- <input type="text" id="totalInWords" class="form-control" readonly> -->
-                <textarea name="totalInWords" class="form-control" id="totalInWords" cols="30" rows="2" style="color: #00008B"></textarea>
+                <textarea name="totalInWords" class="form-control" id="totalInWords" cols="30" rows="2"
+                    style="color: #00008B"></textarea>
             </div>
         </div>
 
@@ -298,6 +302,87 @@
             });
         }
     </script> --}}
+
+
+    {{--
+    <script>
+        window.onload = function() {
+            var container = document.querySelector('.main');
+
+            html2pdf().from(container).set({
+                margin: 10,
+                filename: '{{ $formattedNumber }}.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    dpi: 192,
+                    letterRendering: true
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            }).outputPdf('blob').then(function(pdfBlob) {
+                var formData = new FormData();
+                formData.append('pdf', pdfBlob, '{{ $formattedNumber }}.pdf');
+
+                fetch('{{ route('upload-pdf') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    }).then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error uploading PDF:', error));
+            });
+        }
+    </script> --}}
+
+
+
+
+    <script>
+        window.onload = function() {
+            var container = document.querySelector('.main');
+            var invoiceNumber = '{{ 'R' . substr($formattedNumber, 1) }}'; // Pass invoice number from Blade to JavaScript
+
+            html2pdf().from(container).set({
+                margin: 10,
+                filename: invoiceNumber + '.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    dpi: 192,
+                    letterRendering: true
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            }).outputPdf('blob').then(function(pdfBlob) {
+                var formData = new FormData();
+                formData.append('pdf', pdfBlob, invoiceNumber + '.pdf');
+                formData.append('invoiceNumber', invoiceNumber); // Include invoice number in the form data
+
+                fetch('{{ route('upload-pdf') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    }).then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error uploading PDF:', error));
+            });
+        }
+    </script>
 </body>
 <script>
     var shouldBlockRefresh = true;
@@ -313,4 +398,5 @@
         shouldBlockRefresh = !shouldBlockRefresh;
     }
 </script>
+
 </html>
