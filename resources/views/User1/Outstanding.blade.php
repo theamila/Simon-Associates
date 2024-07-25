@@ -19,10 +19,10 @@
 
 @section('Ttopic', 'Outstanding Invoice')
 @section('thead')
-
+{{--
     <button type="button" class="btn btn-success col-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Custom Receipt
-    </button>
+    </button> --}}
 
 
     <th class="text-center">No</th>
@@ -114,7 +114,7 @@
     @endif
 
 
-    <!-- Modal -->
+{{--    
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -142,7 +142,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
 @endsection
 @endsection
