@@ -6,11 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Invoice</title>
     <link rel="stylesheet" href="{{ asset('sidebar/css/bootstrap.min.css') }}">
-    <link rel="stylesheet" href="{{ asset('sidebar/css/.bank-box {
-        display: flex;
-        justify-content: space-between;
-        margin-top: 15px;
-    }.css') }}">
+    <link rel="stylesheet"
+        href="{{ asset('sidebar/css/.bank-box {
+                                                                                display: flex;
+                                                                                justify-content: space-between;
+                                                                                margin-top: 15px;
+                                                                            }.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -28,6 +29,28 @@
         * {
             color: #00008B;
             font-size: 10pt;
+        }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
+            /* Adjust the font size to fit more content on one page */
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .payment {
+            margin-top: auto;
+            width: 100%;
         }
 
         i {
@@ -50,11 +73,12 @@
         }
 
         .payment {
-            padding: 10px;
-            background: rgba(0, 0, 0, 0.05);
-            margin-top: 10px;
-            border-radius: 10px;
+            margin-top: auto;
+            width: 100%;
+            margin-bottom: 30px;
+            /* Adjust as needed */
         }
+
 
         .payment-row {
             display: flex;
@@ -98,6 +122,18 @@
                 padding: 0;
             }
 
+            .main {
+                display: block;
+                position: relative;
+                min-height: 100%;
+            }
+
+            .payment {
+                position: absolute;
+                bottom: 0;
+                width: 100%;
+            }
+
             .btn {
                 display: none;
             }
@@ -107,6 +143,34 @@
                 margin: 1cm;
             }
         }
+        .header-row {
+    margin-bottom: 20px;
+}
+
+.header-row h2 {
+    margin-bottom: 10px;
+}
+
+.header-row .text-end {
+    text-align: end;
+}
+
+.header-row .company-name {
+    margin: 0;
+    padding: 0;
+    font-size: 1em; /* Adjust font size as needed */
+    font-weight: bold; /* Make it bold if desired */
+}
+
+.header-row .sender-address {
+    text-align: end;
+}
+
+.header-row .r-No {
+    padding: 4px 0;
+}
+
+
     </style>
 </head>
 
@@ -114,59 +178,42 @@
 
     <div class="container mt-2 mb-2">
 
-        <a href="{{ Route('new-invoice-user') }}" class="btn btn-danger"><i
-                class="fa-solid fa-angle-left"></i>Back</a>
+        <a href="{{ Route('new-invoice-user') }}" class="btn btn-danger"><i class="fa-solid fa-angle-left"></i>Back</a>
 
-            <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
-        <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button>
+        <button onclick="window.print()" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
+        <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i> Download</button>
     </div>
 
     <div class="container main">
         <div class="header mt-2">
             <div class="row header-row">
                 <div class="col-3">
-                    <h2 class="text-start">
-                        INVOICE
-                    </h2>
+                    <h2 class="text-start">INVOICE</h2>
                     <div class="row">
-                        <div class="col-7 r-No">
-                            Date
-                        </div>
+                        <div class="col-7 r-No">Date</div>
                         <div class="col-5 r-No">
                             {{ $date ? \Carbon\Carbon::parse($date)->format('d/m/Y') : '' }}
-
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7 r-No">
-                            Invoice No
-                        </div>
-                        <div class="col-5 r-No">
-                            {{ $invoiceNumber }}
-                        </div>
+                        <div class="col-7 r-No">Invoice No</div>
+                        <div class="col-5 r-No">{{ $invoiceNumber }}</div>
                     </div>
-
                 </div>
-                <div class="col-9">
-                    <h3 class="text-end justify-content-end">
-                        SECRETARIUS(PVT) LTD
-                    </h3>
-                    <div class="row justify-content-end">
-
-                        <div class="col-12 sender-address justify-content-end">
-                            <span class="text-end d-flex justify-content-end">
-
-                                #40 Galle Face Court 02, Colombo 03, <br>
-                                (Reg. No: PV 5958) <br>
-                                Tele: +94(011) 2399 090/2390 356 Fax: +94(011)2381 907
-                                <br>Email: simonsec@simonas.net Web: www.simonas.net <br>
-
-                            </span>
-                        </div>
-
+                <div class="col-9 text-end">
+                    <h3 class="company-name">SECRETARIUS(PVT) LTD</h3>
+                    <div class="sender-address">
+                        <span>
+                            #40 Galle Face Court 02, Colombo 03, <br>
+                            (Reg. No: PV 5958) <br>
+                            Tele: +94(011) 2399 090/2390 356 Fax: +94(011)2381 907 <br>
+                            Email: simonsec@simonas.net Web: www.simonas.net <br>
+                        </span>
                     </div>
                 </div>
             </div>
+
+
         </div>
         <div class="bill-to" style="
         position: relative;
@@ -177,7 +224,7 @@
                     <h4>TO</h4>
                 </div>
                 <div class="b-address">
-                    <span class="text-start" contenteditable="true" >
+                    <span class="text-start" contenteditable="true">
                         {!! $company_data->to !!} <br>
                         {!! $company_data->companyName . ',' !!} <br>
                         {!! str_replace(',', ',<br>', $company_data->address) !!}<br>
@@ -290,10 +337,9 @@
             </table>
         </div>
 
-        <div class="payment">
+        <div class="payment container">
             <div class="row payment-row">
                 <div class="col-12 bank-payment">
-
                     <div class="gray">
                         Payment to be made by Crossed Cheque in favour of"Secretarius(Pvt)Ltd" Or Remittances to be made
                         to the undernoted Account.
@@ -318,13 +364,15 @@
                     </div>
                 </div>
             </div>
+            <div class="row text-dark">
+                <span class="text-center">
+                    This is a computer-generated Invoice.
+                </span>
+            </div>
         </div>
-        <div class="row text-dark">
-            <span class="text-center">
-                This is a computer-generated Invoice.
-            </span>
-        </div>
+
     </div>
+
 
     <input type="hidden" name="price" id="price" Value="{{ $total }}">
 
@@ -332,10 +380,9 @@
     <script src="{{ asset('assets/js/numberToWords.min.js') }}"></script>
     <script src="{{ asset('assets/js/html2pdf.bundle.min.js') }}"></script>
 
-@php
-
-$invoiceNumber = str_replace('/', '-', $invoiceNumber);
-@endphp
+    @php
+        $invoiceNumber = str_replace('/', '-', $invoiceNumber);
+    @endphp
     <script>
         // Add click event listener to the download button
         document.getElementById("downloadPdfBtn").addEventListener("click", function() {
@@ -367,32 +414,81 @@ $invoiceNumber = str_replace('/', '-', $invoiceNumber);
         });
     </script>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.min.js"></script>
+
+
     <script>
         window.onload = function() {
-    var container = document.querySelector('.main');
 
-    html2pdf().from(container).set({
-        margin: 10,
-        filename: "{{ $invoiceNumber }}.pdf",
-        image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { dpi: 192, letterRendering: true },
-        jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-    }).outputPdf('blob').then(function (pdfBlob) {
-        var formData = new FormData();
-        formData.append('pdf', pdfBlob, "{{ $invoiceNumber }}.pdf");
 
-        fetch('{{ route("upload-invoice") }}', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-            },
-            body: formData
-        }).then(response => response.json())
-          .then(data => console.log(data))
-          .catch(error => console.error('Error uploading PDF:', error));
-    });
-}
+            var container = document.querySelector('.main');
 
+            html2pdf().from(container).set({
+                margin: 10,
+                filename: "{{ $invoiceNumber }}.pdf",
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    dpi: 192,
+                    letterRendering: true
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            }).outputPdf('blob').then(function(pdfBlob) {
+                var formData = new FormData();
+                formData.append('pdf', pdfBlob, "{{ $invoiceNumber }}.pdf");
+
+                fetch('{{ route('upload-invoice') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    }).then(response => response.json())
+                    .then(data => console.log(data))
+                    .catch(error => console.error('Error uploading PDF:', error));
+            });
+
+
+
+            // var container = document.querySelector('.main');
+
+            // html2pdf().from(container).set({
+            //     margin: 10,
+            //     filename: "{{ $invoiceNumber }}.pdf",
+            //     image: {
+            //         type: 'jpeg',
+            //         quality: 0.98
+            //     },
+            //     html2canvas: {
+            //         dpi: 192,
+            //         letterRendering: true
+            //     },
+            //     jsPDF: {
+            //         unit: 'mm',
+            //         format: 'a4',
+            //         orientation: 'portrait'
+            //     }
+            // }).outputPdf('blob').then(function(pdfBlob) {
+            //     var formData = new FormData();
+            //     formData.append('pdf', pdfBlob, "{{ $invoiceNumber }}.pdf");
+
+            //     fetch('{{ route('upload-invoice') }}', {
+            //             method: 'POST',
+            //             headers: {
+            //                 'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            //             },
+            //             body: formData
+            //         }).then(response => response.json())
+            //         .then(data => console.log(data))
+            //         .catch(error => console.error('Error uploading PDF:', error));
+            // });
+        }
     </script>
 
     <script>

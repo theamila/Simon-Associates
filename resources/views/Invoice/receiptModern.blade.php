@@ -26,6 +26,22 @@
             font-size: 10pt;
         }
 
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
         @page {
             size: A4;
         }
@@ -52,10 +68,46 @@
                 display: none;
             }
 
+            .notes {
+                margin-top: auto;
+                width: 100%;
+                margin-bottom: 40px;
+                /* Adjust as needed */
+            }
+
             @page {
                 size: A4;
                 margin: 1cm;
             }
+        }
+
+        .header-row {
+            margin-bottom: 20px;
+        }
+
+        .header-row h2 {
+            margin-bottom: 10px;
+        }
+
+        .header-row .text-end {
+            text-align: end;
+        }
+
+        .header-row .company-name {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+            /* Adjust font size as needed */
+            font-weight: bold;
+            /* Make it bold if desired */
+        }
+
+        .header-row .sender-address {
+            text-align: end;
+        }
+
+        .header-row .r-No {
+            padding: 4px 0;
         }
     </style>
 </head>
@@ -63,8 +115,7 @@
 <body>
 
     <div class="container mt-2 mb-2">
-        <a href="{{ Route('Outstanding-invoice') }}" class="btn btn-danger"><i
-                class="fa-solid fa-angle-left"></i>Back</a>
+        <a href="/2/outstanding" class="btn btn-danger"><i class="fa-solid fa-angle-left"></i>Back</a>
         <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
         <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button>
     </div>
@@ -73,42 +124,29 @@
         <div class="header mt-2">
             <div class="row header-row">
                 <div class="col-3">
-                    <h2 class="text-start">
-                        RECEIPT
-                    </h2>
+                    <h2 class="text-start">RECEIPT</h2>
                     <div class="row">
-                        <div class="col-7 r-No">
-                            Date
-                        </div>
+                        <div class="col-7 r-No">Date</div>
                         <div class="col-5 r-No">
                             {{ now()->format('d/m/Y') }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7 r-No">
-                            Receipt No
-                        </div>
+                        <div class="col-7 r-No">Receipt No</div>
                         <div class="col-5 r-No">
                             {{ 'R ' . substr($formattedNumber, 1) }}
                         </div>
                     </div>
-
                 </div>
-                <div class="col-9">
-                    <h3 class="text-end justify-content-end">
-                        SECRETARIUS(PVT) LTD
-                    </h3>
-                    <div class="row justify-content-end">
-
-                        <div class="col-12 sender-address justify-content-end">
-                            <span class="text-end d-flex justify-content-end">
-                                (Reg. No: PV 5958) <br>
-                                #40 Galle Face Court 02, Colombo 03, <br>
-                                Tele: +94(011) 2399 090/239 0356 Fax: +94(011)2381 907
-                                <br>Email: simonsec@simonas.net Web: www.simonas.net
-                            </span>
-                        </div>
-
+                <div class="col-9 text-end">
+                    <h3 class="company-name">SECRETARIUS(PVT) LTD</h3>
+                    <div class="sender-address">
+                        <span>
+                            #40 Galle Face Court 02, Colombo 03, <br>
+                            (Reg. No: PV 5958) <br>
+                            Tele: +94(011) 2399 090/2390 356 Fax: +94(011)2381 907 <br>
+                            Email: simonsec@simonas.net Web: www.simonas.net <br>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -226,10 +264,12 @@
                     Notes
                 </div>
                 <div class="col-12">
-                    <li>This is an official receipt subject to realization of Cheques.</li>
-                    <li>All Returned Cheques will be subject to a levy of Rs 1,500.00</li>
-                    <li>Stamp Duty of this Receipt will be remitted in terms of section 7 of the Stamp Duty (Special
-                        Provisions) Act No of 2006.</li>
+                    <ul>
+                        <li>This is an official receipt subject to realization of Cheques.</li>
+                        <li>All Returned Cheques will be subject to a levy of Rs 1,500.00</li>
+                        <li>Stamp Duty of this Receipt will be remitted in terms of section 7 of the Stamp Duty (Special
+                            Provisions) Act No of 2006.</li>
+                    </ul>
                 </div>
             </div>
         </div>
@@ -348,7 +388,8 @@
     <script>
         window.onload = function() {
             var container = document.querySelector('.main');
-            var invoiceNumber = '{{ 'R' . substr($formattedNumber, 1) }}'; // Pass invoice number from Blade to JavaScript
+            var invoiceNumber =
+                '{{ 'R' . substr($formattedNumber, 1) }}'; // Pass invoice number from Blade to JavaScript
 
             html2pdf().from(container).set({
                 margin: 10,

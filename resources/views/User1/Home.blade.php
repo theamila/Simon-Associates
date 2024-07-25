@@ -4,6 +4,7 @@
 @section('pageTitle', 'Dashboard')
 
 @section('content')
+@include('sweetalert::alert')
 
 @section('f-state', 'Approved Invoices')
 
@@ -72,11 +73,37 @@
                                             <td class="text-center">{{ $get->invoiceNumber }}</td>
                                             <td class="text-center">{{ $get->companyName }}</td>
                                             <td class="text-center">
+                                                <a href="#" class="btn btn-sm btn-inverse-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-id="{{ $get->id }}">
+                                                    <i class="material-symbols-outlined">delete</i>
+                                                </a>
                                                 <a href="{{ route('recent.home', str_replace('/', '-', $get->invoiceNumber)) }}"
                                                     class="btn btn-sm btn-inverse-success">
                                                     <i class="material-symbols-outlined">keyboard_arrow_right</i>
                                                 </a>
 
+{{-- ------------------------ Delete confimation modal --------------------------------- --}}
+
+<div class="modal fade" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteConfirmationModalLabel">Confirm Delete</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete this item?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <a href="#" class="btn btn-danger" id="confirmDeleteButton">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+{{-- ------------------------ Delete confimation modal --------------------------------- --}}
                                             </td>
                                         </tr>
                                     @endforeach
@@ -178,3 +205,19 @@ switch ($get->status) {
 
 @endsection
 @endsection
+
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var deleteConfirmationModal = document.getElementById('deleteConfirmationModal');
+        var confirmDeleteButton = document.getElementById('confirmDeleteButton');
+
+        deleteConfirmationModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget; // Button that triggered the modal
+            var id = button.getAttribute('data-id'); // Extract info from data-* attributes
+
+            // Update the delete link with the correct ID
+            confirmDeleteButton.href = '{{ route("recent.delete", "") }}/' + id;
+        });
+    });
+    </script>

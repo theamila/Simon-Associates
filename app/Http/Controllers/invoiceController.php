@@ -21,7 +21,7 @@ class invoiceController extends Controller
 {
     public function NewInvoice()
     {
-        $data = CompanyDetails::all();
+        $data = CompanyDetails::where('state', true)->get();
 
         $name = "";
 
@@ -291,8 +291,8 @@ class invoiceController extends Controller
 
 
 
-    $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
-    $directoryPath = public_path('pdfs/invoices');
+            $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
+            $directoryPath = public_path('pdfs/invoices');
 
             // file_put_contents(public_path('pdfs/invoices/' . $filename), $dompdf->output());
 
@@ -302,10 +302,10 @@ class invoiceController extends Controller
             }
 
 
-    $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
-    $directoryPath = public_path('pdfs/invoices');
+            $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
+            $directoryPath = public_path('pdfs/invoices');
 
-    file_put_contents($directoryPath . '/' . $filename, $dompdf->output());
+            file_put_contents($directoryPath . '/' . $filename, $dompdf->output());
             // =================================================================
 
             return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr'));
@@ -403,9 +403,9 @@ class invoiceController extends Controller
             Alert::success('Success', 'success');
 
 
-                return redirect('/ongoing/invoice');
+            return redirect('/ongoing/invoice');
 
-    
+
 
             // $outPriceTotal = 0.00; // Accumulator for total outstanding price
             // $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceNumber)->get();
@@ -517,14 +517,13 @@ class invoiceController extends Controller
 
     public function SearchCustomer(Request $request)
     {
-        try
-        {
+        try {
             $request->validate([
                 'name' => 'required',
             ]);
 
             $name = $request->input('name');
-           $data = CompanyDetails::where('companyName', 'like', "%$name%")->get();
+            $data = CompanyDetails::where('companyName', 'like', "%$name%")->get();
 
             if ($data->isEmpty()) {
 
@@ -534,11 +533,41 @@ class invoiceController extends Controller
             }
 
             return view('User1.newInvoice', compact('data', 'name'));
-
-        }
-        catch(\Exception $e)
-        {
+        } catch (\Exception $e) {
             toast('Something went wrong. Please try again later.', 'error');
+            return back();
+        }
+    }
+
+
+    public function recentDelete($id)
+    {
+        try {
+            // Find the invoice or throw a 404 exception if not found
+            $data = Invoice::findOrFail($id);
+
+            // Retrieve the invoice number before deleting the invoice
+            $deleteInvoiceNumber = $data->invoiceNumber;
+
+            // Retrieve all related invoice details
+            $deleteInvoiceData = InvoiceDetails::where('invoiceNumber', $deleteInvoiceNumber)->get();
+
+            if (!empty($deleteInvoiceData)) {
+
+                foreach ($deleteInvoiceData as $invoiceDetail) {
+                    $invoiceDetail->delete();
+                }
+            }
+
+            $data->delete();
+
+            toast('Invoice Deleted successfully.', 'success');
+
+            return back();
+        } catch (Exception $e) {
+
+            toast('Failed to delete the invoice.', 'error');
+
             return back();
         }
     }
