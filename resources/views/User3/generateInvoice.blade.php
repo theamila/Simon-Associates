@@ -233,7 +233,9 @@
     @php
         $invoiceNumber = str_replace('/', '-', $invoiceNumber);
     @endphp
-    <a href="{{ Route('send-to-user-back', $invoiceNumber) }}" class="btn btn-success mb-3 float-end">Send To Approver</a>
+    <a href="{{ Route('send-to-user-back', $invoiceNumber) }}" class="btn btn-success mb-3 float-end d-flex align-items-center"><span class="material-symbols-outlined me-2">
+        thumb_up
+        </span>Approved</a>
 
 <div class="b-address">
     <span class="text-start fw-bold">

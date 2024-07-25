@@ -313,5 +313,63 @@
 
 
 
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card shadow" style="border-radius: 15px">
+            <div class="card-body">
+                <h4 class="card-title">Customers List
+                </h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Customer Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Address</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (count($customersList) > 0)
+                                @foreach ($customersList as $get)
+                                    <tr>
+                                        <td class="text-center">
+                                            {{ $get->id }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->companyName }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->email }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->address }}
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($get->state)
+                                            <a href="{{ route('customer.off', $get->id) }}"
+                                                class="btn btn-inverse-success fs-4">
+                                                <i class="material-symbols-outlined">toggle_on</i>
+                                            </a>
+                                            @else
+                                            <a href="{{ route('customer.on', $get->id) }}"
+                                                class="btn btn-inverse-danger">
+                                                <i class="material-symbols-outlined fs-4">toggle_off</i>
+                                            </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
 
 @endsection

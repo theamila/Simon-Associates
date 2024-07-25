@@ -21,7 +21,7 @@
   {{-- @elseif ($invoice->status == '4')
   <span>status 4</span> --}}
   @elseif ($invoice->status == '6')
-  <a href="{{ Route('send-invoice-last', $invoiceNumber) }}" class="btn btn-danger">Send Invoice</a>
+  <a href="{{ Route('send-invoice-last', $invoiceNumber) }}" class="btn btn-danger">Generate Invoice</a>
 @else
 <a href="{{ Route('send-to-user-3', $invoiceNumber) }}" class="btn btn-success">Send To Approver</a>
   @endif

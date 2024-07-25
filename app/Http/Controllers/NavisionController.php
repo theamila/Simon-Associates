@@ -103,8 +103,10 @@ class NavisionController extends Controller
         $data = payment::all();
         $userData = User::all();
         $handlerData = handler::all();
+        $customersList = CompanyDetails::all();
 
-        return view('User2.update-form', compact('data', 'userData', 'handlerData'));
+
+        return view('User2.update-form', compact('data', 'userData', 'handlerData', 'customersList'));
     }
 
     // ===========================================================

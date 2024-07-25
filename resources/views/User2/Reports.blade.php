@@ -3,8 +3,7 @@
 @section('title', 'Reports')
 
 <style>
-    .bg-cs-success
-    {
+    .bg-cs-success {
         background: rgba(144, 238, 144, 1)
     }
 </style>
@@ -48,7 +47,6 @@
             }
         });
     </script>
-
 
 @endsection
 
@@ -169,10 +167,26 @@
                         </td>
                         <td class="text-center">
                             @switch($get->status)
-                                @case(1) Recent @break
-                                @case(2) @case(3) @case(4) @case(5) @case(6) Ongoing @break
-                                @case(7) Outstanding @break
-                                @default Completed
+                                @case(1)
+                                    Recent
+                                @break
+
+                                @case(2)
+                                @case(3)
+
+                                @case(4)
+                                @case(5)
+
+                                @case(6)
+                                    Ongoing
+                                @break
+
+                                @case(7)
+                                    Outstanding
+                                @break
+
+                                @default
+                                    Completed
                             @endswitch
                         </td>
                         <td class="text-center">{{ $durationInDays }}</td>
@@ -192,47 +206,96 @@
 
 @section('firstTable')
 
-@if (!empty($table2))
+    @if (!empty($table2))
 
-    <div class="row">
-        <div class="col-12 grid-margin">
-            <div class="card shadow" style="border-radius: 15px">
-                <div class="card-body">
-                    <h4 class="card-title text-danger">@yield('Ttopic')</h4>
-                    <div class="table-responsive">
-                        <table id="example" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th class="text-center" style="width: 50px;">No</th>
-                                    <th class="text-center">Company Name</th>
-                                    <th class="text-center">Address</th>
-                                    <th class="text-center">Outstanding</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($table2 as $table)
-                                <tr style="
-                                {{
-                                    $table->outstanding == 0 ? 'background: #d1f5d1;' :
-                                    ($table->outstanding > 0 ? 'background: #ffffbf;' :
-                                    ($table->outstanding < 0 ? 'background: #ffb9b9;' : ''))
-                                }}
+        <div class="row">
+            <div class="col-12 grid-margin">
+                <div class="card shadow" style="border-radius: 15px">
+                    <div class="card-body">
+                        <h4 class="card-title text-danger">Customers</h4>
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped" style="width:100%">
+                                <thead>
+                                    <tr>
+                                        <th class="text-center" style="width: 50px;">No</th>
+                                        <th class="text-center">Company Name</th>
+                                        <th class="text-center">Address</th>
+                                        <th class="text-center">Outstanding</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($table2 as $table)
+                                        <tr
+                                            style="
+                                {{ $table->outstanding == 0
+                                    ? 'background: #d1f5d1;'
+                                    : ($table->outstanding > 0
+                                        ? 'background: #ffffbf;'
+                                        : ($table->outstanding < 0
+                                            ? 'background: #ffb9b9;'
+                                            : '')) }}
                                 ">
-                                    <td class="text-center">{{ $loop->iteration }}</td>
-                                    <td class="text-center">{{ $table->companyName }}</td>
-                                    <td>{{ $table->address }}</td>
-                                    <td>{{ $table->outstanding }}</td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+                                            <td class="text-center">{{ $loop->iteration }}</td>
+                                            <td class="text-center">{{ $table->companyName }}</td>
+                                            <td>{{ $table->address }}</td>
+                                            <td>{{ $table->outstanding }}</td>
+                                            <td>
+                                                <button class="btn btn-danger btn-sm" data-toggle="modal"
+                                                    data-target="#modal{{ $loop->iteration }}">
+                                                    <span class="material-symbols-outlined"
+                                                        style="font-size: 15px;">visibility</span>
+                                                </button>
+                                            </td>
+                                        </tr>
+
+                                        <div class="modal fade" id="modal{{ $loop->iteration }}" tabindex="-1"
+                                            role="dialog" aria-labelledby="exampleModalLabel{{ $loop->iteration }}"
+                                            aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title"
+                                                            id="exampleModalLabel{{ $loop->iteration }}">All Invoices
+                                                            {{ $table->companyName }}</h5>
+                                                        <button type="button" class="close btn btn-sm btn-danger"
+                                                            data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+
+                                                       @php
+                                                           $settleData = App\Models\Invoice::where('address', $table->address)->get();
+
+                                                       @endphp
+                                                       @if ($settleData)
+                                                       <ui>
+                                                       @foreach ($settleData as $data)
+                                                       <li>{{$data->invoiceNumber}}</li>
+                                                       @endforeach
+                                                    </ui>
+                                                       @endif
+                                                        <!-- Add more details as necessary -->
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-dismiss="modal">Close</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
+
         </div>
-
-    </div>
-@endif
-
+    @endif
+    <script src="{{ asset('js/jquery-3.2.1.slim.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.min.js') }}"></script>
 @endsection
 @endsection

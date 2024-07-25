@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\customerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NavisionController;
 use App\Http\Controllers\invoiceController;
@@ -41,15 +42,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/recent/home/{invoiceNumber}', [invoiceController::class, 'recentHome'])->name('recent.home');
 
-        Route::post('/payment/submit', [Receipt::class, 'paymentSubmit'])->name('payment.submit');
 
         Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
         Route::get('/search/customer', [invoiceController::class, 'SearchCustomer'])->name('search.customer');
 
-        Route::get('/generate/Reciept/form/{id}', [Receipt::class, 'generateReceiptForm'])->name('generateReceiptForm');
 
-        Route::match(['get', 'post'], '/custom/Reciept', [Receipt::class, 'CustomReceipt'])->name('CustomReceipt');
+
+        Route::get('recent/delete/{id}', [invoiceController::class, 'recentDelete'])->name('recent.delete');
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_FINANCE]], function () {
@@ -78,6 +78,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/invoice/generate/{id}', [InvoiceController::class, 'generateInvoiceFinal'])->name('generate-Invoice');
 
         Route::post('/invoice/generate/pdf', [InvoiceController::class, 'generateInvoicePdf'])->name('lastGenerate');
+
+        Route::get('customer/on/{id}', [customerController::class, 'on'])->name('customer.on');
+
+
+        Route::get('customer/off/{id}', [customerController::class, 'off'])->name('customer.off');
 
     });
 
@@ -165,3 +170,9 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/reSend/{id}', [invoiceController::class, 'reSend'])->name('re.send');
 
 });
+
+Route::post('/payment/submit', [Receipt::class, 'paymentSubmit'])->name('payment.submit');
+
+Route::get('/generate/Reciept/form/{id}', [Receipt::class, 'generateReceiptForm'])->name('generateReceiptForm');
+
+Route::match(['get', 'post'], '/custom/Reciept', [Receipt::class, 'CustomReceipt'])->name('CustomReceipt');

@@ -31,17 +31,45 @@ class userTwoController extends Controller
             }
         }
 
+        // Create InvoiceData array
         $InvoiceData = [];
-        $data = Modelreceipt::orderByDesc('id')->paginate(30);
+        $invoices = Modelreceipt::orderByDesc('id')->paginate(50);
 
-        foreach ($data as $get) {
+        foreach ($invoices as $get) {
             $invoiceDetails = Invoice::where('invoiceNumber', $get->invoiceNumber)->first();
-            $InvoiceData[$get->invoiceNumber] = $invoiceDetails;
+            if ($invoiceDetails) {
+                $InvoiceData[$get->invoiceNumber] = $invoiceDetails;
+            }
         }
 
-        // $InvoiceData = Invoice::where('status', '7')->get();
+        return view('User2.receipt', compact('invoices', 'InvoiceData'));
 
-        return view('User2.receipt', compact('data', 'InvoiceData'));
+
+
+
+
+        // $data = Invoice::where('status', '7')->get();
+
+        // foreach ($data as $get) {
+        //     $count = DB::table('invoice_details')
+        //         ->where('invoiceNumber', $get->invoiceNumber)
+        //         ->where('status', 0)
+        //         ->get();
+
+        //     if (count($count) == 0) {
+        //         $get->status = 8;
+        //         $get->save();
+        //     }
+        // }
+
+        // $data = Invoice::where('status', '7')->get();
+
+        // $company = CompanyDetails::all();
+
+        // return view('User1.Outstanding', compact('data', 'company'));
+
+
+
     }
 
     public function OutstandingInvoiceView()
@@ -155,21 +183,18 @@ class userTwoController extends Controller
                     $cdata = Invoice::latest()->take(30)->get();
 
                     $table2 = CompanyDetails::all();
-
                 } else {
                     $data = Invoice::where('refID', $customerID)->get();
 
                     $cdata = Invoice::where('refID', $customerID)->latest()->take(30)->get();
 
-                    $table2 = CompanyDetails::where('id',$customerID)->get();
+                    $table2 = CompanyDetails::where('id', $customerID)->get();
                 }
             } else {
                 if ($customerID != 0) {
                     $data = Invoice::where('refID', $customerID)->where('handleBy', $serviceBy)->get();
 
                     $cdata = Invoice::where('refID', $customerID)->where('handleBy', $serviceBy)->latest()->take(30)->get();
-
-
                 } else {
                     $data = Invoice::where('handleBy', $serviceBy)->get();
 
