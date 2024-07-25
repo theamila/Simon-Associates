@@ -25,6 +25,23 @@
             color: #00008B;
             font-size: 10pt;
         }
+
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            font-size: 12px;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
         @page {
             size: A4;
         }
@@ -34,7 +51,7 @@
             color: white;
         }
 
-        th{
+        th {
             color: white;
             background: #00008B;
         }
@@ -50,21 +67,58 @@
                 display: none;
             }
 
+            .notes {
+                margin-top: auto;
+                width: 100%;
+                margin-bottom: 40px;
+                /* Adjust as needed */
+            }
+
             @page {
                 size: A4;
                 margin: 1cm;
             }
         }
+
+        .header-row {
+            margin-bottom: 20px;
+        }
+
+        .header-row h2 {
+            margin-bottom: 10px;
+        }
+
+        .header-row .text-end {
+            text-align: end;
+        }
+
+        .header-row .company-name {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+            /* Adjust font size as needed */
+            font-weight: bold;
+            /* Make it bold if desired */
+        }
+
+        .header-row .sender-address {
+            text-align: end;
+        }
+
+        .header-row .r-No {
+            padding: 4px 0;
+        }
     </style>
 </head>
+
 <body>
     @include('sweetalert::alert')
     <div class="container mt-2 mb-2">
         @if ($isSubmit)
-            <a href="{{ Route('Outstanding-invoice') }}" class="btn btn-danger"><i
-                    class="fa-solid fa-angle-left"></i>Back</a>
-            <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
-            <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button>
+            <a href="/2/outstanding" class="btn btn-danger"><i class="fa-solid fa-angle-left"></i>Back</a>
+            <button id="printPdfBtn" onclick="window.print()" class="btn btn-primary"><i
+                    class="fa-solid fa-print"></i>Print</button>
+            {{-- <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button> --}}
         @else
             <form action="{{ Route('payment.submit') }}" method="post">
                 @csrf
@@ -72,11 +126,11 @@
                     <div class="col-3">
                         <input type="number" name="payment" placeholder="Enter Payment Amount.." class="form-control">
 
-                        <input type="hidden" name="companyID" value="{{$Invoice->id}}">
-                        <input type="hidden" name="billNo" value="{{$formattedNumber}}">
+                        <input type="hidden" name="companyID" value="{{ $Invoice->id }}">
+                        <input type="hidden" name="billNo" value="{{ $formattedNumber }}">
                     </div>
                     <div class="col">
-                    <input type="submit" value="submit" class="btn btn-success">
+                        <input type="submit" value="submit" class="btn btn-success">
 
                     </div>
                 </div>
@@ -88,41 +142,27 @@
         <div class="header mt-2">
             <div class="row header-row">
                 <div class="col-3">
-                    <h2 class="text-start">
-                        RECEIPT
-                    </h2>
+                    <h2 class="text-start">RECEIPT</h2>
                     <div class="row">
-                        <div class="col-7 r-No">
-                            Date
-                        </div>
+                        <div class="col-7 r-No">Date</div>
                         <div class="col-5 r-No">
                             {{ now()->format('d/m/Y') }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7 r-No">
-                            Receipt No
-                        </div>
-                        <div class="col-5 r-No">
-                            {{ 'R ' . substr($formattedNumber, 1) }}
-
-                        </div>
+                        <div class="col-7 r-No">Receipt No</div>
+                        {{ 'R ' . substr($formattedNumber, 1) }}
                     </div>
                 </div>
-                <div class="col-9">
-                    <h3 class="text-end justify-content-end">
-                        SECRETARIUS(PVT) LTD
-                    </h3>
-                    <div class="row justify-content-end">
-
-                        <div class="col-12 sender-address justify-content-end">
-                            <span class="text-end d-flex justify-content-end">
-                                (Reg. No: PV 5958) <br>
-                                #40 Galle Face Court 02, Colombo 03, <br>
-                                Tele: +94(011) 233 090/2390356 Fax: +94(011)2381 907
-                                <br>Email: simonas@simonas.net Web: www.simonas.net
-                            </span>
-                        </div>
+                <div class="col-9 text-end">
+                    <h3 class="company-name">SECRETARIUS(PVT) LTD</h3>
+                    <div class="sender-address">
+                        <span>
+                            #40 Galle Face Court 02, Colombo 03, <br>
+                            (Reg. No: PV 5958) <br>
+                            Tele: +94(011) 2399 090/2390 356 Fax: +94(011)2381 907 <br>
+                            Email: simonsec@simonas.net Web: www.simonas.net <br>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -174,7 +214,8 @@
         <div class="row">
             <div class="form-group mb-3">
                 <!-- <input type="text" id="totalInWords" class="form-control" readonly> -->
-                <textarea name="totalInWords" class="form-control" id="totalInWords" cols="30" rows="2" placeholder="Total in words.."></textarea>
+                <textarea name="totalInWords" class="form-control" id="totalInWords" cols="30" rows="2"
+                    placeholder="Total in words.."></textarea>
             </div>
         </div>
 
@@ -253,9 +294,9 @@
             });
         });
 
-        document.getElementById("printPdfBtn").addEventListener("click", function() {
-            window.print();
-        });
+        // document.getElementById("printPdfBtn").addEventListener("click", function() {
+        //     window.print();
+        // });
     </script>
 
 

@@ -1,4 +1,4 @@
-@extends('sidebar.user2sub1')
+@extends('sidebar.sub1')
 
 @section('title', 'Finalizing Invoice')
 

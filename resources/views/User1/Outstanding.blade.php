@@ -14,6 +14,7 @@
 @section('title', 'Outstanding Invoice')
 
 @section('pageTitle', 'Outstanding Invoice')
+
 @section('content')
 
 @section('Ttopic', 'Outstanding Invoice')
@@ -81,7 +82,8 @@
                 <td class="text-center d-flex align-items-center justify-content-around">
 
 
-                    <a href="{{ Storage::url('invoices/' . $invoiceNumber.'.pdf') }}" target="_blank" class="btn btn-sm btn-success me-1">
+                    <a href="{{ Storage::url('invoices/' . $invoiceNumber . '.pdf') }}" target="_blank"
+                        class="btn btn-sm btn-success me-1">
                         <i class="material-symbols-outlined">visibility</i>
                     </a>
 
@@ -125,7 +127,8 @@
                     @if (!empty($company))
                         <ul>
                             @foreach ($company as $customer)
-                                <a href="/cus-receipt/{{ $customer->id }}" style="font-size: 12pt; text-decoration: none; color: #000;">
+                                <a href="/cus-receipt/{{ $customer->id }}"
+                                    style="font-size: 12pt; text-decoration: none; color: #000;">
                                     <li title="{{ $customer->address }}" class="p-2">
                                         {{ $customer->companyName }}
                                     </li>

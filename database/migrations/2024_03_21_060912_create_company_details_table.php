@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('address')->unique();
             $table->string('handleBy');
             $table->decimal('outstanding', 10, 2)->default(0.0);
+            $table->boolean('state')->default(true);
             $table->timestamps();
         });
     }
