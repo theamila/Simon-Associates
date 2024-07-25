@@ -44,10 +44,6 @@ class userTwoController extends Controller
 
         return view('User2.receipt', compact('invoices', 'InvoiceData'));
 
-
-
-
-
         // $data = Invoice::where('status', '7')->get();
 
         // foreach ($data as $get) {
@@ -90,7 +86,9 @@ class userTwoController extends Controller
 
         $data = Invoice::where('status', '7')->get();
 
-        return view('User2.Outstanding', compact('data'));
+        $company = CompanyDetails::all();
+
+        return view('User2.Outstanding', compact('data', 'company'));
     }
 
     // public function ongoingInvoiceTwo()
