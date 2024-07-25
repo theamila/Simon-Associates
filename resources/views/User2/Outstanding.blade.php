@@ -92,6 +92,37 @@
             </td>
         </tr>
     @endif
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Modal body content goes here -->
+                    @if (!empty($company))
+                        <ul>
+                            @foreach ($company as $customer)
+                                <a href="/cus-receipt/{{ $customer->id }}"
+                                    style="font-size: 12pt; text-decoration: none; color: #000;">
+                                    <li title="{{ $customer->address }}" class="p-2">
+                                        {{ $customer->companyName }}
+                                    </li>
+                                </a>
+                            @endforeach
+                        </ul>
+                    @endif
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
 @endsection
 
 
