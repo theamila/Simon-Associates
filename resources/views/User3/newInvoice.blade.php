@@ -16,11 +16,12 @@
 
 @endsection
 @section('tbody')
+@php $no = 0 @endphp
 @if ($data->count() > 0)
 @foreach($data as $get)
-
+@php $no += 1 @endphp
 <tr>
-  <td>{{ $get->id }}</td>
+  <td>{{ $no }}</td>
   <td class="text-start">{{ $get->invoiceNumber }}</td>
   <td>{{ $get->companyName }}</td>
   <td>{{ $get->address }}</td>

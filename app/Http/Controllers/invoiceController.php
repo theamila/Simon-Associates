@@ -160,7 +160,7 @@ class invoiceController extends Controller
             $data->status = '2';
             $data->save();
 
-            return redirect()->route('new-invoice')->with('good', 'Invoice successfully sent to the approver.');
+            return redirect('/dashboard')->with('good', 'Invoice successfully sent to the approver.');
         } catch (ModelNotFoundException $e) {
             return back()->with('bad', 'Something went wrong');
         } catch (\Exception $e) {
@@ -552,8 +552,7 @@ class invoiceController extends Controller
             // Retrieve all related invoice details
             $deleteInvoiceData = InvoiceDetails::where('invoiceNumber', $deleteInvoiceNumber)->get();
 
-            if (!empty($deleteInvoiceData)) {
-
+            if (!$deleteInvoiceData->isEmpty()) {
                 foreach ($deleteInvoiceData as $invoiceDetail) {
                     $invoiceDetail->delete();
                 }
@@ -561,11 +560,13 @@ class invoiceController extends Controller
 
             $data->delete();
 
+            // Reset auto-increment value
+            DB::statement("ALTER TABLE invoices AUTO_INCREMENT = 1");
+
             toast('Invoice Deleted successfully.', 'success');
 
             return back();
         } catch (Exception $e) {
-
             toast('Failed to delete the invoice.', 'error');
 
             return back();
