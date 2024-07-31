@@ -67,7 +67,7 @@
         <i class="fa-solid fa-bars text-light"></i>
         </div>
         <div class="version text-light text-muted" style="position: absolute; top: 100%; left: 2%;">
-            0.0.7
+            0.0.9
         </div>
 
     </div>
