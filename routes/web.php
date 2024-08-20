@@ -66,6 +66,12 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/new/invoice/approvel', [invoiceController::class, 'NewInvoiceUser'])->name('new-invoice-user');
 
+
+        Route::get('/reject/Invoice/View/two/{id}', [NavisionController::class, 'RejectInvoiceView'])->name('view-reject-Invoice-two');
+
+
+        Route::get('/two/rejected/invoice', [invoiceController::class, 'rejectInvoiceUser'])->name('rejectInvoiceUserTwo');
+
         Route::post('/handler/add', [PaymentController::class, 'handlerAdd'])->name('handler.add');
 
         Route::get('/pin/{id}', [PaymentController::class, 'pin'])->name('pin');
@@ -97,6 +103,13 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
         Route::get('/user3', [Madem3::class, 'home'])->name('Home');
+
+
+        Route::get('/reject/Invoice/View/Three/{id}', [userTreeController::class, 'RejectInvoiceView'])->name('view-reject-Invoice-Three');
+
+
+        Route::get('/Three/rejected/invoice', [userTreeController::class, 'rejectInvoiceUser'])->name('rejectInvoiceUserThree');
+
 
         Route::get('3/outstanding', [userTreeController::class, 'OutstandingInvoice'])->name('tree-Outstanding-invoice');
 

@@ -144,6 +144,15 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('rejectInvoiceUserTwo') }}">
+                            <span class="menu-title">Rejected Invoices</span>
+                            <i class="material-symbols-outlined mdi menu-icon">
+                                thumb_down
+                            </i>
+                        </a>
+                    </li>
+
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('Reports') }}">
