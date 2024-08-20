@@ -199,6 +199,7 @@ class Receipt extends Controller
         $payment = $request->input('balance', []);
         $selectedItems = $request->input('selected_items', []);
         $method = $request->input('payment');
+        $formattedNumber = $request->input('receiptNo');
 
         if (empty($selectedItems)) {
             Alert::error('Error', 'No items selected.')->persistent(true);
@@ -251,16 +252,17 @@ class Receipt extends Controller
         // =================================================================================
         $additional = $request->input('additionalcharges');
 
-        $lastReceiptId = ModelReceipt::max('id');
+        // $lastReceiptId = ModelReceipt::max('id');
 
-        $nextNumber = $lastReceiptId == 9999 ? 10000 : $lastReceiptId + 1;
+        // $nextNumber = $lastReceiptId == 9999 ? 10000 : $lastReceiptId + 1;
 
-        $formattedNumber = 'R' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        // $formattedNumber = 'R' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
 
         $receipt = new Modelreceipt();
 
         $receipt->invoiceNumber = $firstInvoiceNumber;
         $receipt->receiptNumber = $formattedNumber;
+        // $receipt->receiptNumber = $formattedNumber;
 
         if ($additional == '') {
             $additional = 0;
@@ -282,7 +284,7 @@ class Receipt extends Controller
 
         $filename = str_replace('/', '-', $formattedNumber) . '.pdf';
 
-        file_put_contents(public_path('pdfs/' . $filename), $dompdf->output());
+        file_put_contents(public_path('pdfs/' . $formattedNumber), $dompdf->output());
 
         return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber'));
     }
@@ -342,6 +344,11 @@ class Receipt extends Controller
             $payment = $request->input('payment');
             $id = $request->input('companyID');
             $formattedNumber = $request->input('billNo');
+            $OldformattedNumber = $request->input('OldbillNo');
+
+            $oldReceiptNo = Modelreceipt::where('receiptNumber', $OldformattedNumber)->first();
+            $oldReceiptNo->receiptNumber = $formattedNumber;
+            $oldReceiptNo->save();
 
             $Invoice = CompanyDetails::findOrFail($id);
             $Invoice->outstanding -= $payment;

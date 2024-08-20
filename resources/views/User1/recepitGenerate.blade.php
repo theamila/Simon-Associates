@@ -51,7 +51,15 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-success col">Generate a Receipt</button>
+            <div class="col">
+                <input type="text" name="receiptNo" id="receiptNo" class="form-control"
+                    placeholder="Receipt No" required>
+                @error('receiptNo')
+                    <span class="text-danger mt-2">{{ $message }}</span>
+                @enderror
+            </div>
+
+            <button type="submit" class="btn btn-sm btn-success col">Generate a Receipt</button>
         </div>
 
     @endsection

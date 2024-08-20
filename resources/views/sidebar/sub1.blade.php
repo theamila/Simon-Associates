@@ -165,6 +165,26 @@
               </i>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('allInvoice') }}">
+                <span class="menu-title">All Invoices</span>
+                <i class="material-symbols-outlined mdi menu-icon">
+                    receipt_long
+                </i>
+            </a>
+        </li>
+
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('rejectInvoice') }}">
+                <span class="menu-title">Rejected Invoices</span>
+                <i class="material-symbols-outlined mdi menu-icon">
+                    thumb_down
+                </i>
+            </a>
+        </li>
+
+
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}">
               <span class="menu-title">Log Out</span>

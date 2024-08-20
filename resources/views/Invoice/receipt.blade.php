@@ -16,7 +16,7 @@
 <style>
 
     i{
-        margin-right: 10px; 
+        margin-right: 10px;
     }
         @media print {
             body {
@@ -44,11 +44,11 @@
 <div class="container main">
 
         <div class="d-flex flex-column align-items-center mt-4 mb-2" >
-            
+
             <h5 class="CompanyName text-center">SECRETARIUS (PRIVATE) LIMITED</h5>
             <h6 class="CompanyName text-center">
                 (Reg No: PV 5958) <br>
-                #40,Galle Face Court2,Colombo 03. <br>
+                #40, Galle Face Court2,Colombo 03. <br>
                 Tele: +94(011) 233090/2390356 Fax: +94(011)2381907 <br>
                 Email: simonas@simonas.net Web: www.simonas.net
             </h6>
@@ -63,7 +63,7 @@
         <div class="row">
             <div class="col-6 border-dark p-3 pb-0" style="border-left: 1px solid #000; border-top: 1px solid #000; border-bottom: 1px solid #000;">
                 To: <span class="text-justify" style="display: block; margin-left: 25px; transform: translateY(-22px);">
-                
+
                 {{ $Invoice->to }} <br>
                 @if ($Invoice->companyName)
                 <p>
@@ -129,7 +129,7 @@
                 @endforeach
                 @endif
 
-   
+
             @if($invoice_data->count() > 0)
                 @foreach($invoice_data as $get)
                 @if($get->Reimbursables == "1")
@@ -140,7 +140,7 @@
                         <td class="text-wrap text-break border-end border-dark" style="border-bottom: none;">
                             {{ $get->description }}
                         </td>
-                        
+
                         <td class="border-end border-dark" style="border-bottom: none;"></td>
                         <td class="border-end border-dark text-center" style="border: none;">
                         {{ $method }}
@@ -148,7 +148,7 @@
                         <td class='text-end border-end border-dark' style="border: none;">
 
                             @if($get->currancy == 1)
-                               
+
                                 @php
                                     $convertedPrice = $get->price * $get->dollerRate;
                                     $total += $convertedPrice;
@@ -167,13 +167,13 @@
                 @endforeach
 
             @endif
-            
+
             <tr>
-            
+
                     <td colspan="4" class="fw-bold text-center border border-dark">
                         Total
                     </td>
-                    
+
                     <td class="fw-bold text-end border border-dark">
                     {{ number_format($total, 2) }}
                     </td>
@@ -254,7 +254,7 @@
         document.getElementById('totalInWords').value ="Rupees " + dollarsInWords + ' and ' + centsInWords + ' cents';
     });
 </script>
-    
+
 <script>
         document.getElementById("downloadPdfBtn").addEventListener("click", function() {
             var container = document.querySelector('.main');
