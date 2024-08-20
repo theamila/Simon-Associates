@@ -572,4 +572,20 @@ class invoiceController extends Controller
             return back();
         }
     }
+
+
+    public function rejectInvoice($invoiceNumber)
+    {
+        $invoiceNumber = str_replace('-', '/', $invoiceNumber);
+
+
+        $data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+
+        $data->status = 9;
+        $data->save();
+
+        Alert::success('Success', 'Invoice Rejected Successfully');
+
+        return redirect('/new-invoice-user-tree');
+    }
 }

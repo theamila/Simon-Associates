@@ -136,6 +136,15 @@
               <i class="material-symbols-outlined mdi menu-icon">receipt_long</i>
             </a>
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('two-allInvoice') }}">
+              <span class="menu-title">All Invoices</span>
+              <i class="material-symbols-outlined mdi menu-icon">receipt_long</i>
+            </a>
+          </li>
+
+
           <li class="nav-item">
             <a class="nav-link" href="{{ route('Reports') }}">
               <span class="menu-title">Reports</span>

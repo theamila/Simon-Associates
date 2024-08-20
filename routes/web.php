@@ -32,6 +32,13 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_USER]], function () {
         Route::get('/dashboard', [NavisionController::class, 'dashboard'])->name('dashboard');
 
+        Route::get('/all/Invoice', [NavisionController::class, 'allInvoice'])->name('allInvoice');
+
+
+        Route::get('/reject/Invoice', [NavisionController::class, 'RejectInvoice'])->name('rejectInvoice');
+
+        Route::get('/reject/Invoice/View/{id}', [NavisionController::class, 'RejectInvoiceView'])->name('view-reject-Invoice');
+
         Route::get('/new/invoice', [invoiceController::class, 'NewInvoice'])->name('new-invoice');
 
         Route::get('/ongoing/invoice', [NavisionController::class, 'ongoingInvoice'])->name('ongoing-invoice');
@@ -54,6 +61,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_FINANCE]], function () {
         Route::get('/user2', [NavisionController::class, 'user2'])->name('user2');
+
+        Route::get('/user2/two-allInvoice', [NavisionController::class, 'twoallInvoice'])->name('two-allInvoice');
 
         Route::get('/new/invoice/approvel', [invoiceController::class, 'NewInvoiceUser'])->name('new-invoice-user');
 
@@ -90,6 +99,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/user3', [Madem3::class, 'home'])->name('Home');
 
         Route::get('3/outstanding', [userTreeController::class, 'OutstandingInvoice'])->name('tree-Outstanding-invoice');
+
+        Route::get('3/all/Invoices', [NavisionController::class, 'treeAllInvoices'])->name('tree-allinvoice');
+
 
         Route::get('3/outstanding/view', [userTreeController::class, 'OutstandingInvoiceView'])->name('tree-Outstanding-view');
 
@@ -168,6 +180,8 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/upload-invoice', [App\Http\Controllers\PDFController::class, 'uploadInvoice'])->name('upload-invoice');
 
     Route::get('/reSend/{id}', [invoiceController::class, 'reSend'])->name('re.send');
+
+    Route::get('/reject-invoice/{invoiceNumber}', [invoiceController::class, 'rejectInvoice'])->name('reject.invoice');
 
 });
 

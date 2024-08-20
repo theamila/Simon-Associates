@@ -4,6 +4,7 @@
 
 @section('pageTitle', 'Invoice Request')
 @section('content')
+@include('sweetalert::alert')
 
 
 @section('Ttopic', 'Invoice Request')

@@ -15,6 +15,52 @@ use Illuminate\Http\Request;
 
 class NavisionController extends Controller
 {
+
+    public function allInvoice()
+    {
+        $data = Invoice::orderBy('id', 'desc')->paginate(100);
+
+        return view('User1.allInvoice', compact('data'));
+    }
+
+    public function twoallInvoice()
+    {
+        $data = Invoice::orderBy('id', 'desc')->paginate(100);
+
+        return view('User2.allInvoice', compact('data'));
+    }
+
+    public function treeAllInvoices()
+    {
+        $data = Invoice::orderBy('id', 'desc')->paginate(100);
+
+        return view('User3.allInvoice', compact('data'));
+    }
+
+    public function RejectInvoice()
+    {
+        $data = Invoice::where('status', 9)->orderBy('id', 'desc')->paginate(100);
+
+        return view('User1.rejected', compact('data'));
+    }
+
+    public function RejectInvoiceView($id)
+    {
+        $Invoicedata = Invoice::findOrFail($id);
+        if ($Invoicedata) {
+
+            $data = InvoiceDetails::where('invoiceNumber', $Invoicedata->invoiceNumber)->get();
+
+            return view('User1.rejectedView', compact('data'));
+
+        } else {
+            return back();
+        }
+
+    }
+
+
+
     public function dashboard()
     {
         $data = Invoice::orderByDesc('id')->paginate(10);

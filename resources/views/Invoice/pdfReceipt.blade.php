@@ -75,7 +75,7 @@
     </h2>
     Date - {{ now()->format('d/m/Y') }}
     <br>
-    Receipt No - {{ 'R ' . substr($formattedNumber, 1) }}
+    Receipt No - {{ 'R ' . $formattedNumber }}
 
     <br>
     Bill To - {{ $Invoice->to }}, {{ $Invoice->companyName }}
