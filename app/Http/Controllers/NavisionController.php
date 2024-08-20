@@ -51,7 +51,7 @@ class NavisionController extends Controller
 
             $data = InvoiceDetails::where('invoiceNumber', $Invoicedata->invoiceNumber)->get();
 
-            return view('User1.rejectedView', compact('data'));
+            return view('User2.rejectedView', compact('data'));
 
         } else {
             return back();

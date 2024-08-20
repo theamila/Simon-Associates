@@ -19,6 +19,15 @@ use Illuminate\Support\Facades\DB;
 
 class invoiceController extends Controller
 {
+
+    public function rejectInvoiceUser()
+    {
+        $data = Invoice::where('status', 9)->orderBy('id', 'desc')->paginate(100);
+
+        return view('User2.rejected', compact('data'));
+    }
+
+
     public function NewInvoice()
     {
         $data = CompanyDetails::where('state', true)->get();

@@ -144,6 +144,14 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('rejectInvoiceUserTwo') }}">
+                <span class="menu-title">Rejected Invoices</span>
+                <i class="material-symbols-outlined mdi menu-icon">
+                    thumb_down
+                </i>
+            </a>
+        </li>
 
           <li class="nav-item">
             <a class="nav-link" href="{{ route('Reports') }}">
@@ -193,7 +201,7 @@
                     @yield('f-icon')
                   </h4>
                   <h2 class="mb-5">@yield('f-state-c')</h2>
-                  <h6 class="card-text">Increased by 60%</h6>
+                  {{-- <h6 class="card-text">Increased by 60%</h6> --}}
                 </div>
               </div>
             </div>
@@ -204,7 +212,7 @@
                   <h4 class="font-weight-normal mb-3">@yield('s-state') @yield('s-icon')
                   </h4>
                   <h2 class="mb-5">@yield('s-state-c')</h2>
-                  <h6 class="card-text">Decreased by 10%</h6>
+                  {{-- <h6 class="card-text">Decreased by 10%</h6> --}}
                 </div>
               </div>
             </div>
@@ -215,7 +223,7 @@
                   <h4 class="font-weight-normal mb-3">@yield('t-state') @yield('t-icon')
                   </h4>
                   <h2 class="mb-5">@yield('t-state-c')</h2>
-                  <h6 class="card-text">Increased by 5%</h6>
+                  {{-- <h6 class="card-text">Increased by 5%</h6> --}}
                 </div>
               </div>
             </div>
