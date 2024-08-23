@@ -12,12 +12,13 @@
         <form action="{{ Route('invoiceDataAdd') }}" method="post" class="mt-3">
 
             <div class="row m-1 p-2 bg-light align-items-center">
-                <div class="col">
+                <div class="col-8 d-flex justify-content-between">
+                    <span style="font-weight: bold;" class="text-success">Invoice Number : {{ $invoiceNumber }}</span>
                     <span class="text-danger">Outstanding Amount : <span class="fw-bold">
                             {{ $outdata->outstanding }}
                         </span></span>
                 </div>
-                <div class="col">
+                <div class="col-4">
                     <select id="bank" name="Selectbank" class="form-select">
                         @foreach ($bank as $get)
                             <option value="{{ $get->id }}" {{ $get->default == 1 ? 'selected' : '' }}>
@@ -207,7 +208,7 @@
                                                                     @enderror
                                                                 </div>
 
-                                                                <div class="mb-3">
+                                                                <div class="mb-3" style="display: none;">
                                                                     <label for="discount"
                                                                         class="form-label text-dark fw-bold">Discount
                                                                         %</label>

@@ -126,8 +126,10 @@
                     <div class="col-3">
                         <input type="number" name="payment" placeholder="Enter Payment Amount.." class="form-control">
 
+                        <input type="text" name="billNo" placeholder="Enter bill No.." class="form-control">
+
                         <input type="hidden" name="companyID" value="{{ $Invoice->id }}">
-                        <input type="hidden" name="billNo" value="{{ $formattedNumber }}">
+                        <input type="hidden" name="OldbillNo" value="{{ $formattedNumber }}">
                     </div>
                     <div class="col">
                         <input type="submit" value="submit" class="btn btn-success">
@@ -151,14 +153,14 @@
                     </div>
                     <div class="row">
                         <div class="col-7 r-No">Receipt No</div>
-                        {{ 'R ' . substr($formattedNumber, 1) }}
+                        {{ 'R ' . $formattedNumber }}
                     </div>
                 </div>
                 <div class="col-9 text-end">
-                    <h3 class="company-name">SECRETARIUS(PVT) LTD</h3>
+                    <h3 class="company-name">SECRETARIUS (PVT) LTD</h3>
                     <div class="sender-address">
                         <span>
-                            #40 Galle Face Court 02, Colombo 03, <br>
+                            #40, Galle Face Court 02, Colombo 03, <br>
                             (Reg. No: PV 5958) <br>
                             Tele: +94(011) 2399 090/2390 356 Fax: +94(011)2381 907 <br>
                             Email: simonsec@simonas.net Web: www.simonas.net <br>
@@ -199,6 +201,34 @@
                         <td class="text-start" contenteditable="true" style="color: #00008B"></td>
                         <td class="text-center" contenteditable="true" style="color: #00008B"></td>
                         <td class="text-end" contenteditable="true" style="color: #00008B"></td>
+                    </tr>
+
+                    <tr>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-start" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-end" contenteditable="true" style="color: #00008B">
+                    </tr>
+
+                    <tr>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-start" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-end" contenteditable="true" style="color: #00008B">
+                    </tr>
+
+                    <tr>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-start" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-end" contenteditable="true" style="color: #00008B">
+                    </tr>
+
+                    <tr>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-start" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-end" contenteditable="true" style="color: #00008B">
                     </tr>
 
                     <tr>

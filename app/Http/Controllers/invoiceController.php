@@ -19,6 +19,15 @@ use Illuminate\Support\Facades\DB;
 
 class invoiceController extends Controller
 {
+
+    public function rejectInvoiceUser()
+    {
+        $data = Invoice::where('status', 9)->orderBy('id', 'desc')->paginate(100);
+
+        return view('User2.rejected', compact('data'));
+    }
+
+
     public function NewInvoice()
     {
         $data = CompanyDetails::where('state', true)->get();
@@ -571,5 +580,21 @@ class invoiceController extends Controller
 
             return back();
         }
+    }
+
+
+    public function rejectInvoice($invoiceNumber)
+    {
+        $invoiceNumber = str_replace('-', '/', $invoiceNumber);
+
+
+        $data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+
+        $data->status = 9;
+        $data->save();
+
+        Alert::success('Success', 'Invoice Rejected Successfully');
+
+        return redirect('/new-invoice-user-tree');
     }
 }

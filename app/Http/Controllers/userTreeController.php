@@ -14,6 +14,30 @@ use Illuminate\Support\Facades\DB;
 
 class userTreeController extends Controller
 {
+
+    public function rejectInvoiceUser()
+    {
+        $data = Invoice::where('status', 9)->orderBy('id', 'desc')->paginate(100);
+
+        return view('User3.rejected', compact('data'));
+    }
+
+    public function RejectInvoiceView($id)
+    {
+        $Invoicedata = Invoice::findOrFail($id);
+        if ($Invoicedata) {
+
+            $data = InvoiceDetails::where('invoiceNumber', $Invoicedata->invoiceNumber)->get();
+
+            return view('User3.rejectedView', compact('data'));
+
+        } else {
+            return back();
+        }
+
+    }
+
+
     public function OutstandingInvoice()
     {
         $data = Invoice::where('status', '7')->get();

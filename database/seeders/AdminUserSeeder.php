@@ -17,7 +17,7 @@ class AdminUserSeeder extends Seeder
     DB::table('users')->insert([
         [
             'name' => 'Admin',
-            'email' => 'admin@gmail.com',
+            'email' => 'admin@simonas.net',
             'password' => Hash::make('2222'), // You can replace 'aaaa' with the desired password
             'role' => 2, // Set role to 2 for admin
             'email_verified_at' => now(),
