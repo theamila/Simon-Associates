@@ -34,6 +34,8 @@ class Receipt extends Controller
                 $invoice_data = InvoiceDetails::whereIn('invoiceNumber', $invoiceNumbers)->get();
 
                 $invoiceNumber = $company_data->invoiceNumber;
+
+                // dd($invoiceNumber);
             }
             return view('User1.recepitGenerate', compact('company_data', 'invoice_data', 'invoiceNumber'));
         } catch (\Exception $e) {

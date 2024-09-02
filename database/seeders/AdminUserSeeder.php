@@ -25,7 +25,7 @@ class AdminUserSeeder extends Seeder
             'updated_at' => now(),
         ],
         [
-            'name' => 'Kumari',
+            'name' => 'Neelababile',
             'email' => 'simonsec@simonas.net',
             'password' => Hash::make('1111'), // You can replace 'aaaa' with the desired password
             'role' => 1, // Set role to 1 for regular user

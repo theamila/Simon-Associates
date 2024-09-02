@@ -72,7 +72,7 @@
                     </div>
                 </div>
 
-                <div class="col">
+                <div class="col" style="display: none;">
                     <div class="mb-3">
                         <label for="discount" class="form-label text-dark fw-bold">Discount %</label>
                         <input type="text" class="form-control border" id="discount" name="discount"
@@ -110,7 +110,7 @@
                                         <th class="text-center">No</th>
                                         <th class="text-center">Description</th>
                                         <th class="text-center">Reimbursable</th>
-                                        <th class="text-center">Discount</th>
+                                        {{-- <th class="text-center">Discount</th> --}}
                                         <th class="text-center">Price</th>
                                         <th class="text-center"></th>
                                     </tr>
@@ -131,9 +131,9 @@
                                                 </td>
 
 
-                                                <td class="fw-bold text-center" style="width: 80px;">
+                                                {{-- <td class="fw-bold text-center" style="width: 80px;">
                                                     {{ $get->discount . ' %' }}
-                                                </td>
+                                                </td> --}}
                                                 <td style="max-width: 250px; width:200px;" class="text-end">
                                                     @php
 
