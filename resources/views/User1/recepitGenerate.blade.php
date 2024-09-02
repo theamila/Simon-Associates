@@ -1,4 +1,4 @@
-@extends('sidebar.user2sub1')
+@extends('sidebar.sub1')
 
 @section('title', 'Generate Receipt')
 
@@ -79,6 +79,7 @@
     @endphp
 
     @section('tbody')
+
         @if ($invoice_data->count() > 0)
             @foreach ($invoice_data as $get)
                 @if ($get->mark_status == 1)
