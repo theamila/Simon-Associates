@@ -10,12 +10,15 @@ use App\Models\payment;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Storage;
 use Alert;
+use App\Mail\approverMail;
+use App\Models\User;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
 use Dompdf\Dompdf;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class invoiceController extends Controller
 {
@@ -383,6 +386,8 @@ class invoiceController extends Controller
             $company = CompanyDetails::findOrFail($invoice->refID);
             $company->outstanding += $outPriceTotal;
             $company->save();
+
+
 
             return redirect()->route('generate-Invoice', $invoice->id);
         } catch (\Exception $e) {

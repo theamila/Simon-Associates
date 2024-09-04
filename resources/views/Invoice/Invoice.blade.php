@@ -37,7 +37,7 @@ i{
                 padding: 0;
             }
         }
-        
+
     </style>
 <body>
 <div class="container mt-3">
@@ -51,14 +51,14 @@ i{
 
 
         <div class="d-flex flex-column align-items-center mt-4">
-            
+
             <h5 class="CompanyName text-center">SECRETARIUS (PRIVATE) LIMITED</h5>
             <h6 class="CompanyName text-center">
                 Corporate Secretaries <br>
                 PV 5958
             </h6>
         </div>
-    
+
 
     <div class="col-12">
         <div class="row">
@@ -93,14 +93,14 @@ i{
         <div class="col-12 text-start fw-bold mt-4">
 
     <p>To: {!! $company_data->to !!},</p>
-    
+
     <p style="margin-left: 25px;margin-top:-15px;">
     {!! $company_data->companyName . ',' !!} <br>
     {!! str_replace(',', ',<br>', $company_data->address) !!} <br>
     {{ $company_data->email }}
     </p>
 </div>
- 
+
 
         </div>
     </div>
@@ -123,7 +123,7 @@ i{
         @if($get->Reimbursables == '0')
             <tr>
                 @php
-                   
+
                     $total += $get->price;
                 @endphp
                 <td class="text-wrap text-break">
@@ -156,7 +156,7 @@ i{
         @if($get->Reimbursables == '1')
             <tr>
                 @php
-                    
+
                     $total += $get->price;
                 @endphp
                 <td class="text-wrap text-break">
@@ -179,13 +179,13 @@ i{
     </td>
 </tr>
 
-                
+
             </tbody>
         </table>
         <div class="row">
             <div class="col-12 fw-bold">
                 <p>
-                    Payment to be made by Crossed Cheque in favour of "Secretarius(Pvt) Ltd" <br> Or <br>
+                    Payment to be made by Crossed Cheque in favour of "Secretarius (Pvt) Ltd" <br> Or <br>
                     Remittances to be made to the undernoted Account
                 </p>
             </div>
@@ -202,7 +202,7 @@ i{
                         </tr>
                         <tr>
                             <th class="text-start mr-4" style="width: 130px;">
-                            Account No 
+                            Account No
                             </th>
                             <td class="">
                             - 000910010182
@@ -210,7 +210,7 @@ i{
                         </tr>
                         <tr>
                             <th class="text-start mr-4" style="width: 130px;">
-                            Bank name 
+                            Bank name
                             </th>
                             <td class="">
                             - Sampath bank Plc-Nawam mawatha Branch
@@ -226,7 +226,7 @@ i{
                         </tr>
                         <tr>
                             <th class="text-start mr-4" style="width: 130px;">
-                            Swift Code 
+                            Swift Code
                             </th>
                             <td class="">
                             - BSAMLKLX
