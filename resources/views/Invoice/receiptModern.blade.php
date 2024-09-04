@@ -126,8 +126,8 @@
                 <div class="col-3">
                     <h2 class="text-start">RECEIPT</h2>
                     <div class="row">
-                        <div class="col-7 r-No">Date</div>
-                        <div class="col-5 r-No">
+                        <div class="col-6 r-No">Date</div>
+                        <div class="col-6 r-No" contenteditable="true">
                             {{ now()->format('d/m/Y') }}
                         </div>
                     </div>
@@ -234,14 +234,14 @@
                 <div class="col-2">
                     Total
                 </div>
-                <div class="col-2 text-end">{{ number_format($maintotal, 2) }}</div>
+                <div class="col-2 text-end"> {{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($maintotal, 2) }}</div>
             </div>
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col-2">
                     Payment
                 </div>
-                <div class="col-2 text-end">{{ number_format($payment, 2) }}</div>
+                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($payment, 2) }}</div>
             </div>
             <div class="row">
                 <div class="col-8 d-flex justify-content-center">
@@ -255,7 +255,7 @@
                 <div class="col-2">
                     Balance
                 </div>
-                <div class="col-2 text-end">{{ number_format($balance, 2) }}</div>
+                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}  {{ number_format($balance, 2) }}</div>
             </div>
         </div>
         <div class="notes">
@@ -303,6 +303,67 @@
 
     <script>
         document.getElementById("downloadPdfBtn").addEventListener("click", function() {
+
+
+            // ===============================
+
+
+            function uploadPDF(pdfBlob, invoiceNumber) {
+                var formData = new FormData();
+                formData.append('pdf', pdfBlob, invoiceNumber + '.pdf');
+                formData.append('invoiceNumber', invoiceNumber);
+
+                fetch('{{ route('upload-pdf') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: formData
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            console.log('PDF uploaded successfully!');
+                            // Optionally, you can show a success message here.
+                        } else {
+                            console.warn('Failed to upload PDF, retrying...');
+                            uploadPDF(pdfBlob, invoiceNumber); // Retry the upload
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error uploading PDF:', error);
+                        // Retry the upload in case of an error
+                        uploadPDF(pdfBlob, invoiceNumber);
+                    });
+            }
+
+            var container = document.querySelector('.main');
+            var invoiceNumber = '{{ $formattedNumber }}';
+
+            html2pdf().from(container).set({
+                margin: 10,
+                filename: invoiceNumber + '.pdf',
+                image: {
+                    type: 'jpeg',
+                    quality: 0.98
+                },
+                html2canvas: {
+                    dpi: 192,
+                    letterRendering: true
+                },
+                jsPDF: {
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                }
+            }).outputPdf('blob').then(function(pdfBlob) {
+                uploadPDF(pdfBlob, invoiceNumber); // Start the upload process
+            });
+
+
+
+
+
+            // ====================================
             var container = document.querySelector('.main');
 
             html2pdf(container, {
@@ -386,43 +447,43 @@
 
 
     <script>
-        window.onload = function() {
-            var container = document.querySelector('.main');
-            var invoiceNumber =
-                '{{ $formattedNumber }}'; // Pass invoice number from Blade to JavaScript
+        // window.onload = function() {
+        //     var container = document.querySelector('.main');
+        //     var invoiceNumber =
+        //         '{{ $formattedNumber }}'; // Pass invoice number from Blade to JavaScript
 
-            html2pdf().from(container).set({
-                margin: 10,
-                filename: invoiceNumber + '.pdf',
-                image: {
-                    type: 'jpeg',
-                    quality: 0.98
-                },
-                html2canvas: {
-                    dpi: 192,
-                    letterRendering: true
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            }).outputPdf('blob').then(function(pdfBlob) {
-                var formData = new FormData();
-                formData.append('pdf', pdfBlob, invoiceNumber + '.pdf');
-                formData.append('invoiceNumber', invoiceNumber); // Include invoice number in the form data
+        //     html2pdf().from(container).set({
+        //         margin: 10,
+        //         filename: invoiceNumber + '.pdf',
+        //         image: {
+        //             type: 'jpeg',
+        //             quality: 0.98
+        //         },
+        //         html2canvas: {
+        //             dpi: 192,
+        //             letterRendering: true
+        //         },
+        //         jsPDF: {
+        //             unit: 'mm',
+        //             format: 'a4',
+        //             orientation: 'portrait'
+        //         }
+        //     }).outputPdf('blob').then(function(pdfBlob) {
+        //         var formData = new FormData();
+        //         formData.append('pdf', pdfBlob, invoiceNumber + '.pdf');
+        //         formData.append('invoiceNumber', invoiceNumber); // Include invoice number in the form data
 
-                fetch('{{ route('upload-pdf') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: formData
-                    }).then(response => response.json())
-                    .then(data => console.log(data))
-                    .catch(error => console.error('Error uploading PDF:', error));
-            });
-        }
+        //         fetch('{{ route('upload-pdf') }}', {
+        //                 method: 'POST',
+        //                 headers: {
+        //                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //                 },
+        //                 body: formData
+        //             }).then(response => response.json())
+        //             .then(data => console.log(data))
+        //             .catch(error => console.error('Error uploading PDF:', error));
+        //     });
+        // }
     </script>
 </body>
 <script>

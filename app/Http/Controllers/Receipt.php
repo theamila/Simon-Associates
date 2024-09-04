@@ -274,19 +274,19 @@ class Receipt extends Controller
 
         $receipt->save();
 
-        $html = view('Invoice.pdfReceipt', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber'))->render();
+        // $html = view('Invoice.pdfReceipt', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber'))->render();
 
-        $dompdf = new Dompdf();
+        // $dompdf = new Dompdf();
 
-        $dompdf->loadHtml($html);
+        // $dompdf->loadHtml($html);
 
-        $dompdf->setPaper('A4', 'portrait');
+        // $dompdf->setPaper('A4', 'portrait');
 
-        $dompdf->render();
+        // $dompdf->render();
 
-        $filename = str_replace('/', '-', $formattedNumber) . '.pdf';
+        // $filename = str_replace('/', '-', $formattedNumber) . '.pdf';
 
-        file_put_contents(public_path('pdfs/' . $formattedNumber), $dompdf->output());
+        // file_put_contents(public_path('pdfs/' . $formattedNumber), $dompdf->output());
 
         return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber'));
     }

@@ -55,7 +55,10 @@
 @endsection
 
 @section('tbody')
-    @php $no = 1; @endphp
+    @php $no = 1;
+
+    $totalPrice = 0;
+    @endphp
 
     @if ($invoice_data->count() > 0)
         @foreach ($invoice_data as $get)
@@ -72,6 +75,8 @@
                     @php
                         $no += 1;
                         $price = $get->price - $get->price * ($get->discount / 100);
+
+                        $totalPrice += $price;
                     @endphp
                     <span class="text-danger">
                         {{ number_format($get->price, 2) }}
@@ -223,6 +228,14 @@
 
             <!-- ============================================================================== -->
         @endforeach
+
+        <tr>
+            <td class="fw-bold text-center" colspan="4">Total</td>
+        <td class="fw-bold text-end" style="font-size: 12pt;">
+            {{ $company_data->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($totalPrice, 2)}}
+        </td>
+        <td></td>
+        </tr>
     @else
         <tr>
             <td colspan="6" class="text-center fw-bold">

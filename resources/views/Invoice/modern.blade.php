@@ -341,7 +341,7 @@
             <div class="row payment-row">
                 <div class="col-12 bank-payment">
                     <div class="gray">
-                        Payment to be made by Crossed Cheque in favour of"Secretarius(Pvt)Ltd" Or Remittances to be made
+                        Payment to be made by Crossed Cheque in favour of"Secretarius (Pvt) Ltd" Or Remittances to be made
                         to the undernoted Account.
                     </div>
                     <div class="bank-details">

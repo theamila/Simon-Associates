@@ -23,9 +23,12 @@ class PDFController extends Controller
             }
 
 
-            $path = $file->storeAs('public/pdfs', $filename);
 
-            return response()->json(['message' => 'PDF uploaded successfully', 'path' => $path]);
+           $path = $file->storeAs('public/pdfs', $filename);
+
+            return response()->json(['success' => true]);
+
+            //return response()->json(['message' => 'PDF uploaded successfully', 'path' => $path]);
         }
 
        Alert::error('No file uploaded');
