@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\approverMail;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
@@ -12,7 +13,8 @@ use App\Models\Modelreceipt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Mail;
+// use
 class NavisionController extends Controller
 {
 
@@ -217,6 +219,14 @@ class NavisionController extends Controller
         $data = Invoice::where('invoiceNumber', $invoiceNumberModify)->first();
         $data->status = '3';
         $data->save();
+
+        $mailTo = User::where('role', 3)->orderBy('id', 'desc')->first();
+
+        $mailDetails = [];
+
+            if ($mailTo) {
+                Mail::to($mailTo)->send(new approverMail($mailDetails));
+            }
 
         return redirect()->route('new-invoice-user')->with('good', 'Invoice successfully sent to the approver.');
     }

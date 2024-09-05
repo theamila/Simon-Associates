@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\customerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NavisionController;
@@ -17,6 +18,23 @@ use App\Models\User;
 Route::get('/', function () {
     return view('home.home');
 });
+
+// Route::get('/otp/view', function () {
+//     return view('auth.otp');
+// });
+
+Route::get('/otp/view', [LoginController::class, 'otpView'])->name('otp.view');
+
+
+Route::get('/password/reset', [LoginController::class, 'passwordReset'])->name('passwordReset');
+
+Route::post('/password/reset/send', [LoginController::class, 'passwordResetSend'])->name('password-reset-send');
+
+Route::match(['get', 'post'], '/verify/otp', [LoginController::class, 'verifyotp'])->name('verify-otp');
+
+Route::post('/new/password', [LoginController::class, 'newPassword'])->name('new-password');
+
+
 
 Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register']);
@@ -57,6 +75,11 @@ Route::middleware(['auth'])->group(function () {
 
 
         Route::get('recent/delete/{id}', [invoiceController::class, 'recentDelete'])->name('recent.delete');
+
+        Route::put('/update/company', [CompanyController::class, 'update'])->name('update.company');
+
+
+
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_FINANCE]], function () {
@@ -161,7 +184,7 @@ Route::middleware(['auth'])->group(function () {
 
     // =========================End Use======================
 
-    Route::get('/generateInvoice{id}', [NavisionController::class, 'generateInvoice'])->name('generateInvoice');
+    Route::get('/generateInvoice/{id}', [NavisionController::class, 'generateInvoice'])->name('generateInvoice');
 
     Route::post('/invoiceDataAdd', [invoiceController::class, 'invoiceDataAdd'])->name('invoiceDataAdd');
 

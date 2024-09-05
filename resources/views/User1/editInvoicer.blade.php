@@ -41,7 +41,7 @@
     <th class="fw-bold text-center">No</th>
     <th class="fw-bold text-center">Description</th>
     <th class="fw-bold text-center">Reimbursable</th>
-    <th class="fw-bold text-center">Discount</th>
+    {{-- <th class="fw-bold text-center">Discount</th> --}}
     <th class="fw-bold text-center">Price</th>
     @if ($invoice->status != 7)
         <th class="fw-bold text-center">Action</th>
@@ -62,7 +62,7 @@
                 </td>
 
 
-                <td class="fw-bold text-center" style="width: 80px;">{{ $get->discount . ' %' }}</td>
+                {{-- <td class="fw-bold text-center" style="width: 80px;">{{ $get->discount . ' %' }}</td> --}}
                 <td style="max-width: 250px; width:200px;" class="text-end">
                     @php
                     $no += 1;
