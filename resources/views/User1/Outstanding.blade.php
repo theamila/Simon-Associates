@@ -19,7 +19,7 @@
 
 @section('Ttopic', 'Outstanding Invoice')
 @section('thead')
-{{--
+    {{--
     <button type="button" class="btn btn-success col-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Custom Receipt
     </button> --}}
@@ -97,9 +97,13 @@
                             sync
                         </i>
                     </a> --}}
-                    <a href="{{ Route('generateReceiptForm', $get->id) }}" class="btn btn-sm btn-primary">
-                        <i class="material-symbols-outlined">navigate_next</i>
-                    </a>
+
+                    @if (auth()->user()->role == 2)
+                        <a href="{{ Route('generateReceiptForm', $get->id) }}" class="btn btn-sm btn-primary">
+                            <i class="material-symbols-outlined">navigate_next</i>
+                        </a>
+                    @endif
+
 
 
                 </td>
@@ -114,7 +118,7 @@
     @endif
 
 
-{{--    
+    {{--
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

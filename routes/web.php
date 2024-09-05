@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\customerController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NavisionController;
@@ -74,6 +75,11 @@ Route::middleware(['auth'])->group(function () {
 
 
         Route::get('recent/delete/{id}', [invoiceController::class, 'recentDelete'])->name('recent.delete');
+
+        Route::put('/update/company', [CompanyController::class, 'update'])->name('update.company');
+
+
+
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_FINANCE]], function () {
