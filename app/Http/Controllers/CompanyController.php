@@ -12,7 +12,7 @@ class CompanyController extends Controller
     $request->validate([
         'id' => 'required|integer|exists:company_details,id',
         'to' => 'required|string',
-        'email' => 'required|email',
+        'email' => 'required',
         'companyName' => 'required|string',
         'handleBy' => 'required|integer|exists:handlers,id',
         'address' => 'required|string',
