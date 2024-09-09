@@ -10,6 +10,7 @@ use App\Models\handler;
 use App\Models\payment;
 use App\Models\User;
 use App\Models\Modelreceipt;
+use Exception;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
@@ -54,11 +55,9 @@ class NavisionController extends Controller
             $data = InvoiceDetails::where('invoiceNumber', $Invoicedata->invoiceNumber)->get();
 
             return view('User2.rejectedView', compact('data'));
-
         } else {
             return back();
         }
-
     }
 
 
@@ -224,9 +223,9 @@ class NavisionController extends Controller
 
         $mailDetails = [];
 
-            if ($mailTo) {
-                Mail::to($mailTo)->send(new approverMail($mailDetails));
-            }
+        if ($mailTo) {
+            Mail::to($mailTo)->send(new approverMail($mailDetails));
+        }
 
         return redirect()->route('new-invoice-user')->with('good', 'Invoice successfully sent to the approver.');
     }
@@ -243,45 +242,56 @@ class NavisionController extends Controller
 
     // ===========================================================
 
-    public function generateInvoice($id)
+    public function generateInvoice($id, Request $request)
     {
-        $data = CompanyDetails::findOrFail($id);
-        $handler = handler::where('id', $data->handleBy)->first();
 
-        $invoice = new Invoice();
+        $request->validate([
+            'invoiceNumber' => 'required|unique:invoices,invoiceNumber',
+        ]);
 
-        $invoice->to = $data->to;
-        $invoice->email = $data->email;
-        $invoice->companyName = $data->companyName;
-        $invoice->address = $data->address;
-        $invoice->status = '1';
-        $invoice->handleBy = $handler->id;
-        $invoice->refID = $data->id;
+        try {
+            $data = CompanyDetails::findOrFail($id);
+            $handler = handler::where('id', $data->handleBy)->first();
 
-        $lastRow = Invoice::latest()->first();
-        $lastId = $lastRow ? $lastRow->id + 1 : 1;
+            $invoice = new Invoice();
 
-        $invoid = str_pad($lastId, 4, '0', STR_PAD_LEFT);
+            $invoice->to = $data->to;
+            $invoice->email = $data->email;
+            $invoice->companyName = $data->companyName;
+            $invoice->address = $data->address;
+            $invoice->status = '1';
+            $invoice->handleBy = $handler->id;
+            $invoice->refID = $data->id;
 
-        $currentMonth = date('n');
-        $currentYear = date('Y');
+            // $lastRow = Invoice::latest()->first();
+            // $lastId = $lastRow ? $lastRow->id + 1 : 1;
 
-        if ($currentMonth < 4) {
-            $financialYear = substr($currentYear - 1, -2);
-        } else {
-            $financialYear = substr($currentYear, -2);
+            // $invoid = str_pad($lastId, 4, '0', STR_PAD_LEFT);
+
+            // $currentMonth = date('n');
+            // $currentYear = date('Y');
+
+            // if ($currentMonth < 4) {
+            //     $financialYear = substr($currentYear - 1, -2);
+            // } else {
+            //     $financialYear = substr($currentYear, -2);
+            // }
+            // $customerName = $data->companyName;
+            // $customerInitial = strtoupper(substr($customerName, 0, 1));
+
+            // $invoiceNumber = "Sec/{$financialYear}/{$customerInitial}/{$invoid}";
+
+            $invoiceNumber = $request->query('invoiceNumber');
+
+            $invoice->invoiceNumber = $invoiceNumber;
+
+            $invoice->save();
+
+            $invoiceNumber = str_replace('/', '-', $invoiceNumber);
+
+            return redirect()->route('invoiceGenForm', ['invoiceNumber' => $invoiceNumber]);
+        } catch (Exception $e) {
+            return back()->with('error', 'Something Wrong. : ' . $e->getMessage());
         }
-        $customerName = $data->companyName;
-        $customerInitial = strtoupper(substr($customerName, 0, 1));
-
-        $invoiceNumber = "Sec/{$financialYear}/{$customerInitial}/{$invoid}";
-
-        $invoice->invoiceNumber = $invoiceNumber;
-
-        $invoice->save();
-
-        $invoiceNumber = str_replace('/', '-', $invoiceNumber);
-
-        return redirect()->route('invoiceGenForm', ['invoiceNumber' => $invoiceNumber]);
     }
 }
