@@ -6,6 +6,8 @@
 @section('content')
     @include('sweetalert::alert')
 
+    <script src="{{ asset('js/jquery-3.5.1.slim.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrapNew.min.js') }}"></script>
 @section('Ttopic', 'New Invoice')
 @section('search')
     <form action="{{ Route('search.customer') }}" method="get">
@@ -19,6 +21,12 @@
         </div>
     </form>
 @endsection
+@if ($errors->has('invoiceNumber'))
+    <script>
+        alert('Invoice number already exists. Please enter a unique invoice number.');
+    </script>
+@endif
+
 @section('thead')
     <th class="text-center">ID</th>
     <th class="text-center">Company Name</th>
@@ -36,15 +44,48 @@
                 <td class="text-center">{{ $get->companyName }}</td>
                 <td>{{ $get->address }}</td>
                 <td class="text-center">
-
-                    <a href="{{ Route('generateInvoice', $get->id) }}" class="btn btn-sm btn-success"
-                        onclick="disableButton(this)">
+                    <!-- Trigger the modal -->
+                    <a href="#" class="btn btn-sm btn-success" data-toggle="modal"
+                        data-target="#invoiceModal-{{ $get->id }}">
                         <i class="material-symbols-outlined">
                             navigate_next
                         </i>
                     </a>
                 </td>
             </tr>
+
+            <!-- Modal Structure for each company -->
+            <div class="modal fade" id="invoiceModal-{{ $get->id }}" tabindex="-1"
+                aria-labelledby="invoiceModalLabel-{{ $get->id }}" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="invoiceModalLabel-{{ $get->id }}">Enter Invoice Number for
+                                {{ $get->companyName }}</h5>
+                            <button type="button" class="close btn btn-sm btn-danger" data-dismiss="modal"
+                                aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="invoiceForm-{{ $get->id }}">
+                                <div class="form-group">
+                                    <label for="invoiceNumber-{{ $get->id }}">Invoice Number</label>
+                                    <input type="text" class="form-control" id="invoiceNumber-{{ $get->id }}"
+                                        name="invoiceNumber" required>
+                                </div>
+                                <input type="hidden" id="userId-{{ $get->id }}" name="userId"
+                                    value="{{ $get->id }}">
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"
+                                onclick="submitInvoice({{ $get->id }})">Generate Invoice</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         @endforeach
     @else
         <tr>
@@ -53,9 +94,25 @@
             </td>
         </tr>
     @endif
+
 @endsection
 
 @endsection
+
+<script>
+    function submitInvoice(id) {
+        var invoiceNumber = document.getElementById('invoiceNumber-' + id).value;
+        var userId = document.getElementById('userId-' + id).value;
+
+        if (invoiceNumber) {
+            // Redirect to generate the invoice using the entered invoice number and user ID
+            window.location.href = `/generateInvoice/${userId}?invoiceNumber=${invoiceNumber}`;
+        } else {
+            alert('Please enter an invoice number.');
+        }
+    }
+</script>
+
 
 <script>
     function disableButton(button) {
