@@ -184,7 +184,10 @@ Route::middleware(['auth'])->group(function () {
 
     // =========================End Use======================
 
+    // Route::get('/generateInvoice/{id}', [NavisionController::class, 'generateInvoice'])->name('generateInvoice');
+
     Route::get('/generateInvoice/{id}', [NavisionController::class, 'generateInvoice'])->name('generateInvoice');
+
 
     Route::post('/invoiceDataAdd', [invoiceController::class, 'invoiceDataAdd'])->name('invoiceDataAdd');
 
