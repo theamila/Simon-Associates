@@ -122,6 +122,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('customer/off/{id}', [customerController::class, 'off'])->name('customer.off');
 
+
+        Route::get('delete/invoice/{id}', [invoiceController::class, 'deleteInvoice'])->name('deleteInvoice');
+
     });
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
