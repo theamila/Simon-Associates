@@ -2,23 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Alert;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
 use App\Models\payment;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Storage;
-use Alert;
-use App\Mail\approverMail;
-use App\Models\User;
-use SimpleSoftwareIO\QrCode\Facades\QrCode;
-use Dompdf\Dompdf;
 use Carbon\Carbon;
+use Dompdf\Dompdf;
 use Exception;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Mail;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
 
 class invoiceController extends Controller
 {
@@ -29,7 +24,6 @@ class invoiceController extends Controller
 
         return view('User2.rejected', compact('data'));
     }
-
 
     public function NewInvoice()
     {
@@ -81,7 +75,6 @@ class invoiceController extends Controller
         try {
 
             DB::beginTransaction();
-
 
             $data = new InvoiceDetails();
 
@@ -278,7 +271,6 @@ class invoiceController extends Controller
 
             $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->firstOrFail();
 
-
             try {
                 $txt = 'Account Name : ' . $bank->acName . ', Account Number : ' . $bank->accountNo . ', Bank Name : ' . $bank->bankName . ',  Bank Address : ' . $bank->bankAddress . ', Swift Code : ' . $bank->swiftCode;
 
@@ -301,18 +293,14 @@ class invoiceController extends Controller
 
             // $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
 
-
-
             $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
             $directoryPath = public_path('pdfs/invoices');
 
             // file_put_contents(public_path('pdfs/invoices/' . $filename), $dompdf->output());
 
-
             if (!is_dir($directoryPath)) {
                 mkdir($directoryPath, 0755, true); // Ensure the directory exists
             }
-
 
             $filename = str_replace('/', '-', $invoiceNumber) . '.pdf';
             $directoryPath = public_path('pdfs/invoices');
@@ -387,8 +375,6 @@ class invoiceController extends Controller
             $company->outstanding += $outPriceTotal;
             $company->save();
 
-
-
             return redirect()->route('generate-Invoice', $invoice->id);
         } catch (\Exception $e) {
             // Log the full exception for debugging
@@ -396,7 +382,6 @@ class invoiceController extends Controller
             return back()->with('bad', 'Something went wrong.');
         }
     }
-
 
     public function sendInvoice($invoiceNumber)
     {
@@ -416,10 +401,7 @@ class invoiceController extends Controller
 
             Alert::success('Success', 'success');
 
-
             return redirect('/ongoing/invoice');
-
-
 
             // $outPriceTotal = 0.00; // Accumulator for total outstanding price
             // $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceNumber)->get();
@@ -443,8 +425,6 @@ class invoiceController extends Controller
             return back()->with('bad', 'Something went wrong.');
         }
     }
-
-
 
     // public function sendInvoice($invoiceNumber)
     // {
@@ -510,7 +490,6 @@ class invoiceController extends Controller
             $outdata = CompanyDetails::findOrFail($company_data->refID);
             $bank = payment::all();
 
-
             return view('User1.generateInvoice', compact('invoice_data', 'company_data', 'invoiceNumber', 'outdata', 'bank'));
         } catch (\Exception $e) {
             return back()->with('bad', 'Something Wrong.');
@@ -553,7 +532,6 @@ class invoiceController extends Controller
         }
     }
 
-
     public function recentDelete($id)
     {
         try {
@@ -587,11 +565,9 @@ class invoiceController extends Controller
         }
     }
 
-
     public function rejectInvoice($invoiceNumber)
     {
         $invoiceNumber = str_replace('-', '/', $invoiceNumber);
-
 
         $data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
 
@@ -601,5 +577,50 @@ class invoiceController extends Controller
         Alert::success('Success', 'Invoice Rejected Successfully');
 
         return redirect('/new-invoice-user-tree');
+    }
+
+    public function deleteInvoice($id)
+    {
+        try {
+            $invoice = Invoice::find($id);
+
+            if (!$invoice) {
+                Alert::error('Error', 'Unable to find Invoice.');
+                return back();
+            }
+
+            $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoice->invoiceNumber)->get();
+            $price = $invoiceDetails->sum('price');
+
+
+
+            $company = CompanyDetails::find($invoice->customerRefId);
+
+            if (!$company) {
+                Alert::error('Error', 'Customer Not found.');
+                return back();
+            }
+
+            // Calculate new outstanding price
+            $newOutstanding = $company->outstanding - $price;
+
+            // Ensure outstanding doesn't go below zero if your business rules require it
+            // Example logic to prevent negative outstanding:
+            // $newOutstanding = max(0, $newOutstanding);
+
+            $company->outstanding = $newOutstanding;
+            $company->save();
+            foreach ($invoiceDetails as $detail) {
+                $detail->delete();
+            }
+            $invoice->delete();`
+
+            Alert::success('Success', 'Invoice deleted Successfully.');
+
+            return redirect('/2/outstanding/view');
+        } catch (Exception $e) {
+            Alert::error('Error', $e->getMessage());
+            return redirect('/2/outstanding/view');
+        }
     }
 }
