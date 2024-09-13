@@ -19,6 +19,7 @@ class Invoice extends Model
         'date',
         'handleBy',
         'refID',
+        'customerRefId',
         'debtor',
     ];
 }

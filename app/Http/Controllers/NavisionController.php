@@ -262,6 +262,7 @@ class NavisionController extends Controller
             $invoice->status = '1';
             $invoice->handleBy = $handler->id;
             $invoice->refID = $data->id;
+            $invoice->customerRefId = $data->id;
 
             // $lastRow = Invoice::latest()->first();
             // $lastId = $lastRow ? $lastRow->id + 1 : 1;

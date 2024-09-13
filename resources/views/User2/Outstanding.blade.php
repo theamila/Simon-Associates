@@ -5,6 +5,8 @@
 @section('pageTitle', 'Outstanding Invoice')
 @section('content')
 
+@include('sweetalert::alert')
+
 @section('Ttopic', 'Outstanding Invoice')
 @section('thead')
     <button type="button" class="btn btn-success col-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -70,18 +72,20 @@
                     </a>
 
 
-                    <a href="{{ Route('re.send', $get->id) }}" title="Re Send"
-                        class="btn btn-sm btn-danger {{ $get->currency == 'USD' ? '' : '' }} ">
+                    <a  href="{{ Route('re.send', $get->id) }}" title="Re Send"
+                        class="btn btn-sm btn-warning {{ $get->currency == 'USD' ? '' : '' }} ">
                         <i class="material-symbols-outlined">
                             sync
                         </i>
                     </a>
 
+                    <a onclick="return confirm('Are you sure?')" href="{{ Route('deleteInvoice', $get->id) }}" class="btn btn-sm btn-danger">
+                        <i class="material-symbols-outlined">delete</i>
+                    </a>
+
                     <a href="{{ Route('generateReceiptForm', $get->id) }}" class="btn btn-sm btn-primary">
                         <i class="material-symbols-outlined">navigate_next</i>
                     </a>
-
-
                 </td>
             </tr>
         @endforeach
@@ -122,7 +126,7 @@
         </div>
     </div>
 
-    
+
 @endsection
 
 

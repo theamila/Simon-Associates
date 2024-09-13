@@ -26,6 +26,7 @@ return new class extends Migration
             $table->string('handleBy');
             $table->integer('resend')->default(0);
             $table->integer('refID');
+            $table->integer('customerRefId');
             $table->integer('bankId')->nullable();
             $table->string('debtor')->nullable();
             $table->timestamps();
