@@ -613,7 +613,7 @@ class invoiceController extends Controller
             foreach ($invoiceDetails as $detail) {
                 $detail->delete();
             }
-            $invoice->delete();`
+            $invoice->delete();
 
             Alert::success('Success', 'Invoice deleted Successfully.');
 
