@@ -623,4 +623,75 @@ class invoiceController extends Controller
             return redirect('/2/outstanding/view');
         }
     }
+
+
+    public function editInvoiceNumber(Request $req, $id)
+    {
+        // Retrieve the new invoice number from the request
+        $oldInvoiceNumber = $req->input('oldInvoiceNumber');
+        $invoiceNumber = $req->input('invoiceNumber');
+
+        // Find the invoice by its ID
+        $invoiceData = Invoice::find($id);
+
+        // Ensure the invoice exists
+        if ($invoiceData) {
+            // Update the invoice number for the main invoice table
+            $invoiceData->invoiceNumber = $invoiceNumber;
+            $invoiceData->save();
+
+            // Find all related invoice details and update them
+            $invoiceDetail = InvoiceDetails::where('invoiceNumber', $oldInvoiceNumber)->get();
+
+            foreach ($invoiceDetail as $item) {
+                // Update each related record's invoice number
+                $item->invoiceNumber = $invoiceNumber;
+                $item->save();
+            }
+
+            // Optionally, return a success message or redirect
+            return redirect()->back()->with('success', 'Invoice number updated successfully!');
+        }
+
+        // Optionally, return an error message if the invoice is not found
+        return redirect()->back()->with('error', 'Invoice not found.');
+    }
+
+
+    public function editnewInvoiceNumber(Request $req, $id)
+    {
+
+        $oldInvoiceNumber = str_replace('-', '/', $req->input('oldInvoiceNumber'));
+
+        // dd($oldInvoiceNumber);
+
+        $invoiceNumber = str_replace('-', '/', $req->input('invoiceNumber'));
+
+        // Find the invoice by its ID
+        $invoiceData = Invoice::find($id);
+
+        // Ensure the invoice exists
+        if ($invoiceData) {
+            // Update the invoice number for the main invoice table
+            $invoiceData->invoiceNumber = $invoiceNumber;
+            $invoiceData->save();
+
+            // Find all related invoice details and update them
+            $invoiceDetail = InvoiceDetails::where('invoiceNumber', $oldInvoiceNumber)->get();
+
+            foreach ($invoiceDetail as $item) {
+                // Update each related record's invoice number
+                $item->invoiceNumber = $invoiceNumber;
+                $item->save();
+            }
+
+            $invoiceNumber = str_replace('/', '-', $invoiceNumber);
+
+            // Optionally, return a success message or redirect
+            return redirect('invoice/' . $invoiceNumber);
+        }
+
+        // Optionally, return an error message if the invoice is not found
+        // return redirect()->back()->with('error', 'Invoice not found.');
+    }
 }
