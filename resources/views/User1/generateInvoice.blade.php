@@ -13,7 +13,22 @@
 
             <div class="row m-1 p-2 bg-light align-items-center">
                 <div class="col-8 d-flex justify-content-between">
-                    <span style="font-weight: bold;" class="text-success">Invoice Number : {{ $invoiceNumber }}</span>
+
+                    <span style="font-weight: bold;" class="text-success">Invoice Number : {{ $invoiceNumber }} </span>
+
+                    {{-- <input type="text" name="invoiceNUmber" value="{{ $invoiceNumber }}"> --}}
+
+                    {{-- ==================================================== --}}
+                    <!-- Edit Button -->
+                    <a class="btn btn-sm btn-danger" data-toggle="modal" data-target="#editInvoiceModal">
+                        <i class="material-symbols-outlined">edit</i>
+                    </a>
+
+
+
+
+                    {{-- ================================================= --}}
+
                     <span class="text-danger">Outstanding Amount : <span class="fw-bold">
                             {{ $outdata->outstanding }}
                         </span></span>
@@ -413,6 +428,40 @@
             pomInput.addEventListener('input', calculateTotal);
         </script>
 
+        <!-- Modal for Editing Invoice -->
+        <div class="modal fade" id="editInvoiceModal" tabindex="-1" role="dialog"
+            aria-labelledby="editInvoiceModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="editInvoiceModalLabel">Edit Invoice Number</h5>
+                        <button type="button" class="close btn btn-sm btn-danger" data-dismiss="modal"
+                            aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <form action="{{ Route('edit.new.invoice.number', $company_data->id) }}" method="POST">
+                        @csrf
+                        <div class="modal-body">
+                            <!-- Hidden input for old invoice number -->
+                            <input type="hidden" name="oldInvoiceNumber" value="{{ $invoiceNumber }}">
 
+                            <div class="form-group">
+                                <label for="invoiceNumber">New Invoice Number</label>
+                                <input type="text" class="form-control" id="invoiceNumber" name="invoiceNumber"
+                                    value="{{ $invoiceNumber }}">
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Save changes</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <script src="{{ asset('js/jquery-3.5.1.slim.min.js') }}"></script>
+        <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 
     @endsection

@@ -52,6 +52,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/all/Invoice', [NavisionController::class, 'allInvoice'])->name('allInvoice');
 
+        Route::post('/edit/invoice/number/{id}', [invoiceController::class, 'editInvoiceNumber'])->name('edit.invoice.number');
+        
+        Route::post('/edit/new/invoice/number/{id}', [invoiceController::class, 'editnewInvoiceNumber'])->name('edit.new.invoice.number');
+
 
         Route::get('/reject/Invoice', [NavisionController::class, 'RejectInvoice'])->name('rejectInvoice');
 
