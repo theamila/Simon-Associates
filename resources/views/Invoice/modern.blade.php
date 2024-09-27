@@ -245,7 +245,7 @@
                             Description
                         </th>
                         <th class="text-center text-light" style="width: 150px;">
-                            {{ $dollarRate == 1 ? 'Rs.' : '$USD' }}
+                            {{ $currency != "USD" ? 'Rs.' : '$ USD' }}
                         </th>
                     </tr>
                 </thead>
