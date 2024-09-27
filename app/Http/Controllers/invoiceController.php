@@ -308,7 +308,8 @@ class invoiceController extends Controller
             file_put_contents($directoryPath . '/' . $filename, $dompdf->output());
             // =================================================================
 
-            return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr'));
+           
+            return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr', 'currency'));
 
             // return view('Invoice.Invoice', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data'));
         } catch (\Exception $e) {
