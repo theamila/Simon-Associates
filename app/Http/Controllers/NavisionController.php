@@ -212,19 +212,21 @@ class NavisionController extends Controller
         return view('User2.generateInvoice', compact('invoice_data', 'invoiceNumber', 'invoice', 'bankAccount'));
     }
 
-    public function sendUsertree($invoiceNumber)
+    public function sendUsertree($invoiceNumber, $notify)
     {
         $invoiceNumberModify = str_replace('-', '/', $invoiceNumber);
         $data = Invoice::where('invoiceNumber', $invoiceNumberModify)->first();
         $data->status = '3';
         $data->save();
 
-        $mailTo = User::where('role', 3)->orderBy('id', 'desc')->first();
+        if ($notify == "true") {
+            $mailTo = User::where('role', 3)->orderBy('id', 'desc')->first();
 
-        $mailDetails = [];
+            $mailDetails = [];
 
-        if ($mailTo) {
-            Mail::to($mailTo)->send(new approverMail($mailDetails));
+            if ($mailTo) {
+                Mail::to($mailTo)->send(new approverMail($mailDetails));
+            }
         }
 
         return redirect()->route('new-invoice-user')->with('good', 'Invoice successfully sent to the approver.');
