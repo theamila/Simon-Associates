@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/all/Invoice', [NavisionController::class, 'allInvoice'])->name('allInvoice');
 
         Route::post('/edit/invoice/number/{id}', [invoiceController::class, 'editInvoiceNumber'])->name('edit.invoice.number');
-        
+
         Route::post('/edit/new/invoice/number/{id}', [invoiceController::class, 'editnewInvoiceNumber'])->name('edit.new.invoice.number');
 
 
@@ -183,7 +183,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/view/user/2/{invoiceNumber}', [NavisionController::class, 'viewUserTwo'])->name('view-user-2');
 
-    Route::get('/sent/user/3/{invoiceNumber}', [NavisionController::class, 'sendUsertree'])->name('send-to-user-3');
+    Route::get('/sent/user/3/{invoiceNumber}/{notify}', [NavisionController::class, 'sendUsertree'])->name('send-to-user-3');
 
     Route::get('/sent/user/1/{invoiceNumber}', [NavisionController::class, 'sendUserOne'])->name('send-to-user-1');
 
