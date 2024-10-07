@@ -286,14 +286,19 @@ class NavisionController extends Controller
 
             $invoiceNumber = $request->query('invoiceNumber');
 
+            $invoiceNumber = str_replace('-', '/', $invoiceNumber);
+
+
             $invoice->invoiceNumber = $invoiceNumber;
 
             $invoice->save();
 
             $invoiceNumber = str_replace('/', '-', $invoiceNumber);
+            // dd('fsdfs');
 
             return redirect()->route('invoiceGenForm', ['invoiceNumber' => $invoiceNumber]);
         } catch (Exception $e) {
+
             return back()->with('error', 'Something Wrong. : ' . $e->getMessage());
         }
     }

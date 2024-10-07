@@ -9,6 +9,12 @@
     <script src="{{ asset('js/jquery-3.5.1.slim.min.js') }}"></script>
     <script src="{{ asset('js/bootstrapNew.min.js') }}"></script>
 @section('Ttopic', 'New Invoice')
+@if(session('error'))
+    <div class="alert alert-danger">
+        {{ session('error') }}
+    </div>
+@endif
+
 @section('search')
     <form action="{{ Route('search.customer') }}" method="get">
 
@@ -105,6 +111,7 @@
         var userId = document.getElementById('userId-' + id).value;
 
         if (invoiceNumber) {
+            alert(invoiceNumber);
             // Redirect to generate the invoice using the entered invoice number and user ID
             window.location.href = `/generateInvoice/${userId}?invoiceNumber=${invoiceNumber}`;
         } else {
@@ -113,6 +120,11 @@
     }
 </script>
 
+@if(session('error'))
+    <script>
+        alert("{{ session('error') }}");
+    </script>
+@endif
 
 <script>
     function disableButton(button) {
