@@ -21,6 +21,11 @@
         hourglass_top
     </i>
 @endsection
+@if(session('error'))
+    <script>
+        alert("{{ session('error') }}");
+    </script>
+@endif
 
 @section('t-icon')
     <i class="material-symbols-outlined mdi-24px float-right">
