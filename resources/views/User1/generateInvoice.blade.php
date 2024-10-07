@@ -30,7 +30,7 @@
                     {{-- ================================================= --}}
 
                     <span class="text-danger">Outstanding Amount : <span class="fw-bold">
-                            {{ $outdata->outstanding }}
+                            {{ number_format($outdata->outstanding, 2) }}
                         </span></span>
                 </div>
                 <div class="col-4">
@@ -131,11 +131,13 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php  $totalTablePrice = 0.00; @endphp
 
                                     @if ($invoice_data->count() > 0)
                                         @foreach ($invoice_data as $get)
                                             @php
                                                 $no += 1;
+
                                             @endphp
                                             <tr class="fw-bold t-4">
                                                 <td class="fw-bold text-center" style="width: 80px;">{{ $no }}
@@ -154,11 +156,14 @@
 
                                                         $price = $get->price - $get->price * ($get->discount / 100);
                                                     @endphp
-                                                    <span class="text-danger">
+                                                    {{-- <span class="text-danger">
                                                         {{ number_format($get->price, 2) }}
-                                                    </span><br>
+                                                    </span><br> --}}
                                                     <span class="fw-bold" style="font-size: 12pt;">
                                                         {{ number_format($price, 2) }}
+                                                        @php
+                                                            $totalTablePrice += $price;
+                                                        @endphp
                                                     </span>
                                                 </td>
 
@@ -314,6 +319,10 @@
                                             </script> -->
                                             <!-- ============================================================================== -->
                                         @endforeach
+                                        <tr>
+                                            <td colspan="3" class="fw-bold text-center">Total</td>
+                                            <td class="text-end fw-bold text-danger">{{ number_format($totalTablePrice, 2) }}</td>
+                                        </tr>
                                     @else
                                         <tr>
                                             <td colspan="6" class="text-center fw-bold">

@@ -113,7 +113,7 @@ class invoiceController extends Controller
 
         try {
             $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
-            $outdata = CompanyDetails::findOrFail($company_data->refID);
+            $outdata = CompanyDetails::findOrFail($company_data->customerRefId);
             $invoice_data = InvoiceDetails::where('invoiceNumber', $company_data->invoiceNumber)->get();
             $bank = payment::all();
 
@@ -308,7 +308,7 @@ class invoiceController extends Controller
             file_put_contents($directoryPath . '/' . $filename, $dompdf->output());
             // =================================================================
 
-           
+
             return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr', 'currency'));
 
             // return view('Invoice.Invoice', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data'));
@@ -487,13 +487,34 @@ class invoiceController extends Controller
 
         try {
             $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+
+            // Check if $company_data exists before proceeding
+            if (!$company_data) {
+                $invoiceNumber = str_replace('/', '-', $invoiceNumber);
+                $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+
+                if (!$company_data){
+
+                    return back()->with('error', 'No invoice found with the given invoice number.' . $invoiceNumber);
+                }
+                $invoiceNumber = str_replace('-', '/', $invoiceNumber);
+
+            }
+
+            // Retrieve invoice details
             $invoice_data = InvoiceDetails::where('invoiceNumber', $company_data->invoiceNumber)->get();
-            $outdata = CompanyDetails::findOrFail($company_data->refID);
-            $bank = payment::all();
+
+            // Retrieve company details (findOrFail will throw an exception if not found)
+            $outdata = CompanyDetails::findOrFail($company_data->customerRefId);
+
+            // Retrieve all payment information
+            $bank = Payment::all();
 
             return view('User1.generateInvoice', compact('invoice_data', 'company_data', 'invoiceNumber', 'outdata', 'bank'));
         } catch (\Exception $e) {
-            return back()->with('bad', 'Something Wrong.');
+            // dd($invoiceNumber);
+            dd($e->getMessage());
+            return back()->with('error', 'Something Wrong.' . $e->getMessage());
         }
     }
 
