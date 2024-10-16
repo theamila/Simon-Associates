@@ -316,28 +316,30 @@ class Receipt extends Controller
     {
         $Invoice = CompanyDetails::findOrFail($id);
 
-        $firstInvoiceNumber = Invoice::where('refID', $id)->first();
+        // $firstInvoiceNumber = Invoice::where('customerRefId', $id)->first();
 
-        $lastReceiptId = ModelReceipt::max('id');
+        // $lastReceiptId = ModelReceipt::max('id');
 
-        $nextNumber = $lastReceiptId == 9999 ? 10000 : $lastReceiptId + 1;
+        // $nextNumber = $lastReceiptId == 9999 ? 10000 : $lastReceiptId + 1;
 
-        $formattedNumber = 'R' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+        // $formattedNumber = 'R' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
 
-        $receipt = new Modelreceipt();
+        // $receipt = new Modelreceipt();
 
-        $receipt->invoiceNumber = $firstInvoiceNumber->invoiceNumber;
-        $receipt->receiptNumber = $formattedNumber;
-        $receipt->offline = 1;
+        // $receipt->invoiceNumber = $firstInvoiceNumber->invoiceNumber;
+        // $receipt->receiptNumber = $formattedNumber;
+        // $receipt->offline = 1;
 
-        // $receipt->additional = $additional;
-        $receipt->payedDate = Carbon::now();
+        // $receipt->payedDate = Carbon::now();
 
-        $receipt->save();
+        // $receipt->save();
 
-        $isSubmit = false;
+        // $isSubmit = false;
+        
+        $isSubmit = true;
 
-        return view('invoice.receiptModernTwo', compact('Invoice', 'formattedNumber', 'isSubmit'));
+        return view('invoice.receiptModernTwo', compact('Invoice', 'isSubmit'));
+        // return view('invoice.receiptModernTwo', compact('Invoice', 'formattedNumber', 'isSubmit'));
     }
 
     public function paymentSubmit(Request $request)

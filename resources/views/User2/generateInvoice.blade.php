@@ -43,7 +43,7 @@
     <th class="fw-bold text-center">No</th>
     <th class="fw-bold text-center">Description</th>
     <th class="fw-bold text-center">Reimbursable</th>
-    <th class="fw-bold text-center">Discount</th>
+    {{-- <th class="fw-bold text-center">Discount</th> --}}
     <th class="fw-bold text-center">Price</th>
     <th class="fw-bold text-center">Action</th>
 @endsection
@@ -66,14 +66,14 @@
                 </td>
 
 
-                <td class="fw-bold text-center" style="width: 80px;">{{ $get->discount . ' %' }}</td>
+                {{-- <td class="fw-bold text-center" style="width: 80px;">{{ $get->discount . ' %' }}</td> --}}
                 <td style="max-width: 250px; width:200px;" class="text-end">
                     @php
                         $price = $get->price - $get->price * ($get->discount / 100);
                     @endphp
-                    <span class="text-danger">
+                    {{-- <span class="text-danger">
                         {{ number_format($get->price, 2) }}
-                    </span><br>
+                    </span><br> --}}
                     <span class="fw-bold" style="font-size: 12pt;">
                         {{ number_format($price, 2) }}
                     </span>

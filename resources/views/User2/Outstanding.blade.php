@@ -9,9 +9,12 @@
 
 @section('Ttopic', 'Outstanding Invoice')
 @section('thead')
-    <button type="button" class="btn btn-success col-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
-        Custom Receipt
-    </button>
+
+
+<button type="button" class="btn btn-success col-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+    Custom Receipt
+</button>
+<a href="{{Route('group.receipt')}}" class="float-end btn me-1 btn-primary">Group Receipt</a>
 
     <th class="text-center">ID</th>
     <th class="text-center">Company Name</th>
@@ -25,7 +28,7 @@
 
 @section('tbody')
     @if ($data->count() > 0)
-        @foreach ($data as $get)
+        @foreach ($data as $key => $get)
             @php
 
                 $startDate = strtotime($get->sendDate);
@@ -42,7 +45,7 @@
             @endphp
 
             <tr>
-                <td class="text-center">{{ $get->id }}</td>
+                <td class="text-center">{{ $key+1 }}</td>
                 <td class="text-center">{{ $get->companyName }}</td>
                 <td class="text-center">{{ $get->sendDate }}</td>
                 <td class="text-center">{{ $get->invoiceNumber }}</td>
@@ -65,6 +68,12 @@
 
                     {{-- <a href="{{ Storage::url('invoices/' . $invoiceNumber . '.pdf') }}" class="btn btn-sm btn-primary"
                         download><i class="material-symbols-outlined">download</i></a> --}}
+
+                        <a href="/settle/invoice/manual/{{$get->id}}"
+                        class="btn btn-sm btn-success">
+                        <i class="material-symbols-outlined">check</i>
+                    </a>
+
 
                     <a href="{{ Storage::url('invoices/' . $invoiceNumber . '.pdf') }}" target="_blank"
                         class="btn btn-sm btn-info">
