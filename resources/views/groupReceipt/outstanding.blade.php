@@ -32,7 +32,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         @endif
-        
+
         @if ($errors->any())
             <div class="alert alert-danger mt-2">
                 <ul>
@@ -80,7 +80,8 @@
                                         </td>
                                         <td>
                                             <input type="text" class="form-control" name="receipt"
-                                                placeholder="R0001" required>
+                                                placeholder="R0001" value="{{ session('receiptNumber', '') }}" required>
+
                                         </td>
                                         <td class="text-center">
                                             <input type="submit" value="Settle" class="btn btn-success">
