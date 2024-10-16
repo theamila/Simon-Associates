@@ -1,0 +1,18 @@
+UPDATE `invoices` SET `customerRefId` = '22' WHERE `invoices`.`id` = 8967;
+
+UPDATE `invoices` SET `customerRefId` = '23' WHERE `invoices`.`id` = 8968;
+
+UPDATE `invoices` SET `customerRefId` = '25' WHERE `invoices`.`id` = 8970;
+
+UPDATE `invoices` SET `customerRefId` = '26' WHERE `invoices`.`id` = 8971;
+
+UPDATE `invoices` SET `customerRefId` = '4' WHERE `invoices`.`id` = 8975;
+
+UPDATE `invoices` SET `customerRefId` = '5' WHERE `invoices`.`id` = 8973;
+
+UPDATE `invoices` SET `customerRefId` = '39' WHERE `invoices`.`id` = 8974;
+
+UPDATE `invoices` SET `customerRefId` = '41' WHERE `invoices`.`id` = 8976;
+
+UPDATE `invoices` SET `customerRefId` = '41' WHERE `invoices`.`id` = 8977;
+
