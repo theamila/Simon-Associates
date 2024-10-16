@@ -21,5 +21,6 @@ class InvoiceDetails extends Model
         'remark',
         'convertToD',
         'secAddress',
+        'invoiceID',
     ];
 }

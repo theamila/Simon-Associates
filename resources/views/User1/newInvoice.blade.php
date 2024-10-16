@@ -111,7 +111,7 @@
         var userId = document.getElementById('userId-' + id).value;
 
         if (invoiceNumber) {
-            alert(invoiceNumber);
+           
             // Redirect to generate the invoice using the entered invoice number and user ID
             window.location.href = `/generateInvoice/${userId}?invoiceNumber=${invoiceNumber}`;
         } else {
