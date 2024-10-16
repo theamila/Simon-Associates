@@ -14,6 +14,7 @@ class groupReceiptController extends Controller
 {
     public function groupReceipt()
     {
+        
         $data = Invoice::where('status', "7")->get();
 
         if ($data->isEmpty()) {

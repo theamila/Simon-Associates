@@ -70,7 +70,7 @@
                         download><i class="material-symbols-outlined">download</i></a> --}}
 
                         <a href="/settle/invoice/manual/{{$get->id}}"
-                        class="btn btn-sm btn-success">
+                        class="btn btn-sm btn-success" onclick="return confirm('Are you sure you want to settle this invoice?')">
                         <i class="material-symbols-outlined">check</i>
                     </a>
 
@@ -134,6 +134,8 @@
             </div>
         </div>
     </div>
+
+
 
 
 @endsection
