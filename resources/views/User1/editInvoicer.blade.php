@@ -13,28 +13,28 @@
     @endphp
 
 @section('custom')
-<div class="container">
-    <div class="row p-2 m-2">
-        <form action="{{ Route('change.bank') }}" method="get">
-            <div class="row align-items-center">
-                <div class="col">
-                    <select id="bank" name="Selectbank" class="form-select">
-                        @foreach ($bank as $get)
-                            <option value="{{ $get->id }}" {{ $invoice->bankId == $get->id ? 'selected' : '' }}>
-                                {{ $get->accountNo }}
-                            </option>
-                        @endforeach
-                    </select>
+    <div class="container">
+        <div class="row p-2 m-2">
+            <form action="{{ Route('change.bank') }}" method="get">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <select id="bank" name="Selectbank" class="form-select">
+                            @foreach ($bank as $get)
+                                <option value="{{ $get->id }}" {{ $invoice->bankId == $get->id ? 'selected' : '' }}>
+                                    {{ $get->accountNo }}
+                                </option>
+                            @endforeach
+                        </select>
 
-                    <input type="hidden" name="invoiceNumber" value="{{ $invoice->invoiceNumber }}">
+                        <input type="hidden" name="invoiceNumber" value="{{ $invoice->invoiceNumber }}">
+                    </div>
+                    <div class="col-2">
+                        <input type="submit" value="Change" class="btn btn-success">
+                    </div>
                 </div>
-                <div class="col-2">
-                    <input type="submit" value="Change" class="btn btn-success">
-                </div>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
-</div>
 @endsection
 
 @section('thead')
@@ -50,6 +50,10 @@
 @endsection
 @section('tbody')
     @if ($invoice_data->count() > 0)
+        @php
+            $invoicePrice = 0.0;
+            $totalPrice = 0.0;
+        @endphp
         @foreach ($invoice_data as $get)
             <tr>
 
@@ -65,31 +69,37 @@
                 {{-- <td class="fw-bold text-center" style="width: 80px;">{{ $get->discount . ' %' }}</td> --}}
                 <td style="max-width: 250px; width:200px;" class="text-end">
                     @php
-                    $no += 1;
+                        $no += 1;
                         $price = $get->price - $get->price * ($get->discount / 100);
+
+                        $totalPrice += $price;
+
+                        if (!$get->Reimbursables == 1) {
+                            $invoicePrice += $price;
+                        }
+
                     @endphp
-                    <span class="text-danger">
+                    {{-- <span class="text-danger">
                         {{ number_format($get->price, 2) }}
-                    </span><br>
+                    </span><br> --}}
                     <span class="fw-bold" style="font-size: 12pt;">
                         {{ number_format($price, 2) }}
                     </span>
                 </td>
                 @if ($invoice->status != 7)
-                <td style="max-width: 150px; width:150px;" class="text-end">
+                    <td style="max-width: 150px; width:150px;" class="text-end">
 
-                    <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal{{ $get->id }}">
-                        <i class="material-symbols-outlined">edit_square</i>
-                    </button>
+                        <button type="button" class="btn btn-sm btn-primary" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal{{ $get->id }}">
+                            <i class="material-symbols-outlined">edit_square</i>
+                        </button>
 
-                    <a onclick="return confirm('Are you sure you want to delete this invoice Data?')"
-                        href="{{ route('deleteInvoiceData', $get->id) }}" class="btn btn-sm btn-danger rounded">
-                        <i class="material-symbols-outlined">delete</i>
-                    </a>
+                        <a onclick="return confirm('Are you sure you want to delete this invoice Data?')"
+                            href="{{ route('deleteInvoiceData', $get->id) }}" class="btn btn-sm btn-danger rounded">
+                            <i class="material-symbols-outlined">delete</i>
+                        </a>
 
-                </td>
-
+                    </td>
                 @endif
             </tr>
 
@@ -184,6 +194,11 @@
     @endif
 @endsection
 
+<div class="d-flex mb-3" style="justify-content: space-around;">
+    <span class="text-danger fw-bold">Invoce Amount - <span class="text-success fw-bold">{{ number_format($invoicePrice, 2) }}</span></span>
+    <span class="text-danger fw-bold">Total Amount - <span class="text-success fw-bold">{{ number_format($totalPrice, 2) }}</span></span>
+</div>
+
 @php
     $invoiceNumber = str_replace('/', '-', $invoiceNumber);
 @endphp
@@ -192,7 +207,7 @@
     <a href="{{ Route('send-invoice', $invoiceNumber) }} " class="btn btn-primary mb-3">Finalize Invoice</a>
 @elseif($issu_count == 0 && $invoice->status == 6)
     <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
-    @elseif($issu_count == 0 && $invoice->status == 7)
+@elseif($issu_count == 0 && $invoice->status == 7)
     <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
 @elseif($issu_count != 0)
     <p>Fix all issues.</p>

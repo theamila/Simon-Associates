@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\customerController;
+use App\Http\Controllers\groupReceiptController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NavisionController;
 use App\Http\Controllers\invoiceController;
@@ -129,7 +130,14 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('delete/invoice/{id}', [invoiceController::class, 'deleteInvoice'])->name('deleteInvoice');
 
+        Route::get('group/receipt', [groupReceiptController::class, 'groupReceipt'])->name('group.receipt');
+
+        Route::get('settle/invoice/manual/{id}', [groupReceiptController::class, 'settleInvoice']);
+
+
+
     });
+
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
         Route::get('/user3', [Madem3::class, 'home'])->name('Home');
@@ -236,3 +244,11 @@ Route::post('/payment/submit', [Receipt::class, 'paymentSubmit'])->name('payment
 Route::get('/generate/Reciept/form/{id}', [Receipt::class, 'generateReceiptForm'])->name('generateReceiptForm');
 
 Route::match(['get', 'post'], '/custom/Reciept', [Receipt::class, 'CustomReceipt'])->name('CustomReceipt');
+
+Route::get('/send-checked-receipts', [groupReceiptController::class, 'sendCheckedReceipts'])->name('sendCheckedReceipts');
+
+Route::get('/settle/outstanding/group', [groupReceiptController::class, 'settleoutstandinggroup'])->name('settle.outstanding.group');
+
+Route::get('/group/receipt/generate/{id}', [groupReceiptController::class, 'groupreceiptgenerate'])->name('group.receipt.generate');
+
+Route::get('/group/session/forgot', [groupReceiptController::class, 'groupsessionforgot']);

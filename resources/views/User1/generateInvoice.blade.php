@@ -131,7 +131,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php  $totalTablePrice = 0.00; @endphp
+                                    @php
+                                        $totalTablePrice = 0.0;
+                                        $invoicePrice = 0.0;
+                                    @endphp
 
                                     @if ($invoice_data->count() > 0)
                                         @foreach ($invoice_data as $get)
@@ -148,6 +151,8 @@
                                                 </td>
 
 
+
+
                                                 {{-- <td class="fw-bold text-center" style="width: 80px;">
                                                     {{ $get->discount . ' %' }}
                                                 </td> --}}
@@ -155,7 +160,14 @@
                                                     @php
 
                                                         $price = $get->price - $get->price * ($get->discount / 100);
+
+                                                        if(!$get->Reimbursables == 1)
+                                                        {
+                                                            $invoicePrice += $price;
+                                                        }
                                                     @endphp
+
+
                                                     {{-- <span class="text-danger">
                                                         {{ number_format($get->price, 2) }}
                                                     </span><br> --}}
@@ -319,10 +331,10 @@
                                             </script> -->
                                             <!-- ============================================================================== -->
                                         @endforeach
-                                        <tr>
+                                        {{-- <tr>
                                             <td colspan="3" class="fw-bold text-center">Total</td>
                                             <td class="text-end fw-bold text-danger">{{ number_format($totalTablePrice, 2) }}</td>
-                                        </tr>
+                                        </tr> --}}
                                     @else
                                         <tr>
                                             <td colspan="6" class="text-center fw-bold">
@@ -334,11 +346,20 @@
                             </table>
                         </div>
                     </div>
-                    @php $invoiceNumber = str_replace('/', '-', $invoiceNumber); @endphp
                     {{-- <a href="{{ Route('sendToApprover', $invoiceNumber) }}" class="btn btn-inverse-success btn-fw">Send
                         To
                         Approver</a> --}}
 
+
+                    <div class="my-4 px-5" style="display: flex; justify-content: space-around;">
+                        <span class="text-danger fw-bold">Invoice Price - <span
+                                class="text-success">{{ number_format($invoicePrice, 2) }}</span></span>
+                        <span class="text-danger fw-bold">Total Amount - <span
+                                class="text-success">{{ number_format($totalTablePrice, 2) }}</span></span>
+                    </div>
+
+
+                    @php $invoiceNumber = str_replace('/', '-', $invoiceNumber); @endphp
                     <a id="sendToApproverBtn" href="#" class="btn btn-inverse-success btn-fw">Send To Approver</a>
                 </div>
             </div>

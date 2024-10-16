@@ -10,11 +10,15 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
+    {{-- <link
         href="https://fonts.googleapis.com/css2?family=Madimi+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-        rel="stylesheet">
+        rel="stylesheet"> --}}
 
-    <link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="{{asset('css/css2.css')}}">
+        <link rel="stylesheet" href="{{asset('css/css3.css')}}">
+        <link rel="stylesheet" href="{{asset('css/all.min.css')}}" >
+
+    {{-- <link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet"> --}}
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
         integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
@@ -129,7 +133,7 @@
                         <input type="text" name="billNo" placeholder="Enter bill No.." class="form-control">
 
                         <input type="hidden" name="companyID" value="{{ $Invoice->id }}">
-                        <input type="hidden" name="OldbillNo" value="{{ $formattedNumber }}">
+                        {{-- <input type="hidden" name="OldbillNo" value="{{ $formattedNumber }}"> --}}
                     </div>
                     <div class="col">
                         <input type="submit" value="submit" class="btn btn-success">
@@ -147,14 +151,16 @@
                     <h2 class="text-start">RECEIPT</h2>
                     <div class="row">
                         <div class="col-7 r-No">Date</div>
-                        <div class="col-5 r-No">
+                        <div class="col-5 r-No" contenteditable="true">
                             {{ now()->format('d/m/Y') }}
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-7 r-No">Receipt No</div>
-                        {{ 'R ' . $formattedNumber }}
+                        <label class="col-7 r-No">Receipt No</label>
+                        <input type="text" class="col" style="border: none;">
                     </div>
+
+                    {{-- {{ 'R ' . $formattedNumber }} --}}
                 </div>
                 <div class="col-9 text-end">
                     <h3 class="company-name">SECRETARIUS (PVT) LTD</h3>
@@ -175,7 +181,7 @@
                     <h2>TO</h2>
                 </div>
                 <div class="b-address">
-                    <span class="text-start">
+                    <span class="text-start" contenteditable="true">
                         {{ $Invoice->to }} <br>
                         {{ $Invoice->companyName }}
                     </span>
@@ -307,7 +313,8 @@
 
             html2pdf(container, {
                 margin: 10,
-                filename: '{{ $formattedNumber }}',
+                filename: 'Receipt',
+
                 image: {
                     type: 'jpeg',
                     quality: 0.98
