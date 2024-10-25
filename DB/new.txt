@@ -1,0 +1,15 @@
+UPDATE `company_details` SET `outstanding` = '447.00' WHERE `company_details`.`id` = 43;
+
+UPDATE `invoice_details` SET `status` = '0' WHERE `invoice_details`.`id` = 75;
+
+UPDATE `invoice_details` SET `status` = '0' WHERE `invoice_details`.`id` = 76;
+
+UPDATE `invoice_details` SET `status` = '0' WHERE `invoice_details`.`id` = 77;
+
+UPDATE `invoice_details` SET `status` = '0' WHERE `invoice_details`.`id` = 78;
+
+UPDATE `invoices` SET `status` = '7' WHERE `invoices`.`id` = 8980;
+
+DELETE FROM modelreceipts WHERE `modelreceipts`.`id` = 29;
+
+DELETE FROM modelreceipts WHERE `modelreceipts`.`id` = 30;

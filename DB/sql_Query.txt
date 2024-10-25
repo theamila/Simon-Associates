@@ -16,3 +16,6 @@ UPDATE `invoices` SET `customerRefId` = '41' WHERE `invoices`.`id` = 8976;
 
 UPDATE `invoices` SET `customerRefId` = '41' WHERE `invoices`.`id` = 8977;
 
+DELETE FROM modelreceipts WHERE `modelreceipts`.`id` = 29;
+
+DELETE FROM modelreceipts WHERE `modelreceipts`.`id` = 30;
