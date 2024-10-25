@@ -372,7 +372,7 @@ class invoiceController extends Controller
             }
 
             // Update company outstanding amount
-            $company = CompanyDetails::findOrFail($invoice->refID);
+            $company = CompanyDetails::findOrFail($invoice->customerRefId);
             $company->outstanding += $outPriceTotal;
             $company->save();
 

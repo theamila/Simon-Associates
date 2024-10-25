@@ -69,17 +69,6 @@ class userTwoController extends Controller
         return view('User2.Outstanding', compact('data', 'company'));
     }
 
-    // public function ongoingInvoiceTwo()
-    // {
-    //     $data = Invoice::where('status', '2')
-    //     ->orWhere('status', '3')
-    //     ->orWhere('status', '4')
-    //     ->orWhere('status', '5')
-    //     ->get();
-
-    // return view('User2.ongoing', compact('data'));
-    // }
-
     public function Reports()
     {
         $data = Invoice::all();
@@ -93,7 +82,7 @@ class userTwoController extends Controller
         $cdata = Invoice::latest()->take(30)->get();
 
         foreach ($cdata as $invoice) {
-            $total = 0; // Reset total for each invoice
+            $total = 0; 
             $subInvoice = InvoiceDetails::where('invoiceNumber', $invoice->invoiceNumber)->get();
 
             foreach ($subInvoice as $detail) {
@@ -120,11 +109,9 @@ class userTwoController extends Controller
 
     public function filterInvoices(Request $request)
     {
-        // Retrieve start date and end date from the request
         $sdate = $request->input('sdate');
         $edate = $request->input('fdate');
         $serviceBy = $request->input('serviceBy');
-        // $customer = $request->input('customer');
         $customerID = $request->input('customer');
 
         $table2 = CompanyDetails::all();

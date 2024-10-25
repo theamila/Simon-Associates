@@ -360,7 +360,10 @@
 
 
                     @php $invoiceNumber = str_replace('/', '-', $invoiceNumber); @endphp
-                    <a id="sendToApproverBtn" href="#" class="btn btn-inverse-success btn-fw">Send To Approver</a>
+
+                    @if ($totalTablePrice > 0)
+                    <a onclick="return confirm('Are you sure..?')" id="sendToApproverBtn" href="#" class="btn btn-inverse-success btn-fw">Send To Approver</a>
+                    @endif
                 </div>
             </div>
 
