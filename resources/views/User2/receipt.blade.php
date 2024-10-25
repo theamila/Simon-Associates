@@ -17,6 +17,7 @@
 @section('tbody')
     @php
         $no = 0;
+        $invoices = App\Models\Modelreceipt::orderBy('id', 'desc')->paginate(100);
     @endphp
 
     @if ($invoices->count() > 0)
@@ -26,11 +27,21 @@
             @endphp
             <tr>
                 <td class="text-center">{{ $no }}</td>
-                <td class="text-center">@if (isset($InvoiceData[$get->invoiceNumber]))
+                {{-- <td class="text-center">@if (isset($InvoiceData[$get->invoiceNumber]))
                     {{ $InvoiceData[$get->invoiceNumber]->companyName }}
                 @else
                     Unknown Company
-                @endif</td>
+                @endif</td> --}}
+
+                <td class="text-center">
+                    @php
+                        $company = App\Models\Invoice::where('invoiceNumber', $get->invoiceNumber)->first();
+                        // dd($company);
+                    @endphp
+
+
+                    {{ $company->companyName }}
+                </td>
                 <td class="text-center">{{ $get->receiptNumber }}</td>
                 <td class="text-center">
                     @if ($get->offline == 0)
@@ -54,11 +65,11 @@
         </tr>
     @endif
 
-    @endsection
-    <div class="d-flex justify-content-center">
-        {{ $invoices->links('pagination::bootstrap-4') }}
-    </div>
-    
+@endsection
+<div class="d-flex justify-content-center">
+    {{ $invoices->links('pagination::bootstrap-4') }}
+</div>
+
 {{--
 @section('paginate')
 

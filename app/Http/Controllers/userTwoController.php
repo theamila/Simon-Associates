@@ -31,41 +31,19 @@ class userTwoController extends Controller
             }
         }
 
-        // Create InvoiceData array
-        $InvoiceData = [];
-        $invoices = Modelreceipt::orderByDesc('id')->paginate(50);
+        // // Create InvoiceData array
+        // $InvoiceData = [];
+        // $invoices = Modelreceipt::orderByDesc('id')->paginate(50);
 
-        foreach ($invoices as $get) {
-            $invoiceDetails = Invoice::where('invoiceNumber', $get->invoiceNumber)->first();
-            if ($invoiceDetails) {
-                $InvoiceData[$get->invoiceNumber] = $invoiceDetails;
-            }
-        }
-
-        return view('User2.receipt', compact('invoices', 'InvoiceData'));
-
-        // $data = Invoice::where('status', '7')->get();
-
-        // foreach ($data as $get) {
-        //     $count = DB::table('invoice_details')
-        //         ->where('invoiceNumber', $get->invoiceNumber)
-        //         ->where('status', 0)
-        //         ->get();
-
-        //     if (count($count) == 0) {
-        //         $get->status = 8;
-        //         $get->save();
+        // foreach ($invoices as $get) {
+        //     $invoiceDetails = Invoice::where('invoiceNumber', $get->invoiceNumber)->first();
+        //     if ($invoiceDetails) {
+        //         $InvoiceData[$get->invoiceNumber] = $invoiceDetails;
         //     }
         // }
 
-        // $data = Invoice::where('status', '7')->get();
-
-        // $company = CompanyDetails::all();
-
-        // return view('User1.Outstanding', compact('data', 'company'));
-
-
-
+        // return view('User2.receipt', compact('invoices', 'InvoiceData'));
+        return view('User2.receipt');
     }
 
     public function OutstandingInvoiceView()
@@ -125,8 +103,7 @@ class userTwoController extends Controller
                     $discountAmount = ($totalT * $detail->discount) / 100; // Calculate discount amount
                     $totalT -= $discountAmount; // Apply discount
                 }
-
-                $total += $totalT; // Accumulate total price
+                $total += $totalT;
             }
 
             $amount[$invoice->id] = $total;

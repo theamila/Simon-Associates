@@ -266,36 +266,16 @@ class NavisionController extends Controller
             $invoice->refID = $data->id;
             $invoice->customerRefId = $data->id;
 
-            // $lastRow = Invoice::latest()->first();
-            // $lastId = $lastRow ? $lastRow->id + 1 : 1;
-
-            // $invoid = str_pad($lastId, 4, '0', STR_PAD_LEFT);
-
-            // $currentMonth = date('n');
-            // $currentYear = date('Y');
-
-            // if ($currentMonth < 4) {
-            //     $financialYear = substr($currentYear - 1, -2);
-            // } else {
-            //     $financialYear = substr($currentYear, -2);
-            // }
-            // $customerName = $data->companyName;
-            // $customerInitial = strtoupper(substr($customerName, 0, 1));
-
-            // $invoiceNumber = "Sec/{$financialYear}/{$customerInitial}/{$invoid}";
-
             $invoiceNumber = $request->query('invoiceNumber');
 
             $invoiceNumber = str_replace('-', '/', $invoiceNumber);
-
 
             $invoice->invoiceNumber = $invoiceNumber;
 
             $invoice->save();
 
             $invoiceNumber = str_replace('/', '-', $invoiceNumber);
-            // dd('fsdfs');
-
+        
             return redirect()->route('invoiceGenForm', ['invoiceNumber' => $invoiceNumber]);
         } catch (Exception $e) {
 

@@ -14,9 +14,9 @@
         href="https://fonts.googleapis.com/css2?family=Madimi+One&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
         rel="stylesheet"> --}}
 
-        <link rel="stylesheet" href="{{asset('css/css2.css')}}">
-        <link rel="stylesheet" href="{{asset('css/css3.css')}}">
-        <link rel="stylesheet" href="{{asset('css/all.min.css')}}" >
+    <link rel="stylesheet" href="{{ asset('css/css2.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/css3.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/all.min.css') }}">
 
     {{-- <link href="https://fonts.googleapis.com/css2?family=Madimi+One&display=swap" rel="stylesheet"> --}}
 
@@ -150,16 +150,15 @@
                 <div class="col-3">
                     <h2 class="text-start">RECEIPT</h2>
                     <div class="row">
-                        <div class="col-7 r-No">Date</div>
-                        <div class="col-5 r-No" contenteditable="true">
+                        <div class="col-6 r-No">Date</div>
+                        <div class="col-6 r-No" contenteditable="true">
                             {{ now()->format('d/m/Y') }}
                         </div>
                     </div>
                     <div class="row">
-                        <label class="col-7 r-No">Receipt No</label>
+                        <label class="col-6 r-No">Receipt No</label>
                         <input type="text" class="col" style="border: none;">
                     </div>
-
                     {{-- {{ 'R ' . $formattedNumber }} --}}
                 </div>
                 <div class="col-9 text-end">

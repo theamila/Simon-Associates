@@ -493,12 +493,11 @@ class invoiceController extends Controller
                 $invoiceNumber = str_replace('/', '-', $invoiceNumber);
                 $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
 
-                if (!$company_data){
+                if (!$company_data) {
 
                     return back()->with('error', 'No invoice found with the given invoice number.' . $invoiceNumber);
                 }
                 $invoiceNumber = str_replace('-', '/', $invoiceNumber);
-
             }
 
             // Retrieve invoice details
@@ -712,8 +711,32 @@ class invoiceController extends Controller
             // Optionally, return a success message or redirect
             return redirect('invoice/' . $invoiceNumber);
         }
+    }
 
-        // Optionally, return an error message if the invoice is not found
-        // return redirect()->back()->with('error', 'Invoice not found.');
+    public function deleteinvoiceadmin($invoiceNUmber)
+    {
+        $invoiceNumber = str_replace('-', '/', $invoiceNUmber);
+
+        try {
+            $invoice = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+
+            if ($invoice) {
+                $invoice->delete();
+
+                $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceNumber)->get();
+                foreach ($invoiceDetails as $item) {
+                    $item->delete();
+                }
+
+                Alert::success('Success', 'Invoice Deleted Successfully');
+                return redirect('new/invoice/approvel');
+            } else {
+                Alert::error('Error', 'Invoice not found');
+                return redirect()->back();
+            }
+        } catch (Exception $e) {
+            Alert::error('Error', $e->getMessage());
+            return redirect()->back();
+        }
     }
 }

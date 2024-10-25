@@ -94,6 +94,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/new/invoice/approvel', [invoiceController::class, 'NewInvoiceUser'])->name('new-invoice-user');
 
+        Route::get('/delete/invoice/{invoiceNUmber}', [invoiceController::class, 'deleteinvoiceadmin']);
+
 
         Route::get('/reject/Invoice/View/two/{id}', [NavisionController::class, 'RejectInvoiceView'])->name('view-reject-Invoice-two');
 
