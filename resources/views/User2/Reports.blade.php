@@ -265,17 +265,20 @@
                                                     </div>
                                                     <div class="modal-body">
 
-                                                       @php
-                                                           $settleData = App\Models\Invoice::where('address', $table->address)->get();
+                                                        @php
+                                                            $settleData = App\Models\Invoice::where(
+                                                                'address',
+                                                                $table->address,
+                                                            )->get();
 
-                                                       @endphp
-                                                       @if ($settleData)
-                                                       <ui>
-                                                       @foreach ($settleData as $data)
-                                                       <li>{{$data->invoiceNumber}}</li>
-                                                       @endforeach
-                                                    </ui>
-                                                       @endif
+                                                        @endphp
+                                                        @if ($settleData)
+                                                            <ui>
+                                                                @foreach ($settleData as $data)
+                                                                    <li>{{ $data->invoiceNumber }}</li>
+                                                                @endforeach
+                                                            </ui>
+                                                        @endif
                                                         <!-- Add more details as necessary -->
                                                     </div>
                                                     <div class="modal-footer">
