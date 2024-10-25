@@ -184,8 +184,17 @@
                 </div>
                 <div class="b-address">
                     <span class="text-start" contenteditable="true">
-                        {{ $Invoice->to }} <br>
-                        {{ $Invoice->companyName }}
+
+                        @php
+                            foreach ($data as $cusid) {
+                                $customer = App\Models\Invoice::find($cusid);
+
+                                echo $customer->companyName . ",<br>";
+                            }
+                        @endphp
+                        {{-- {{ $Invoice->to }} <br>
+                        {{ $Invoice->companyName }} --}}
+
                     </span>
                 </div>
             </div>
@@ -211,8 +220,8 @@
                     @endphp
                     <tr>
                         <td class="text-center" contenteditable="true" style="color: #00008B">{{ $invoice->invoiceNumber }}</td>
-                        <td class="text-start" contenteditable="true" style="color: #00008B"></td>
-                        <td class="text-center" contenteditable="true" style="color: #00008B"></td>
+                        <td class="text-start" contenteditable="true" style="color: #00008B">Secretarial fees from ******* to ******** at the rate of Rs.**** per month.</td>
+                        <td class="text-center" contenteditable="true" style="color: #00008B">TRF</td>
                         <td class="text-end" contenteditable="true" style="color: #00008B"></td>
                     </tr>
                     @endforeach

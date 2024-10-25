@@ -211,6 +211,8 @@
     <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
 @elseif($issu_count != 0)
     <p>Fix all issues.</p>
+@elseif ($invoice->status == 2)
+<a href="/invoice/{{$invoiceNumber}}" class="btn btn-danger">Edit</a>
 @else
     <p>Waiting for approve.</p>
 @endif
