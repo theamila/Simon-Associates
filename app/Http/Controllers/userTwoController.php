@@ -82,7 +82,7 @@ class userTwoController extends Controller
         $cdata = Invoice::latest()->take(30)->get();
 
         foreach ($cdata as $invoice) {
-            $total = 0; 
+            $total = 0;
             $subInvoice = InvoiceDetails::where('invoiceNumber', $invoice->invoiceNumber)->get();
 
             foreach ($subInvoice as $detail) {
@@ -100,7 +100,8 @@ class userTwoController extends Controller
 
         $cudata = CompanyDetails::all();
 
-        $table2 = CompanyDetails::all();
+        $table2 = $cudata;
+        // $table2 = CompanyDetails::all();
 
         $customerID = 0;
 
