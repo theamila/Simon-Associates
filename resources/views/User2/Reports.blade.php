@@ -209,6 +209,14 @@
     @if (!empty($table2))
 
         <div class="row">
+
+            <div class="col">
+                <a href="/reset/customer" class="btn btn-danger col">Reset</a>
+            <a href="/fix/outstanding" target="_blank" class="btn btn-success col">fix outstanding</a>
+
+            </div>
+
+
             <div class="col-12 grid-margin">
                 <div class="card shadow" style="border-radius: 15px">
                     <div class="card-body">

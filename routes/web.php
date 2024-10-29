@@ -254,3 +254,11 @@ Route::get('/settle/outstanding/group', [groupReceiptController::class, 'settleo
 Route::get('/group/receipt/generate/{id}', [groupReceiptController::class, 'groupreceiptgenerate'])->name('group.receipt.generate');
 
 Route::get('/group/session/forgot', [groupReceiptController::class, 'groupsessionforgot']);
+
+Route::get('/reset/customer', [groupReceiptController::class, 'reset']);
+
+Route::get('/fix/outstanding', [groupReceiptController::class, 'fixOutstanding']);
+
+Route::post('/update-outstanding/{id}', [groupReceiptController::class, 'updateOutstanding'])->name('update.outstanding');
+
+Route::get('/deactivate/fix/{id}', [groupReceiptController::class, 'deactivate'])->name('deactivate.customer');
