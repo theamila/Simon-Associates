@@ -71,7 +71,7 @@ class userTwoController extends Controller
 
     public function Reports()
     {
-        $data = Invoice::all();
+        $data = Invoice::where('status', 7)->get();
         $sdata = handler::all();
         $serviceBy = 0;
         $sdate = null;
@@ -263,5 +263,11 @@ class userTwoController extends Controller
 
         // Return the filtered invoices
         return view('user2.Reports', compact('data', 'sdata', 'serviceBy', 'sdate', 'edate', 'amount', 'cdata', 'cudata', 'customerID'));
+    }
+
+    public function reporttwo()
+    {
+        $data = Invoice::whereNotIn('status', [1,9])->orderBy('id', 'desc')->paginate(15);
+        return view('User2.reportTwo', compact('data'));
     }
 }

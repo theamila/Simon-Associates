@@ -113,7 +113,7 @@
 
 @endsection
 @section('Ttopic', 'Invoices')
-@section('Table')
+ @section('Table')
     @php $no = 0; @endphp
     <table id="exampleTwo" class="table table-striped" style="width:100%">
         <thead>
@@ -204,16 +204,117 @@
     </table>
 @endsection
 
+
+
+<h2>Outstandings</h2>
+
+@php
+    $totals = [
+        '0-30' => 0,
+        '30-60' => 0,
+        '60-90' => 0,
+        '90+' => 0,
+    ];
+@endphp
+
+<div class="table-responsive">
+    <table id="aggregatedReport" class="table table-striped table-bordered text-center">
+        <thead class="table-dark">
+            <tr>
+                <th>No</th>
+                <th>Invoice Number</th>
+                <th>0-30 Days</th>
+                <th>30-60 Days</th>
+                <th>60-90 Days</th>
+                <th>90+ Days</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if ($data->count() > 0)
+                @foreach ($data as $key => $get)
+                    @php
+                        $startDate = strtotime($get->sendDate);
+                        $currentDate = time();
+                        $durationInSeconds = $currentDate - $startDate;
+                        $durationInDays = floor($durationInSeconds / (60 * 60 * 24));
+
+                        $invoiceDetailsT = DB::table('invoice_details')
+                            ->where('invoiceNumber', $get->invoiceNumber)
+                            ->get();
+
+                        $totalPrice = 0;
+
+                        foreach ($invoiceDetailsT as $item) {
+                            $totalPriceT = $item->price * $item->dollerRate;
+                            if ($item->mark_status == 0 && $item->discount != 0) {
+                                $totalPriceT -= ($totalPriceT * $item->discount) / 100;
+                            }
+                            $totalPrice += $totalPriceT;
+                        }
+
+                        $rangeAmounts = [
+                            '0-30' => 0,
+                            '30-60' => 0,
+                            '60-90' => 0,
+                            '90+' => 0,
+                        ];
+
+                        if ($durationInDays <= 30) {
+                            $rangeAmounts['0-30'] = $totalPrice;
+                            $totals['0-30'] += $totalPrice;
+                        } elseif ($durationInDays <= 60) {
+                            $rangeAmounts['30-60'] = $totalPrice;
+                            $totals['30-60'] += $totalPrice;
+                        } elseif ($durationInDays <= 90) {
+                            $rangeAmounts['60-90'] = $totalPrice;
+                            $totals['60-90'] += $totalPrice;
+                        } else {
+                            $rangeAmounts['90+'] = $totalPrice;
+                            $totals['90+'] += $totalPrice;
+                        }
+                    @endphp
+
+                    <tr>
+                        <td>{{ $key + 1 }}</td>
+                        <td>{{ $get->invoiceNumber }}</td>
+                        <td class="text-end">{{ number_format($rangeAmounts['0-30'], 2) }}</td>
+                        <td class="text-end">{{ number_format($rangeAmounts['30-60'], 2) }}</td>
+                        <td class="text-end">{{ number_format($rangeAmounts['60-90'], 2) }}</td>
+                        <td class="text-end">{{ number_format($rangeAmounts['90+'], 2) }}</td>
+                    </tr>
+                @endforeach
+
+                <tr class="table-secondary">
+                    <td colspan="2" class="font-weight-bold text-center">Total</td>
+                    <td class="text-end font-weight-bold">{{ number_format($totals['0-30'], 2) }}</td>
+                    <td class="text-end font-weight-bold">{{ number_format($totals['30-60'], 2) }}</td>
+                    <td class="text-end font-weight-bold">{{ number_format($totals['60-90'], 2) }}</td>
+                    <td class="text-end font-weight-bold">{{ number_format($totals['90+'], 2) }}</td>
+                </tr>
+            @endif
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 @section('firstTable')
 
     @if (!empty($table2))
-
         <div class="row">
-
             <div class="col">
                 <a href="/reset/customer" class="btn btn-danger col">Reset</a>
-            <a href="/fix/outstanding" target="_blank" class="btn btn-success col">fix outstanding</a>
-
+                <a href="/fix/outstanding" target="_blank" class="btn btn-success col">fix outstanding</a>
             </div>
 
 

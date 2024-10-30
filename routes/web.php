@@ -136,6 +136,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('settle/invoice/manual/{id}', [groupReceiptController::class, 'settleInvoice']);
 
+        Route::get('report/two', [userTwoController::class, 'reporttwo'])->name('reporttwo');
+
 
 
     });
