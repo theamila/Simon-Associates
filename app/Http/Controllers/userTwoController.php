@@ -69,20 +69,9 @@ class userTwoController extends Controller
         return view('User2.Outstanding', compact('data', 'company'));
     }
 
-    // public function ongoingInvoiceTwo()
-    // {
-    //     $data = Invoice::where('status', '2')
-    //     ->orWhere('status', '3')
-    //     ->orWhere('status', '4')
-    //     ->orWhere('status', '5')
-    //     ->get();
-
-    // return view('User2.ongoing', compact('data'));
-    // }
-
     public function Reports()
     {
-        $data = Invoice::all();
+        $data = Invoice::where('status', 7)->get();
         $sdata = handler::all();
         $serviceBy = 0;
         $sdate = null;
@@ -93,7 +82,7 @@ class userTwoController extends Controller
         $cdata = Invoice::latest()->take(30)->get();
 
         foreach ($cdata as $invoice) {
-            $total = 0; // Reset total for each invoice
+            $total = 0;
             $subInvoice = InvoiceDetails::where('invoiceNumber', $invoice->invoiceNumber)->get();
 
             foreach ($subInvoice as $detail) {
@@ -111,7 +100,8 @@ class userTwoController extends Controller
 
         $cudata = CompanyDetails::all();
 
-        $table2 = CompanyDetails::all();
+        $table2 = $cudata;
+        // $table2 = CompanyDetails::all();
 
         $customerID = 0;
 
@@ -120,11 +110,9 @@ class userTwoController extends Controller
 
     public function filterInvoices(Request $request)
     {
-        // Retrieve start date and end date from the request
         $sdate = $request->input('sdate');
         $edate = $request->input('fdate');
         $serviceBy = $request->input('serviceBy');
-        // $customer = $request->input('customer');
         $customerID = $request->input('customer');
 
         $table2 = CompanyDetails::all();
@@ -275,5 +263,11 @@ class userTwoController extends Controller
 
         // Return the filtered invoices
         return view('user2.Reports', compact('data', 'sdata', 'serviceBy', 'sdate', 'edate', 'amount', 'cdata', 'cudata', 'customerID'));
+    }
+
+    public function reporttwo()
+    {
+        $data = Invoice::whereNotIn('status', [1,9])->orderBy('id', 'desc')->paginate(15);
+        return view('User2.reportTwo', compact('data'));
     }
 }

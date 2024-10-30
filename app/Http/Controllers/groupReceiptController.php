@@ -14,7 +14,7 @@ class groupReceiptController extends Controller
 {
     public function groupReceipt()
     {
-        
+
         $data = Invoice::where('status', "7")->get();
 
         if ($data->isEmpty()) {
@@ -152,17 +152,59 @@ class groupReceiptController extends Controller
     public function settleInvoice($id)
     {
         $data = Invoice::find($id);
-        if($data)
-        {
+        if ($data) {
             $data->status = "8";
             $data->save();
 
             Alert::success('Done', 'Invoice Settled Success.');
             return redirect()->back();
-        }
-        else{
+        } else {
             Alert::error('Error', 'Invoice Not Found..');
             return redirect()->back();
         }
     }
+
+    public function reset()
+    {
+        $invoices = Invoice::all();
+
+        foreach ($invoices as $item) {
+            $customer = CompanyDetails::where('address', $item->address)->first();
+
+            if ($customer) {
+                $item->customerRefId = $customer->id;
+                $item->save();
+            } else {
+                // Log the error if customer is not found
+                \Log::warning("Customer not found for invoice with address: {$item->address}");
+            }
+        }
+
+        return redirect()->back()->with('status', 'Invoices updated successfully!');
+    }
+    public function fixOutstanding(){
+
+        $customers = CompanyDetails::where('state', 1)->get();
+        return view('fix', compact('customers'));
+    }
+
+
+    public function updateOutstanding(Request $request, $id)
+    {
+        $customer = CompanyDetails::findOrFail($id);
+        $customer->outstanding = $request->input('outstanding_price');
+        $customer->save();
+
+        return redirect()->back()->with('success', 'Outstanding price updated successfully');
+    }
+
+    public function deactivate($id)
+{
+    $customer = CompanyDetails::findOrFail($id);
+    $customer->state = 0; // Assuming you have an 'active' column for deactivation
+    $customer->save();
+
+    return redirect()->back()->with('success', 'Customer deactivated successfully');
+}
+
 }

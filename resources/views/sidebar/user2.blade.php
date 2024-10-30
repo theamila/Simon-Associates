@@ -166,6 +166,15 @@
             </a>
 
           </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ route('reporttwo') }}">
+              <span class="menu-title">History</span>
+              <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+            </a>
+          </li>
+
+
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}">
               <span class="menu-title">Log Out</span>
