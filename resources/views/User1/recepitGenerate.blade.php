@@ -18,9 +18,7 @@
 
         </span>
     </div>
-
 </div>
-
 <form method="POST" action="{{ Route('CustomReceipt') }}">
     @php
         $total = 0;
@@ -32,7 +30,6 @@
                     <option value="online Transfer" selected>Online Transfer</option>
                     <option value="cash">Cash</option>
                     <option value="cheque">Cheque</option>
-
                 </select>
             </div>
             <div class="col">

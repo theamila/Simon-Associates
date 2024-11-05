@@ -739,4 +739,15 @@ class invoiceController extends Controller
             return redirect()->back();
         }
     }
+
+    public function rejectResend($oldinvoiceNumber){
+        $invoiceNumber = str_replace('-', '/', $oldinvoiceNumber);
+
+        $invoice = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+        $invoice->status = 2;
+        $invoice->save();
+
+        return redirect('/invoice/' . $oldinvoiceNumber);
+
+    }
 }

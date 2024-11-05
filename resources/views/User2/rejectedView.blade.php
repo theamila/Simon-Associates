@@ -15,8 +15,12 @@
 @section('custom')
 
 @endsection
-
 @section('thead')
+    @php
+        $invoiceNumber = str_replace('/', '-', $data[0]->invoiceNumber);
+    @endphp
+    <a onclick="return confirm('Are You Sure..?')" href="/reject/invoice/re/send/{{ $invoiceNumber }}" class="btn btn-danger">Edit</a>
+
     <th class="fw-bold text-center">No</th>
     <th class="fw-bold text-center">Description</th>
     <th class="fw-bold text-center">Reimbursable</th>
@@ -29,7 +33,6 @@
     @if ($data->count() > 0)
         @foreach ($data as $get)
             <tr>
-
                 <td class="fw-bold text-center" style="width: 80px;">{{ $no }}</td>
                 <td class="fw-bold text-start">{{ $get->description }}</td>
                 <td class="fw-bold text-center fs-3 text-dark" style="width: 80px;">
