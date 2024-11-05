@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
-// use
+use Carbon\Carbon;
 class NavisionController extends Controller
 {
 
@@ -265,6 +265,7 @@ class NavisionController extends Controller
             $invoice->handleBy = $handler->id;
             $invoice->refID = $data->id;
             $invoice->customerRefId = $data->id;
+            $invoice->date = Carbon::now('Asia/Colombo')->format('Y-m-d');
 
             $invoiceNumber = $request->query('invoiceNumber');
 
@@ -275,7 +276,7 @@ class NavisionController extends Controller
             $invoice->save();
 
             $invoiceNumber = str_replace('/', '-', $invoiceNumber);
-        
+
             return redirect()->route('invoiceGenForm', ['invoiceNumber' => $invoiceNumber]);
         } catch (Exception $e) {
 

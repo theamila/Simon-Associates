@@ -744,7 +744,7 @@ class invoiceController extends Controller
         $invoiceNumber = str_replace('-', '/', $oldinvoiceNumber);
 
         $invoice = Invoice::where('invoiceNumber', $invoiceNumber)->first();
-        $invoice->status = 2;
+        $invoice->status = 1;
         $invoice->save();
 
         return redirect('/invoice/' . $oldinvoiceNumber);
