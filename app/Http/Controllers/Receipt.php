@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
@@ -202,6 +203,7 @@ class Receipt extends Controller
         $selectedItems = $request->input('selected_items', []);
         $method = $request->input('payment');
         $formattedNumber = $request->input('receiptNo');
+        $payAmount = $request->input('balance');
 
         if (empty($selectedItems)) {
             Alert::error('Error', 'No items selected.')->persistent(true);
@@ -244,10 +246,11 @@ class Receipt extends Controller
             return redirect()->back()->with('bad', 'Invoice not found for the retrieved invoice number.');
         }
 
-        $companyID = $Invoice->refID;
+        $companyID = $Invoice->customerRefId;
 
         $company_outstanding = CompanyDetails::findOrFail($companyID);
         $company_outstanding->outstanding -= $payment;
+        // $company_outstanding->outstanding -= $payAmount;
         // dd($payment);
         $company_outstanding->save();
 
@@ -270,7 +273,8 @@ class Receipt extends Controller
             $additional = 0;
         }
         $receipt->additional = $additional;
-        $receipt->payedDate = Carbon::now();
+        $receipt->payedDate = Carbon::now('Asia/Colombo')->format('Y-m-d');
+        $receipt->payedAmount = $payAmount;
 
         $receipt->save();
 
@@ -335,7 +339,7 @@ class Receipt extends Controller
         // $receipt->save();
 
         // $isSubmit = false;
-        
+
         $isSubmit = true;
 
         return view('invoice.receiptModernTwo', compact('Invoice', 'isSubmit'));
@@ -363,7 +367,6 @@ class Receipt extends Controller
             toast('Success', 'success');
 
             return view('invoice.receiptModernTwo', compact('Invoice', 'formattedNumber', 'isSubmit'));
-
         } catch (Exception $e) {
 
             Alert::error('Error', 'Something went wrong..');
