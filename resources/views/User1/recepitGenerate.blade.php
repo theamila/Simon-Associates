@@ -33,7 +33,7 @@
                 </select>
             </div>
             <div class="col">
-                <input type="text" name="balance" id="balance" class="form-control" placeholder="Payed amount"
+                <input type="number" name="balance" id="balance" class="form-control" placeholder="Payed amount"
                     required>
                 @error('Payment')
                     <span class="text-danger mt-2">{{ $message }}</span>

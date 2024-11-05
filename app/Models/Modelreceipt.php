@@ -14,5 +14,6 @@ class Modelreceipt extends Model
         'payedDate',
         'receiptNumber',
         'offline',
+        'payedAmount'
     ];
 }
