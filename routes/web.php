@@ -83,6 +83,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::put('/update/company', [CompanyController::class, 'update'])->name('update.company');
 
+        Route::get('reject/invoice/re/send/{invoiceNumber}', [invoiceController::class, 'rejectResend'])->name('recent.delete');
 
 
     });
