@@ -57,7 +57,8 @@
                         </div>
                     @endif
 
-                    <div class="mt-2"><a href="{{route('passwordReset')}}" class="text-light text-decoration-none">Forgot Password?</a></div>
+                    <div class="mt-2"><a href="{{ route('passwordReset') }}"
+                            class="text-light text-decoration-none">Forgot Password?</a></div>
                 </div>
             </div>
         </div>
@@ -70,7 +71,7 @@
             <i class="fa-solid fa-bars text-light"></i>
         </div>
         <div class="version text-light text-muted" style="position: absolute; top: 100%; left: 2%;">
-            0.0.46
+            0.0.47
         </div>
     </div>
 </body>
