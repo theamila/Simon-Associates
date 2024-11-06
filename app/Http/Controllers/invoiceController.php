@@ -264,7 +264,8 @@ class invoiceController extends Controller
             $company_data->currency = $currency;
             $company_data->dollerRate = $dollarRate;
             $company_data->date = $date;
-            $company_data->sendDate = Carbon::now('Asia/Colombo');
+            $company_data->sendDate = Carbon::now('Asia/Colombo')->format('Y-m-d');
+
             $company_data->save();
 
             $bank = payment::findOrFail($company_data->bankId);

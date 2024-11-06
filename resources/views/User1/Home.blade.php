@@ -21,7 +21,7 @@
         hourglass_top
     </i>
 @endsection
-@if(session('error'))
+@if (session('error'))
     <script>
         alert("{{ session('error') }}");
     </script>
@@ -78,11 +78,17 @@
                                             <td class="text-center">{{ $get->invoiceNumber }}</td>
                                             <td class="text-center">{{ $get->companyName }}</td>
                                             <td class="text-center">
-                                                <a href="#" class="btn btn-sm btn-inverse-danger"
+
+                                                <a onclick="return confirm('Are You Sure..?')" href="/recent/delete/{{$get->id}}" class="btn btn-sm btn-inverse-danger">
+                                                <i class="material-symbols-outlined">delete</i>
+                                            </a>
+
+                                                {{-- <a href="#" class="btn btn-sm btn-inverse-danger"
                                                     data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal"
                                                     data-id="{{ $get->id }}">
                                                     <i class="material-symbols-outlined">delete</i>
-                                                </a>
+                                                </a> --}}
+
                                                 <a href="{{ route('recent.home', str_replace('/', '-', $get->invoiceNumber)) }}"
                                                     class="btn btn-sm btn-inverse-success">
                                                     <i class="material-symbols-outlined">keyboard_arrow_right</i>
@@ -112,9 +118,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
-
                                                 {{-- ------------------------ Delete confimation modal --------------------------------- --}}
                                             </td>
                                         </tr>

@@ -131,13 +131,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('customer/off/{id}', [customerController::class, 'off'])->name('customer.off');
 
 
-        Route::get('delete/invoice/{id}', [invoiceController::class, 'deleteInvoice'])->name('deleteInvoice');
+        Route::get('/delete/invoice/{id}', [invoiceController::class, 'deleteInvoice'])->name('deleteInvoice');
 
-        Route::get('group/receipt', [groupReceiptController::class, 'groupReceipt'])->name('group.receipt');
+        Route::get('/group/receipt', [groupReceiptController::class, 'groupReceipt'])->name('group.receipt');
 
-        Route::get('settle/invoice/manual/{id}', [groupReceiptController::class, 'settleInvoice']);
+        Route::get('/settle/invoice/manual/{id}', [groupReceiptController::class, 'settleInvoice']);
 
-        Route::get('report/two', [userTwoController::class, 'reporttwo'])->name('reporttwo');
+        Route::get('/report/two', [userTwoController::class, 'reporttwo'])->name('reporttwo');
+
+        Route::get('/company/history/report/{id}', [userTwoController::class, 'reporttwoView']);
 
 
 

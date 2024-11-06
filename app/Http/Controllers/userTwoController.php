@@ -10,8 +10,10 @@ use App\Models\handler;
 use App\Models\payment;
 use App\Models\User;
 use App\Models\Modelreceipt;
+// use Illuminate\Console\View\Components\Alert;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Alert;
 
 class userTwoController extends Controller
 {
@@ -259,7 +261,8 @@ class userTwoController extends Controller
 
             $amount[$invoice->id] = $total;
         }
-        // ========================================================================================
+
+
 
         // Return the filtered invoices
         return view('user2.Reports', compact('data', 'sdata', 'serviceBy', 'sdate', 'edate', 'amount', 'cdata', 'cudata', 'customerID'));
@@ -267,7 +270,26 @@ class userTwoController extends Controller
 
     public function reporttwo()
     {
-        $data = Invoice::whereNotIn('status', [1,9])->orderBy('id', 'desc')->paginate(15);
-        return view('User2.reportTwo', compact('data'));
+        // $data = Invoice::whereNotIn('status', [1,9])->orderBy('id', 'desc')->paginate(15);
+        return view('User2.reportTwo');
+    }
+
+    public function reporttwoView($id)
+    {
+        $company = CompanyDetails::find($id);
+
+        if ($company) {
+            $data = Invoice::where('customerRefId', $company->id)->get();
+            if(count($data) > 0){
+
+                return view('reports.hostory', compact('data'));
+            }
+            else{
+                Alert::error('Error', 'Data not Found..');
+                return redirect()->back();
+            }
+        } else {
+            return redirect()->back();
+        }
     }
 }
