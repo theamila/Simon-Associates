@@ -64,7 +64,7 @@
                         <div class="progress-bar
 
             @php
-            $no += 1;
+$no += 1;
 switch ($get->status) {
             case 1:
                 echo 'bg-gradient-secondary';

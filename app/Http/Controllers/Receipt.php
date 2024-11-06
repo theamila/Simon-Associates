@@ -253,7 +253,6 @@ class Receipt extends Controller
         // $company_outstanding->outstanding -= $payAmount;
         // dd($payment);
         $company_outstanding->save();
-
         // =================================================================================
         $additional = $request->input('additionalcharges');
 
