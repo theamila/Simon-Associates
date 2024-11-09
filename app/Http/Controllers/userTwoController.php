@@ -292,4 +292,30 @@ class userTwoController extends Controller
             return redirect()->back();
         }
     }
+
+    public function fixReceipt()
+    {
+        $data = Modelreceipt::all();
+        return view('user2.fixReceipt', compact('data'));
+    }
+
+    public function receiptUpdatesave(Request $request, $id)
+{
+    $request->validate([
+        'receipt_price' => 'required',
+    ]);
+
+    $receipt = Modelreceipt::find($id);
+
+    if (!$receipt) {
+        return redirect()->back()->with('error', 'Receipt not found.');
+    }
+
+    $receipt->payedAmount = $request->input('receipt_price');
+
+    return $receipt->save()
+        ? redirect()->back()->with('success', 'Update successful.')
+        : redirect()->back()->with('error', 'Failed to update receipt. Please try again.');
+}
+
 }

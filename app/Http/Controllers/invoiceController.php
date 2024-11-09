@@ -6,6 +6,7 @@ use Alert;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
+use App\Models\Modelreceipt;
 use App\Models\payment;
 use Carbon\Carbon;
 use Dompdf\Dompdf;
@@ -751,4 +752,6 @@ class invoiceController extends Controller
         return redirect('/invoice/' . $oldinvoiceNumber);
 
     }
+
+
 }
