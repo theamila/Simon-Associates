@@ -25,24 +25,24 @@ class Receipt extends Controller
     {
         try {
             $company_data = Invoice::findOrFail($id);
-            if ($company_data) {
-                $address = $company_data->address;
+            $customerRefId = $company_data->customerRefId;
 
-                $selected_invoice_details = Invoice::where('address', $address)->pluck('invoiceNumber')->toArray();
+            // Fetch related invoices and details in a single query
+            $invoice_data = InvoiceDetails::whereIn(
+                'invoiceNumber',
+                Invoice::where('customerRefId', $customerRefId)->pluck('invoiceNumber')
+            )->get();
 
-                $invoiceNumbers = Invoice::where('address', $address)->pluck('invoiceNumber')->toArray();
-
-                $invoice_data = InvoiceDetails::whereIn('invoiceNumber', $invoiceNumbers)->get();
-
-                $invoiceNumber = $company_data->invoiceNumber;
-
-                // dd($invoiceNumber);
-            }
-            return view('User1.recepitGenerate', compact('company_data', 'invoice_data', 'invoiceNumber'));
+            return view('User1.recepitGenerate', [
+                'company_data' => $company_data,
+                'invoice_data' => $invoice_data,
+                'invoiceNumber' => $company_data->invoiceNumber,
+            ]);
         } catch (\Exception $e) {
             return back()->with('error', 'Invoice not found.');
         }
     }
+
 
     public function receiptSettlement(Request $request)
     {

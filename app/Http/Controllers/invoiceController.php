@@ -36,34 +36,44 @@ class invoiceController extends Controller
     }
 
     public function RegisterCompanySave(Request $request)
-    {
-        try {
-            $request->validate([
-                'to' => 'required',
-                'email' => 'required',
-                'companyName' => 'required',
-                'address' => 'required',
-            ]);
+{
+    try {
+        $request->validate([
+            'to' => 'required',
+            'email' => 'required',
+            'companyName' => 'required',
+            'address' => 'required',
+        ]);
 
-            $data = new CompanyDetails();
+        // Check if a company with the same name already exists
+        $existingCompany = CompanyDetails::where('companyName', $request->input('companyName'))->first();
 
-            $data->to = $request->input('to');
-            $data->email = $request->input('email');
-            $data->companyName = $request->input('companyName');
-            $data->address = $request->input('address');
-            $data->handleBy = $request->input('handlBy');
-
-            $data->save();
-
-            Alert::success('Success', 'Company Registered Successfully');
-
-            return back();
-        } catch (\Exception $e) {
-            Alert::error('Error', 'An error occurred while registering the company.' . $e);
-
+        if ($existingCompany) {
+            // If a company with the same name is found, display the name
+            Alert::error('Error', 'Company name already exists in the system.');
             return back();
         }
+
+        // If no existing company is found, proceed with registration
+        $data = new CompanyDetails();
+        $data->to = $request->input('to');
+        $data->email = $request->input('email');
+        $data->companyName = $request->input('companyName');
+        $data->address = $request->input('address');
+        $data->handleBy = $request->input('handlBy');
+
+        $data->save();
+
+        Alert::success('Success', 'Company Registered Successfully');
+
+        return back();
+    } catch (\Exception $e) {
+        Alert::error('Error', 'An error occurred while registering the company: ' . $e->getMessage());
+
+        return back();
     }
+}
+
 
     public function invoiceDataAdd(Request $request)
     {
