@@ -141,6 +141,9 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/company/history/report/{id}', [userTwoController::class, 'reporttwoView']);
 
+        Route::get('/fix/receipt', [userTwoController::class, 'fixReceipt']);
+
+        Route::post('/receipt/update/{id}', [userTwoController::class, 'receiptUpdatesave'])->name('update.receipt');
 
 
     });

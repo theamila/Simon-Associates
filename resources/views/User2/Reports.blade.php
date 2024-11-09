@@ -315,6 +315,7 @@
             <div class="col">
                 <a href="/reset/customer" class="btn btn-danger col">Reset</a>
                 <a href="/fix/outstanding" target="_blank" class="btn btn-success col">fix outstanding</a>
+                <a href="/fix/receipt" target="_blank" class="btn btn-primary col">fix Receipt</a>
             </div>
 
 
