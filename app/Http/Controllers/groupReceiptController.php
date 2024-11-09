@@ -164,24 +164,24 @@ class groupReceiptController extends Controller
         }
     }
 
-    public function reset()
-    {
-        $invoices = Invoice::all();
+    // public function reset()
+    // {
+    //     $invoices = Invoice::all();
 
-        foreach ($invoices as $item) {
-            $customer = CompanyDetails::where('address', $item->address)->first();
+    //     foreach ($invoices as $item) {
+    //         $customer = CompanyDetails::where('address', $item->address)->first();
 
-            if ($customer) {
-                $item->customerRefId = $customer->id;
-                $item->save();
-            } else {
-                // Log the error if customer is not found
-                \Log::warning("Customer not found for invoice with address: {$item->address}");
-            }
-        }
+    //         if ($customer) {
+    //             $item->customerRefId = $customer->id;
+    //             $item->save();
+    //         } else {
+    //             \Log::warning("Customer not found for invoice with address: {$item->address}");
+    //         }
+    //     }
 
-        return redirect()->back()->with('status', 'Invoices updated successfully!');
-    }
+    //     return redirect()->back()->with('status', 'Invoices updated successfully!');
+    // }
+
     public function fixOutstanding(){
 
         $customers = CompanyDetails::where('state', 1)->get();

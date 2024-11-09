@@ -63,75 +63,58 @@
 
 
     @section('thead')
-        <th class="text-center"></th>
-        <th class="text-center">Invoice Number</th>
-        <th class="text-center">Description</th>
-        <th class="text-center">Reimbursable</th>
-        <th class="text-center">Discount</th>
-        <th class="text-center">Price(Rs.)</th>
-    @endsection
+    <th class="text-center"></th>
+    <th class="text-center">Invoice Number</th>
+    <th class="text-center">Description</th>
+    <th class="text-center">Reimbursable</th>
+    <th class="text-center">Discount</th>
+    <th class="text-center">Price (Rs.)</th>
+@endsection
 
-    @php
-        $no = 0;
-    @endphp
+@php
+    $no = 0;
+    $total = 0;
+@endphp
 
-    @section('tbody')
-
-        @if ($invoice_data->count() > 0)
-            @foreach ($invoice_data as $get)
-                @if ($get->mark_status == 1)
-                    @if ($get->status == 0)
-                        @php
-
-                            $no += 1;
-
-                            @endphp
-                        <tr class="fw-bold t-4 {{ $get->status == 1 ? 'text-danger' : '' }}">
-
-                            <td style="max-width: 80px; width:80px;" class="text-center">
-                                <input type="checkbox" class="m-3 form-check-input" style="width: 20px; height: 20px;"
-                                    name="selected_items[]" value="{{ $get->id }}"
-                                    {{ $get->status == 1 ? 'disabled' : '' }}>
-                            </td>
-                            <td class="fw-bold text-center" style="width: 80px;">{{ $get->invoiceNumber }}</td>
-                            <td class="fw-bold text-start">{{ $get->description }}</td>
-                            <td class="fw-bold text-center fs-3 text-success m-3" style="width: 80px;">
-
-                                <i class="material-symbols-outlined">
-                                    {{ $get->Reimbursables == 1 ? 'check_circle' : '' }}</i>
-                            </td>
-                            <td class="fw-bold text-center" style="width: 80px;">{{ $get->discount . ' %' }}</td>
-                            <td style="max-width: 250px; width:200px;" class="text-end">
-                                @php
-                                    if ($get->currancy == 1) {
-                                        $price = $get->price * $get->dollerRate;
-                                    } else {
-                                        $price = $get->price;
-                                    }
-                                    $total += $price;
-                                @endphp
-                                {{ number_format($price, 2) }}
-
-                            </td>
-                    @endif
-                @endif
+@section('tbody')
+    @if ($invoice_data->isNotEmpty())
+        @foreach ($invoice_data as $item)
+            @if ($item->mark_status == 1 && $item->status == 0)
+                @php
+                    $no++;
+                    $price = $item->currancy == 1 ? $item->price * $item->dollerRate : $item->price;
+                    $total += $price;
+                @endphp
+                <tr class="fw-bold t-4 {{ $item->status == 1 ? 'text-danger' : '' }}">
+                    <td class="text-center" style="max-width: 80px;">
+                        <input type="checkbox" class="m-3 form-check-input" style="width: 20px; height: 20px;"
+                            name="selected_items[]" value="{{ $item->id }}" {{ $item->status == 1 ? 'disabled' : '' }}>
+                    </td>
+                    <td class="fw-bold text-center" style="width: 80px;">{{ $item->invoiceNumber }}</td>
+                    <td class="fw-bold text-start">{{ $item->description }}</td>
+                    <td class="fw-bold text-center fs-3 text-success m-3" style="width: 80px;">
+                        <i class="material-symbols-outlined">
+                            {{ $item->Reimbursables == 1 ? 'check_circle' : '' }}
+                        </i>
+                    </td>
+                    <td class="fw-bold text-center" style="width: 80px;">{{ $item->discount }}%</td>
+                    <td class="text-end" style="max-width: 250px; width: 200px;">
+                        {{ number_format($price, 2) }}
+                    </td>
                 </tr>
-            @endforeach
-            <tr>
-                <td colspan="5" class="text-center">Total</td>
-                <td class="text-end fw-bold">{{ number_format($total, 2) }}</td>
-                <td></td>
-            </tr>
-        @else
-            <tr>
-                <td colspan="6" class="text-center fw-bold">
-                    No Records Found...
-                </td>
-            </tr>
-        @endif
+            @endif
+        @endforeach
+        <tr>
+            <td colspan="5" class="text-center fw-bold">Total</td>
+            <td class="text-end fw-bold">{{ number_format($total, 2) }}</td>
+        </tr>
+    @else
+        <tr>
+            <td colspan="6" class="text-center fw-bold">No Records Found...</td>
+        </tr>
+    @endif
 
-        <input type="hidden" name="invoiceNumber" value="{{ $get->invoiceNumber }}">
-    </form>
-
+    <!-- Hidden input to store invoice number -->
+    <input type="hidden" name="invoiceNumber" value="{{ $invoiceNumber }}">
 @endsection
 @endsection

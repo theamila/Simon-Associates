@@ -1,0 +1,6 @@
+SHOW INDEX FROM `company_details`;
+
+
+
+ALTER TABLE `company_details`
+DROP INDEX `company_details_address_unique`;
