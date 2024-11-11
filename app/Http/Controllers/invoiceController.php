@@ -538,7 +538,8 @@ class invoiceController extends Controller
         $data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
         $data->bankId = $id;
         $data->save();
-        return back();
+
+        return redirect()->back();
     }
 
     public function SearchCustomer(Request $request)
