@@ -62,7 +62,7 @@
                                 </thead>
                                 <tbody>
                                     @php
-                                        $invoice = App\Models\Invoice::where('address', $Citem->address)
+                                        $invoice = App\Models\Invoice::where('customerRefId', $Citem->id)
                                             ->whereNotIn('status', [1, 9])
                                             ->get();
                                     @endphp
