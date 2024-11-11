@@ -376,9 +376,14 @@
                                                     <div class="modal-body">
 
                                                         @php
+                                                            // $settleData = App\Models\Invoice::where(
+                                                            //     'address',
+                                                            //     $table->address,
+                                                            // )->get();
+
                                                             $settleData = App\Models\Invoice::where(
-                                                                'address',
-                                                                $table->address,
+                                                                'customerRefId',
+                                                                $table->id,
                                                             )->get();
 
                                                         @endphp
