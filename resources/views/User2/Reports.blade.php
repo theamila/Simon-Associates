@@ -312,12 +312,11 @@
 
     @if (!empty($table2))
         <div class="row">
-            <div class="col">
-                <a href="/reset/customer" class="btn btn-danger col">Reset</a>
+            <div class="col mb-2">
+                {{-- <a href="/reset/customer" class="btn btn-danger col">Reset</a> --}}
                 <a href="/fix/outstanding" target="_blank" class="btn btn-success col">fix outstanding</a>
                 <a href="/fix/receipt" target="_blank" class="btn btn-primary col">fix Receipt</a>
             </div>
-
 
             <div class="col-12 grid-margin">
                 <div class="card shadow" style="border-radius: 15px">
