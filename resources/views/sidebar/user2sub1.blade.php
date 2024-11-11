@@ -161,6 +161,14 @@
                         </a>
                     </li>
 
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('reporttwo') }}">
+                            <span class="menu-title">History</span>
+                            <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+                        </a>
+                    </li>
+                    
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('update') }}">
                             <span class="menu-title">Settings</span>
@@ -169,12 +177,7 @@
 
                     </li>
 
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('reporttwo') }}">
-                            <span class="menu-title">History</span>
-                            <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
-                        </a>
-                    </li>
+
 
 
                     <li class="nav-item">
