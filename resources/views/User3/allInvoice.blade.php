@@ -17,6 +17,7 @@
     <th class="text-center">ID</th>
     {{-- <th class="text-center">Invoice Number</th> --}}
 
+    <th class="text-center">Company Name</th>
     <th class="text-center">Invoice Number</th>
     <th class="text-center">Action</th>
 
@@ -31,7 +32,7 @@
             <tr>
                 <td class="text-center">{{ $no }}</td>
                 {{-- <td class="text-center">{{ $get->invoiceNumber }}</td> --}}
-
+                <td class="text-center">{{ $get->companyName }}</td>
 
                 <td class="text-center">{{ $get->invoiceNumber }}</td>
                 <td class="text-center">

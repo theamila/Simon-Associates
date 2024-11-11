@@ -73,7 +73,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/recent/home/{invoiceNumber}', [invoiceController::class, 'recentHome'])->name('recent.home');
 
 
-        Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
         Route::get('/search/customer', [invoiceController::class, 'SearchCustomer'])->name('search.customer');
 
@@ -144,6 +143,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/fix/receipt', [userTwoController::class, 'fixReceipt']);
 
         Route::post('/receipt/update/{id}', [userTwoController::class, 'receiptUpdatesave'])->name('update.receipt');
+
+        Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
 
     });
