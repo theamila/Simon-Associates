@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Update Outstanding Price</title>
     <link href="{{ asset('Login-customa/css/bootstrap.min.css') }}" rel="stylesheet">
-
 </head>
 
 <body>
@@ -36,32 +35,33 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach ($data as $key => $item)
-                    <tr>
-                        <th>{{ $key + 1 }}</th>
-                        <td class="text-center">{{ $item->receiptNumber }}</td>
-                        <td class="text-center">{{ $item->payedDate }}</td>
-                        <td>
-                            <form action="{{ route('update.receipt', $item->id) }}" method="POST">
-                                @csrf
-                                <input type="number" name="receipt_price"
-                                    value="{{ number_format($item->payedAmount, 2) }}" class="form-control"
-                                    required step="0.01">
-                        </td>
-                        <td class="text-center">
-                            <button type="submit" class="btn btn-primary">Update</button>
-                            </form>
-                        </td>
-                    </tr>
-                @endforeach
-
+                @if (!$data->isEmpty())
+                    @foreach ($data as $key => $item)
+                        <tr>
+                            <th>{{ $key + 1 }}</th>
+                            <td class="text-center">{{ $item->receiptNumber }}</td>
+                            <td class="text-center">{{ $item->payedDate }}</td>
+                            <td>
+                                <form action="{{ route('update.receipt', $item->id) }}" method="POST">
+                                    @csrf
+                                    <input type="number" name="receipt_price"
+                                        value="{{ $item->payedAmount }}" class="form-control" required
+                                        step="0.01" aria-label="Receipt Price">
+                            </td>
+                            <td class="text-center">
+                                <button type="submit" class="btn btn-primary" aria-label="Update Price">Update</button>
+                                </form>
+                            </td>
+                        </tr>
+                    @endforeach
+                @else
+                <tr>
+                    <td colspan="5" class="text-center fw-bold"> All Receipts are Updated.. </td>
+                </tr>
+                @endif
             </tbody>
         </table>
     </div>
 
-    {{-- <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
 </body>
-
 </html>

@@ -21,11 +21,11 @@
                     <td colspan="5" class="text-center fw-bold">{{ $data[0]->companyName }}</td>
                 </tr>
                 <tr>
-                    <th>Date</th>
-                    <th>Details</th>
-                    <th>Invoices Value</th>
-                    <th>Receipts Value</th>
-                    <th>Net Balance</th>
+                    <th class="text-center">Date</th>
+                    <th class="text-center">Details</th>
+                    <th class="text-center">Invoices Value</th>
+                    <th class="text-center">Receipts Value</th>
+                    <th class="text-center">Net Balance</th>
                 </tr>
             </thead>
             <tbody>
@@ -92,10 +92,10 @@
                         @endphp
 
                         <tr>
-                            <td class="text-center">{{ \Carbon\Carbon::parse($transaction['date'])->format('d F Y') }}
+                            <td class="text-end">{{ \Carbon\Carbon::parse($transaction['date'])->format('d F Y') }}
                             </td>
 
-                            <td>{{ $transaction['details'] }}</td>
+                            <td class="text-center">{{ $transaction['details'] }}</td>
                             <td class="text-end">
                                 {{ $transaction['invoicesValue'] !== null ? number_format($transaction['invoicesValue'], 2) : '' }}
                             </td>
