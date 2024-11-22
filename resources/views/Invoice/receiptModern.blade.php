@@ -181,14 +181,21 @@
                     @php
                         $maintotal = 0;
                         $invo_list = [];
+                        $firstdec = '';
                     @endphp
 
                     @if ($invoice_data->count() > 0)
-                        @foreach ($invoice_data as $get)
+                        @foreach ($invoice_data as $key=>$get)
+
+                        @php
+                        if($key == 0){
+                            $firstdec = $get->description;
+                        }
+                    @endphp
                             @if (!in_array($get->invoiceNumber, $invo_list))
                                 @php
                                     $invo_list[] = $get->invoiceNumber;
-                                    $total = 0; // Reset total for each new invoice group
+                                    $total = 0; 
                                 @endphp
                             @endif
                             @if ($get->currency == 1)
@@ -205,9 +212,10 @@
                             @endif
                             @if ($loop->last || $get->invoiceNumber != $invoice_data[$loop->index + 1]->invoiceNumber)
                                 <tr>
+
                                     <td class="text-center">{{ $get->invoiceNumber }}</td>
                                     <td class="text-start" contenteditable="true" style="color: #00008B">
-                                        {{ $get->description }}</td>
+                                        {{ $firstdec }}</td>
                                     <td class="text-center">
                                         {{ $method == 'online Transfer' ? 'TRF' : ($method == 'Cheque' ? 'Chq' : $method) }}
                                     </td>

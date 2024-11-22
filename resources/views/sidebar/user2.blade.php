@@ -174,6 +174,13 @@
             </a>
           </li>
 
+          <li class="nav-item">
+            <a class="nav-link" href="/aging/report">
+              <span class="menu-title">Aging Report</span>
+              <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+            </a>
+          </li>
+
 
           <li class="nav-item">
             <a class="nav-link" href="{{ route('logout') }}">

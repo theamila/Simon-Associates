@@ -9,12 +9,34 @@
     <!-- plugins:css -->
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/mdi/css/materialdesignicons.min.css') }}">
     <link rel="stylesheet" href="{{ asset('admin/assets/vendors/css/vendor.bundle.base.css') }}">
+    <!-- endinject -->
+    <!-- Plugin css for this page -->
+    <!-- End plugin css for this page -->
+    <!-- inject:css -->
+    <!-- endinject -->
+    <!-- Layout styles -->
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}" />
+
+    <link rel="stylesheet" href="{{ asset('assets/dataTable/dataTables.bootstrap5.css') }}">
+    <link rel="stylesheet" href="{{ asset('assets/dataTable/buttons.dataTables.css') }}">
+
+    <script defer src="{{ asset('assets/dataTable/jquery-3.7.1.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/dataTables.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/dataTables.bootstrap5.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/bootstrap.bundle.min.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/dataTables.buttons.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/buttons.dataTables.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/jszip.min.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/buttons.html5.min.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/vfs_fonts.js') }}"></script>
+    <script defer src="{{ asset('assets/dataTable/pdfmake.min.js') }}"></script>
+
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.3.0/css/bootstrap.min.css"> -->
 </head>
 
 <body>
@@ -25,10 +47,8 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href="">
-                    <h3 class="text-muted">
-                        Dashboard</h3>
-                </a>
+                <a class="navbar-brand brand-logo" href=""><h3 class="text-muted">
+                    Dashboard</h3></a>
                 <a class="navbar-brand brand-logo-mini" href="#"><img
                         src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo" /></a>
             </div>
@@ -49,8 +69,8 @@
                 </div>
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
-                            data-bs-toggle="dropdown" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
+                            aria-expanded="false">
                             <div class="nav-profile-img">
                                 <img src="{{ asset('admin/assets/images/faces/face1.jpg') }}" alt="image">
                                 <span class="availability-status online"></span>
@@ -139,12 +159,12 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('two-allInvoice') }}">
-                            <span class="menu-title">All Invoices</span>
-                            <i class="material-symbols-outlined mdi menu-icon">receipt_long</i>
+                          <span class="menu-title">All Invoices</span>
+                          <i class="material-symbols-outlined mdi menu-icon">receipt_long</i>
                         </a>
-                    </li>
+                      </li>
 
-                    <li class="nav-item">
+                      <li class="nav-item">
                         <a class="nav-link" href="{{ route('rejectInvoiceUserTwo') }}">
                             <span class="menu-title">Rejected Invoices</span>
                             <i class="material-symbols-outlined mdi menu-icon">
@@ -175,7 +195,8 @@
                           <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
                         </a>
                       </li>
-                      
+
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('update') }}">
                             <span class="menu-title">Settings</span>
@@ -183,9 +204,6 @@
                         </a>
 
                     </li>
-
-
-
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">
@@ -195,7 +213,7 @@
                     </li>
                 </ul>
             </nav>
-
+            <!-- partial -->
             <div class="main-panel">
                 <div class="content-wrapper">
                     <div class="page-header">
@@ -214,36 +232,17 @@
                         </nav>
                     </div>
 
-                    <div class="row">
-                        <div class="col-12 grid-margin">
-                            <div class="card shadow" style="border-radius: 15px">
-                                <div class="card-body">
-                                    <h4 class="card-title">@yield('Ttopic')</h4>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    @yield('thead')
-                                                </tr>
-                                            </thead>
-                                            <tbody>
+                    @yield('serviceBy')
 
-                                                @yield('tbody')
+                    @yield('LineChart')
 
-                                            </tbody>
-                                        </table>
-                                        @yield('paginate')
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                    @yield('firstTable')
 
-                    </div>
+
 
                     @yield('content')
 
 
-                </div>
                 <!-- content-wrapper ends -->
                 <!-- partial:partials/_footer.html -->
 
@@ -255,6 +254,8 @@
     </div>
     <!-- container-scroller -->
     <!-- plugins:js -->
+
+
     <script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
     <!-- endinject -->
     <!-- Plugin js for this page -->
@@ -269,8 +270,32 @@
     <!-- Custom js for this page -->
     <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('admin/assets/js/todolist.js') }}"></script>
-    <!-- End custom js for this page -->
 
+    <script>
+    $(document).ready(function() {
+        $('#example').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'excelHtml5',
+                // 'pdfHtml5',
+            ]
+        });
+    });
+
+    $(document).ready(function() {
+        $('#exampleTwo').DataTable({
+            dom: 'Bfrtip',
+            buttons: [
+                'excelHtml5',
+                // 'pdfHtml5',
+            ]
+        });
+    });
+
+
+
+    </script>
+    <!-- End custom js for this page -->
 </body>
 
 </html>

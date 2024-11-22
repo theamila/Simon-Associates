@@ -280,11 +280,10 @@ class userTwoController extends Controller
 
         if ($company) {
             $data = Invoice::where('customerRefId', $company->id)->get();
-            if(count($data) > 0){
+            if (count($data) > 0) {
 
                 return view('reports.hostory', compact('data'));
-            }
-            else{
+            } else {
                 Alert::error('Error', 'Data not Found..');
                 return redirect()->back();
             }
@@ -300,22 +299,26 @@ class userTwoController extends Controller
     }
 
     public function receiptUpdatesave(Request $request, $id)
-{
-    $request->validate([
-        'receipt_price' => 'required',
-    ]);
+    {
+        $request->validate([
+            'receipt_price' => 'required',
+        ]);
 
-    $receipt = Modelreceipt::find($id);
+        $receipt = Modelreceipt::find($id);
 
-    if (!$receipt) {
-        return redirect()->back()->with('error', 'Receipt not found.');
+        if (!$receipt) {
+            return redirect()->back()->with('error', 'Receipt not found.');
+        }
+
+        $receipt->payedAmount = $request->input('receipt_price');
+
+        return $receipt->save()
+            ? redirect()->back()->with('success', 'Update successful.')
+            : redirect()->back()->with('error', 'Failed to update receipt. Please try again.');
     }
 
-    $receipt->payedAmount = $request->input('receipt_price');
 
-    return $receipt->save()
-        ? redirect()->back()->with('success', 'Update successful.')
-        : redirect()->back()->with('error', 'Failed to update receipt. Please try again.');
-}
-
+    public function agingReport() {
+        return view('function.aging');
+    }
 }

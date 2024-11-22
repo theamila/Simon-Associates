@@ -271,3 +271,5 @@ Route::get('/fix/outstanding', [groupReceiptController::class, 'fixOutstanding']
 Route::post('/update-outstanding/{id}', [groupReceiptController::class, 'updateOutstanding'])->name('update.outstanding');
 
 Route::get('/deactivate/fix/{id}', [groupReceiptController::class, 'deactivate'])->name('deactivate.customer');
+
+Route::get('/aging/report', [userTwoController::class, 'agingReport']);

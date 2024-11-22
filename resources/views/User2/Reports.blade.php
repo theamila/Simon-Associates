@@ -113,7 +113,7 @@
 
 @endsection
 @section('Ttopic', 'Invoices')
- @section('Table')
+@section('Table')
     @php $no = 0; @endphp
     <table id="exampleTwo" class="table table-striped" style="width:100%">
         <thead>
@@ -204,9 +204,95 @@
     </table>
 @endsection
 
+{{--
+<section class="my-4">
+    <h2>Aging Report</h2>
+
+    @php
+        use Carbon\Carbon;
+
+        $currentDate = Carbon::now('Asia/Colombo');
+
+        // Retrieve all companies and invoices
+        $company = App\Models\CompanyDetails::all();
+        $invoices = App\Models\Invoice::where('status', 7)->get();
+    @endphp
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="bg-dark text-light">
+                <tr>
+                    <th scope="col" class="text-center">Company Name</th>
+                    <th scope="col" class="text-center">0 - 30 Days</th>
+                    <th scope="col" class="text-center">31 - 60 Days</th>
+                    <th scope="col" class="text-center">61 - 90 Days</th>
+                    <th scope="col" class="text-center">90+ Days</th>
+                    <th scope="col" class="text-center">Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($invoices as $item)
+                    @php
+                        $invoice_date = $item->sendDate ? Carbon::parse($item->sendDate) : null;
+
+                        $duration = $invoice_date ? $currentDate->diffInDays($invoice_date) : null;
+                        $invoiceDetails = App\Models\InvoiceDetails::where('invoiceNumber', $item->invoiceNumber)->get();
+                        $totalInvoicePrice = $invoiceDetails->sum('price');
+                    @endphp
+
+                    <tr>
+                        <td class="text- fw-bold">{{ $item->companyName }}</td>
+                        <td class="text-center fw-bold">
+                            @if ($duration !== null && $duration <= 30)
+                                {{ number_format($totalInvoicePrice, 2) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="text-center fw-bold">
+                            @if ($duration !== null && $duration >= 31 && $duration < 61)
+                                {{ number_format($totalInvoicePrice, 2) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="text-center fw-bold">
+                            @if ($duration !== null && $duration >= 61 && $duration < 91)
+                                {{ number_format($totalInvoicePrice, 2) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="text-center fw-bold">
+                            @if ($duration !== null && $duration > 90)
+                                {{ number_format($totalInvoicePrice, 2) }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td class="text-center fw-bold">
+
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
+</section> --}}
+
+
+
+
+{{-- ========================================================== --}}
+@include('function.aging')
+
+{{-- ============================================================= --}}
+
 
 
 <h2>Outstandings</h2>
+
+<button id="exportButtoninvoiceAging" class="btn btn-success my-2">Excel</button>
 
 @php
     $totals = [
@@ -218,7 +304,7 @@
 @endphp
 
 <div class="table-responsive">
-    <table id="aggregatedReport" class="table table-striped table-bordered text-center">
+    <table id="invoiceagingReportTable" class="table table-striped table-bordered text-center">
         <thead class="table-dark">
             <tr>
                 <th>No</th>
@@ -414,5 +500,19 @@
     @endif
     <script src="{{ asset('js/jquery-3.2.1.slim.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('assets/js/xlsx.full.min.js') }}"></script>
+
+<script>
+    document.getElementById('exportButtoninvoiceAging').addEventListener('click', function() {
+        var table = document.getElementById('invoiceagingReportTable');
+        var worksheet = XLSX.utils.table_to_sheet(table);
+        var workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Aging Report');
+        XLSX.writeFile(workbook, 'Aging_Report.xlsx');
+    });
+</script>
+
+
+
 @endsection
 @endsection
