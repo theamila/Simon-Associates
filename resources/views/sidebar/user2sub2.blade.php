@@ -190,13 +190,21 @@
                     </li>
 
                     <li class="nav-item">
+                        <a class="nav-link" href="/aging/report">
+                          <span class="menu-title">Aging Report</span>
+                          <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+                        </a>
+                      </li>
+
+                      
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('update') }}">
                             <span class="menu-title">Settings</span>
                             <i class="material-symbols-outlined mdi menu-icon">settings</i>
                         </a>
 
                     </li>
-                    
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('logout') }}">
                             <span class="menu-title">Log Out</span>
@@ -244,7 +252,6 @@
                     </div>
 
                     @yield('content')
-
 
                 </div>
                 <!-- content-wrapper ends -->
@@ -295,6 +302,8 @@
             ]
         });
     });
+
+
 
     </script>
     <!-- End custom js for this page -->
