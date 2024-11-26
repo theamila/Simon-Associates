@@ -273,3 +273,9 @@ Route::post('/update-outstanding/{id}', [groupReceiptController::class, 'updateO
 Route::get('/deactivate/fix/{id}', [groupReceiptController::class, 'deactivate'])->name('deactivate.customer');
 
 Route::get('/aging/report', [userTwoController::class, 'agingReport']);
+
+Route::get('/aging/report/user3', [userTwoController::class, 'agingReport3']);
+
+Route::get('/user/one/delete/invoice/{invoiceNumber}', [userTwoController::class, 'userOneDeleteOngoingInvoice']);
+
+// Route::get('/api/settle/outstanding', [Receipt::class, 'processPrice']);

@@ -118,6 +118,12 @@
         <a href="/2/outstanding" class="btn btn-danger"><i class="fa-solid fa-angle-left"></i>Back</a>
         <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
         <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button>
+
+        {{-- <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#priceModal">
+            Enter Price
+        </button> --}}
+
+
     </div>
 
     <div class="container main">
@@ -185,17 +191,16 @@
                     @endphp
 
                     @if ($invoice_data->count() > 0)
-                        @foreach ($invoice_data as $key=>$get)
-
-                        @php
-                        if($key == 0){
-                            $firstdec = $get->description;
-                        }
-                    @endphp
+                        @foreach ($invoice_data as $key => $get)
+                            @php
+                                if ($key == 0) {
+                                    $firstdec = $get->description;
+                                }
+                            @endphp
                             @if (!in_array($get->invoiceNumber, $invo_list))
                                 @php
                                     $invo_list[] = $get->invoiceNumber;
-                                    $total = 0; 
+                                    $total = 0;
                                 @endphp
                             @endif
                             @if ($get->currency == 1)
@@ -242,14 +247,16 @@
                 <div class="col-2">
                     Total
                 </div>
-                <div class="col-2 text-end"> {{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($maintotal, 2) }}</div>
+                <div class="col-2 text-end"> {{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
+                    {{ number_format($maintotal, 2) }}</div>
             </div>
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col-2">
                     Payment
                 </div>
-                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($payment, 2) }}</div>
+                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
+                    {{ number_format($payment, 2) }}</div>
             </div>
             <div class="row">
                 <div class="col-8 d-flex justify-content-center">
@@ -263,7 +270,8 @@
                 <div class="col-2">
                     Balance
                 </div>
-                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}  {{ number_format($balance, 2) }}</div>
+                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
+                    {{ number_format($balance, 2) }}</div>
             </div>
         </div>
         <div class="notes">
@@ -413,5 +421,98 @@
         shouldBlockRefresh = !shouldBlockRefresh;
     }
 </script>
+
+
+
+{{-- =================Model========================= --}}
+{{-- 
+<div class="modal fade" id="priceModal" tabindex="-1" aria-labelledby="priceModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="priceModalLabel">Enter Price</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <!-- Price Input Form -->
+                <form id="priceForm">
+                    <div class="mb-3">
+                        <label for="price" class="form-label">Price (Negative or Positive)</label>
+                        <input type="number" id="price" name="price" class="form-control" step="0.01"
+                            required>
+                    </div>
+
+                    <input type="hidden" name="companyId" value="{{ $companyID }}">
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('priceForm').addEventListener('submit', function(event) {
+      event.preventDefault(); // Prevent the default form submission
+
+      // Get the submit button
+      const submitButton = document.querySelector('#priceForm button[type="submit"]');
+
+      // Disable the submit button
+      submitButton.disabled = true;
+
+      // Re-enable the button after 5 seconds
+      setTimeout(() => {
+          submitButton.disabled = false;
+      }, 5000);
+
+      // Get the price value
+      const price = document.getElementById('price').value;
+
+      // Get the companyId from the hidden input field
+      const companyId = document.querySelector('input[name="companyId"]').value;
+
+      // Construct the API URL with both query parameters
+      const apiUrl = `/api/settle/outstanding?price=${price}&companyId=${companyId}`;
+
+      console.log('API URL:', apiUrl); // Log the API URL for debugging
+
+      // Send the data to the API using the GET method
+      fetch(apiUrl, {
+          method: 'GET'
+      })
+      .then(response => {
+          // Check if the response is OK (HTTP 200)
+          if (!response.ok) {
+              throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          return response.json();
+      })
+      .then(data => {
+          if (data.success) {
+              alert('Success: ' + data.message); // Display success message
+          } else {
+              alert('Error: ' + data.message); // Display error message
+          }
+
+          // Close the modal after submission
+          const modalElement = document.getElementById('priceModal');
+          const modalInstance = bootstrap.Modal.getInstance(modalElement);
+          modalInstance.hide();
+      })
+      .catch(error => {
+          console.error('Error:', error);
+          alert('An error occurred. Please try again. ' + error.message);
+      });
+  });
+  </script> --}}
+
+
+
+
+{{-- +===========================end Model========================+ --}}
 
 </html>

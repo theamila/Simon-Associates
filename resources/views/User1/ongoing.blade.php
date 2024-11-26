@@ -39,6 +39,13 @@
                     <a href="{{ Route('modify', $invoiceNumber) }}" class="btn btn-sm btn-success">
                         <i class="material-symbols-outlined">navigate_next</i>
                     </a>
+
+                    <a onclick="return confirm('Are you sure you want to permanently delete this invoice? This action cannot be undone.');" href="/user/one/delete/invoice/{{ str_replace('/', '-', $get->invoiceNumber) }}" class="btn btn-sm btn-danger">
+                        <i class="material-symbols-outlined">
+                            delete
+                        </i>
+                    </a>
+
                 </td>
             </tr>
 
