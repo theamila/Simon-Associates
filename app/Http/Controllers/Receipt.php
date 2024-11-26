@@ -291,7 +291,7 @@ class Receipt extends Controller
 
         // file_put_contents(public_path('pdfs/' . $formattedNumber), $dompdf->output());
 
-        return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber'));
+        return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber', 'companyID'));
     }
 
     public function generateReceipt(Request $request)
@@ -370,6 +370,56 @@ class Receipt extends Controller
 
             Alert::error('Error', 'Something went wrong..');
             return back();
+        }
+    }
+
+
+
+    public function processPrice(Request $request)
+    {
+        // Retrieve the price and companyId from the query parameters
+        $price = $request->query('price');
+        $companyId = $request->query('companyId');
+
+        // Log the input values for debugging
+        Log::info('Price: ' . $price);
+        Log::info('CompanyId: ' . $companyId);
+
+        // Example validation and processing
+        if (is_numeric($price) && !empty($companyId)) {
+            // Find the company data using the company ID
+            $data = CompanyDetails::find($companyId);
+
+            // Check if the company exists
+            if ($data) {
+                // Update the outstanding value
+                $data->outstanding -= $price;
+                if ($data->save()) {
+                    // Return success response
+                    return response()->json([
+                        'success' => true,
+                        'message' => 'Price processed successfully.',
+                    ]);
+                } else {
+                    // Return error if saving the data fails
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to update company data.',
+                    ]);
+                }
+            } else {
+                // Return error if the company is not found
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Company not found.',
+                ]);
+            }
+        } else {
+            // Return error response for invalid input
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid input data.',
+            ]);
         }
     }
 }
