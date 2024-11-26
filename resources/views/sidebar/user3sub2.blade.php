@@ -194,34 +194,6 @@
                         </nav>
                     </div>
 
-                    <div class="row">
-                        <div class="col-12 grid-margin">
-                            <div class="card shadow" style="border-radius: 15px">
-                                <div class="card-body">
-                                    <h4 class="card-title">@yield('Ttopic')</h4>
-                                    <div class="table-responsive">
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    @yield('thead')
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-
-                                                @yield('tbody')
-
-                                            </tbody>
-                                        </table>
-                                        @yield('paginate')
-
-                                        @yield('bankDetails')
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
 
                     @yield('content')
 

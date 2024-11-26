@@ -318,7 +318,52 @@ class userTwoController extends Controller
     }
 
 
-    public function agingReport() {
+    public function agingReport()
+    {
         return view('function.aging');
     }
+
+    public function agingReport3()
+    {
+        return view('function.aging3');
+    }
+
+
+    public function userOneDeleteOngoingInvoice($invoiceNumber)
+{
+    // Correctly replace '-' with '/'
+    $invoiceNumber = str_replace('-', '/', $invoiceNumber);
+
+    // Start the transaction
+    DB::beginTransaction();
+
+    try {
+        // Find and delete the invoice
+        $data = Invoice::where('invoiceNumber', $invoiceNumber)->first();
+        if ($data) {
+            $data->delete();
+        }
+
+        // Delete related invoice details
+        $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceNumber)->get();
+        if ($invoiceDetails->isNotEmpty()) {
+            foreach ($invoiceDetails as $item) {
+                $item->delete();
+            }
+        }
+
+        // Commit the transaction
+        DB::commit();
+
+        // Success message and redirect
+        Alert::success('Success', 'Invoice Deleted Successfully.');
+        return redirect()->back();
+
+    } catch (\Exception $e) {
+        // Rollback the transaction if there was an error
+        DB::rollBack();
+        Alert::error('Error', 'An error occurred. Please try again.');
+        return redirect()->back();
+    }
+}
 }
