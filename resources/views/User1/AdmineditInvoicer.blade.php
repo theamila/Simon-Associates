@@ -1,4 +1,5 @@
-@extends('sidebar.sub1')
+@extends('sidebar.user2sub1')
+{{-- @extends('sidebar.sub1') --}}
 
 @section('title', 'Finalizing Invoice')
 
@@ -195,29 +196,32 @@
 @endsection
 
 <div class="d-flex mb-3" style="justify-content: space-around;">
-    <span class="text-danger fw-bold">Invoce Amount - <span class="text-success fw-bold">{{ number_format($invoicePrice, 2) }}</span></span>
-    <span class="text-danger fw-bold">Total Amount - <span class="text-success fw-bold">{{ number_format($totalPrice, 2) }}</span></span>
+    <span class="text-danger fw-bold">Invoce Amount - <span
+            class="text-success fw-bold">{{ number_format($invoicePrice, 2) }}</span></span>
+    <span class="text-danger fw-bold">Total Amount - <span
+            class="text-success fw-bold">{{ number_format($totalPrice, 2) }}</span></span>
 </div>
 
 @php
     $invoiceNumber = str_replace('/', '-', $invoiceNumber);
 @endphp
-{{-- <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a> --}}
+
 
 @if ($issu_count == 0 && $invoice->status == 4)
     <a href="{{ Route('send-invoice', $invoiceNumber) }} " class="btn btn-primary mb-3">Finalize Invoice</a>
 @elseif($issu_count == 0 && $invoice->status == 6)
-<p>Invoice Finalized..</p>
+    <p>Invoice Finalized..</p>
     {{-- <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a> --}}
 @elseif($issu_count == 0 && $invoice->status == 7)
-<p>Invoice Finalized..</p>
+    <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a>
+    <p>Invoice Finalized..</p>
 @elseif($issu_count != 0)
-    <p>Fixl issues.</p>
+    <p>Fix issues.</p>
 @elseif ($invoice->status == 2)
+    <a href="/invoice/{{ $invoiceNumber }}" class="btn btn-danger">Edit</a>
 @else
-<p>Waiting for approve.</p>
+    <p>Waiting for approve.</p>
 @endif
-<a href="/invoice/{{$invoiceNumber}}" class="btn btn-danger">Edit</a>
 </div>
 
 @endsection

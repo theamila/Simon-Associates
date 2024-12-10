@@ -487,11 +487,14 @@ class invoiceController extends Controller
 
             $bank = payment::all();
 
-            return view('User1.editInvoicer', compact('invoice', 'invoice_data', 'invoiceNumber', 'bank'));
+            return view('User1.AdmineditInvoicer', compact('invoice', 'invoice_data', 'invoiceNumber', 'bank'));
         } else {
             Alert::error('Error', 'Unble to find Invoice.');
         }
     }
+
+
+
 
     public function recentHome($invoiceNumber)
     {
