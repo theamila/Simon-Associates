@@ -175,7 +175,7 @@
                           <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
                         </a>
                       </li>
-                      
+
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('update') }}">
                             <span class="menu-title">Settings</span>
@@ -213,7 +213,7 @@
                             </ul>
                         </nav>
                     </div>
-
+                    @yield('custom')
                     <div class="row">
                         <div class="col-12 grid-margin">
                             <div class="card shadow" style="border-radius: 15px">
