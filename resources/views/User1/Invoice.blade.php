@@ -63,7 +63,7 @@
         <input type="hidden" name="invoiceNo" value="{{ $invoiceNumber }}">
 
         <div class="col">
-            <input type="submit" value="Generate Invoice" class="btn btn-primary form-control text-light">
+            <input onclick="return confirm('Are you sure you want to generate the invoice?');" type="submit" value="Generate Invoice" class="btn btn-primary form-control text-light">
         </div>
     </div>
 
