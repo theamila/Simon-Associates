@@ -294,7 +294,7 @@ class userTwoController extends Controller
 
     public function fixReceipt()
     {
-        $data = Modelreceipt::where('payedAmount', null)->get();
+        $data = Modelreceipt::where('payedAmount', null)->orWhere('payedAmount', 0.00)->get();
         return view('user2.fixReceipt', compact('data'));
     }
 
