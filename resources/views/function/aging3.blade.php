@@ -102,7 +102,7 @@
 
                             <tr>
                                 <td class="text-center">{{ $rowNumber++ }}</td>
-                                <td class="text-center">{{ $company->companyName }}</td>
+                                <td class="text-center"> <a style="text-decoration: none;" target="_blank" href="/company/history/report/{{$company->id}}">{{ $company->companyName }}</a></td>
                                 <td class="text-end">{{ number_format($amount0_30, 2) }}</td>
                                 <td class="text-end">{{ number_format($amount31_60, 2) }}</td>
                                 <td class="text-end">{{ number_format($amount61_90, 2) }}</td>
