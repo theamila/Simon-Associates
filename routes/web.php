@@ -99,7 +99,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/reject/Invoice/View/two/{id}', [NavisionController::class, 'RejectInvoiceView'])->name('view-reject-Invoice-two');
 
-
         Route::get('/two/rejected/invoice', [invoiceController::class, 'rejectInvoiceUser'])->name('rejectInvoiceUserTwo');
 
         Route::post('/handler/add', [PaymentController::class, 'handlerAdd'])->name('handler.add');
@@ -126,9 +125,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('customer/on/{id}', [customerController::class, 'on'])->name('customer.on');
 
-
         Route::get('customer/off/{id}', [customerController::class, 'off'])->name('customer.off');
-
 
         Route::get('/delete/invoice/{id}', [invoiceController::class, 'deleteInvoice'])->name('deleteInvoice');
 
@@ -138,17 +135,15 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/report/two', [userTwoController::class, 'reporttwo'])->name('reporttwo');
 
-        Route::get('/company/history/report/{id}', [userTwoController::class, 'reporttwoView']);
-
         Route::get('/fix/receipt', [userTwoController::class, 'fixReceipt']);
 
         Route::post('/receipt/update/{id}', [userTwoController::class, 'receiptUpdatesave'])->name('update.receipt');
 
         Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
-
     });
 
+    Route::get('/company/history/report/{id}', [userTwoController::class, 'reporttwoView']);
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
         Route::get('/user3', [Madem3::class, 'home'])->name('Home');
