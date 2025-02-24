@@ -618,6 +618,7 @@ class invoiceController extends Controller
 
     public function deleteInvoice($id)
     {
+// dd($id);
         try {
             $invoice = Invoice::find($id);
 
