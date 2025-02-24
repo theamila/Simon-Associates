@@ -274,12 +274,15 @@ class userTwoController extends Controller
         return view('User2.reportTwo');
     }
 
-    public function reporttwoView($id)
+    public function reporttwoView($id, $crn)
     {
+
         $company = CompanyDetails::find($id);
 
         if ($company) {
-            $data = Invoice::where('customerRefId', $company->id)->get();
+            $data = Invoice::where('customerRefId', $company->id)
+            ->where('currency', $crn)->get();
+
             if (count($data) > 0) {
 
                 return view('reports.hostory', compact('data'));

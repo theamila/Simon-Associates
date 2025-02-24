@@ -82,7 +82,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::put('/update/company', [CompanyController::class, 'update'])->name('update.company');
 
-        Route::get('reject/invoice/re/send/{invoiceNumber}', [invoiceController::class, 'rejectResend'])->name('recent.delete');
+        Route::get('reject/invoice/re/send/{invoiceNumber}', [invoiceController::class, 'rejectResend']);
 
 
     });
@@ -94,8 +94,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/new/invoice/approvel', [invoiceController::class, 'NewInvoiceUser'])->name('new-invoice-user');
 
-        Route::get('/delete/invoice/{invoiceNUmber}', [invoiceController::class, 'deleteinvoiceadmin']);
-
+        // Route::get('/delete/invoice/{invoiceNUmber}', [invoiceController::class, 'deleteinvoiceadmin']);
 
         Route::get('/reject/Invoice/View/two/{id}', [NavisionController::class, 'RejectInvoiceView'])->name('view-reject-Invoice-two');
 
@@ -141,9 +140,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
+        Route::get('/delete/receipt/{id}', [PaymentController::class, 'deleteReceipt'])->name('delete.receipt');
+
     });
 
-    Route::get('/company/history/report/{id}', [userTwoController::class, 'reporttwoView']);
+    Route::get('/company/history/report/{id}/{crn}', [userTwoController::class, 'reporttwoView']);
 
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
         Route::get('/user3', [Madem3::class, 'home'])->name('Home');
@@ -267,7 +268,7 @@ Route::post('/update-outstanding/{id}', [groupReceiptController::class, 'updateO
 
 Route::get('/deactivate/fix/{id}', [groupReceiptController::class, 'deactivate'])->name('deactivate.customer');
 
-Route::get('/aging/report', [userTwoController::class, 'agingReport']);
+Route::get('/aging/report/', [userTwoController::class, 'agingReport']);
 
 Route::get('/aging/report/user3', [userTwoController::class, 'agingReport3']);
 

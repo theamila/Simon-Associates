@@ -57,11 +57,11 @@
                             'type' => 'invoice',
                         ];
 
-                        // Get receipt details
+                        
                         $receipts = App\Models\Modelreceipt::where('invoiceNumber', $item->invoiceNumber)->get();
                         if (!$receipts->isEmpty()) {
                             foreach ($receipts as $rvalue) {
-                                // Add receipt entry to the transactions array
+
                                 $transactions[] = [
                                     'date' => $rvalue->payedDate,
                                     'details' => $rvalue->receiptNumber,

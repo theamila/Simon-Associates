@@ -6,12 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\handler;
 use Alert;
+use App\Models\Modelreceipt;
+use Exception;
 
 class PaymentController extends Controller
 {
     public function updateData(Request $request)
-    {
-        {
+    { {
             // Validate the incoming request
             $request->validate([
                 'acName' => 'required|string',
@@ -33,10 +34,10 @@ class PaymentController extends Controller
             ]);
 
             Payment::where('id', $id)
-                   ->update($formData);
+                ->update($formData);
 
-                   toast('Bank Details Update Successfully', 'success');
-                //    Alert::success('Success', 'Bank Details Update Successfully');
+            toast('Bank Details Update Successfully', 'success');
+            //    Alert::success('Success', 'Bank Details Update Successfully');
 
             return redirect()->back();
         }
@@ -77,8 +78,6 @@ class PaymentController extends Controller
             $data->save();
 
             toast('Pinned Successfully', 'success');
-
-
         } else {
             Alert::error('Error', 'Record not found');
         }
@@ -88,24 +87,31 @@ class PaymentController extends Controller
     public function handlerAdd(Request $request)
     {
 
-        try
-        {
+        try {
             $data = new handler();
 
-        $data->name = $request->input('name');
-        $data->save();
+            $data->name = $request->input('name');
+            $data->save();
 
-        toast('Hander added successful.', 'success');
+            toast('Hander added successful.', 'success');
 
-        return back();
-        }
-
-        catch(Exception $e)
-        {
+            return back();
+        } catch (Exception $e) {
             Alert::error('Error', 'Something Wrong..');
             return back();
         }
+    }
 
+    public function deleteReceipt($id){
+        try {
+            $data = Modelreceipt::findOrFail($id);
+            $data->delete();
 
+            Alert::success('Success', 'Receipt deleted successfully.');
+        } catch (\Exception $e) {
+            Alert::error('Error', 'Failed to delete receipt. Please try again.');
+        }
+
+        return redirect()->back();
     }
 }

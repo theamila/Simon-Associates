@@ -88,7 +88,7 @@
                         </i>
                     </a>
 
-                    <a onclick="return confirm('Are you sure?')" href="{{ Route('deleteInvoice', $get->id) }}" class="btn btn-sm btn-danger">
+                    <a onclick="return confirm('Are you sure?')" href="/delete/invoice/{{ $get->id }}" class="btn btn-sm btn-danger">
                         <i class="material-symbols-outlined">delete</i>
                     </a>
 
