@@ -10,7 +10,7 @@
         $currentDate = Carbon::now('Asia/Colombo');
 
         // Retrieve all companies
-        $companies = App\Models\CompanyDetails::all();
+        $companies = App\Models\CompanyDetails::orderBy('companyName', 'asc')->get();
 
         // Initialize grand totals
         $grandTotal0_30 = 0;
@@ -155,7 +155,7 @@
         $currentDate = Carbon::now('Asia/Colombo');
 
         // Retrieve all companies
-        $companies = App\Models\CompanyDetails::all();
+        $companies = App\Models\CompanyDetails::orderBy('companyName', 'asc')->get();
 
         // Initialize grand totals
         $grandTotal0_30 = 0;
