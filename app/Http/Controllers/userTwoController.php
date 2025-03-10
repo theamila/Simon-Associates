@@ -33,18 +33,6 @@ class userTwoController extends Controller
             }
         }
 
-        // // Create InvoiceData array
-        // $InvoiceData = [];
-        // $invoices = Modelreceipt::orderByDesc('id')->paginate(50);
-
-        // foreach ($invoices as $get) {
-        //     $invoiceDetails = Invoice::where('invoiceNumber', $get->invoiceNumber)->first();
-        //     if ($invoiceDetails) {
-        //         $InvoiceData[$get->invoiceNumber] = $invoiceDetails;
-        //     }
-        // }
-
-        // return view('User2.receipt', compact('invoices', 'InvoiceData'));
         return view('User2.receipt');
     }
 

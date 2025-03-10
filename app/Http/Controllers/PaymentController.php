@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\handler;
 use Alert;
+use App\Models\Invoice;
+use App\Models\InvoiceDetails;
 use App\Models\Modelreceipt;
 use Exception;
 
@@ -102,9 +104,21 @@ class PaymentController extends Controller
         }
     }
 
-    public function deleteReceipt($id){
+    public function deleteReceipt($id)
+    {
         try {
             $data = Modelreceipt::findOrFail($id);
+            $invoice_no = $data->invoiceNumber;
+
+            $invoice = Invoice::where('invoiceNumber', $invoice_no)->firstOrFail();
+            $invoice->update(['status' => 7]);
+
+            InvoiceDetails::where('invoiceNumber', $invoice_no)->update(['status' => 0]);
+
+            $invoice = Invoice::where('invoiceNumber', $invoice_no)->first();
+
+            // dd($invoice);
+
             $data->delete();
 
             Alert::success('Success', 'Receipt deleted successfully.');
