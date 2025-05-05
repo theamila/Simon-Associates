@@ -311,6 +311,7 @@ class userTwoController extends Controller
 
     public function agingReport()
     {
+
         return view('function.aging');
     }
 
@@ -319,6 +320,10 @@ class userTwoController extends Controller
         return view('function.aging3');
     }
 
+  public function agingReportuser()
+    {
+        return view('function.aging1');
+    }
 
     public function userOneDeleteOngoingInvoice($invoiceNumber)
 {

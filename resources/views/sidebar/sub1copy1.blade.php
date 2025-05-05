@@ -224,7 +224,7 @@
 
           <div class="row">
             <div class="col-12 grid-margin">
-              <div class="card shadow" style="border-radius: 15px;">
+              {{-- <div class="card shadow" style="border-radius: 15px;">
                 <div class="card-body">
                   <h4 class="card-title">@yield('Ttopic')</h4>
                   @yield('search')
@@ -243,7 +243,7 @@
                     </table>
                   </div>
                 </div>
-              </div>
+              </div> --}}
             </div>
 
           </div>

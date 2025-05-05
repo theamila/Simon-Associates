@@ -21,7 +21,7 @@ class NavisionController extends Controller
 
     public function allInvoice()
     {
-        $data = Invoice::orderBy('id', 'desc')->paginate(100);
+        $data = Invoice::orderBy('id', 'desc')->get();
 
         return view('User1.allInvoice', compact('data'));
     }

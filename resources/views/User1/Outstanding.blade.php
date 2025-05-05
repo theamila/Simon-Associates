@@ -18,12 +18,16 @@
 @section('content')
 
 @section('Ttopic', 'Outstanding Invoice')
+
+
+
+
 @section('thead')
+
     {{--
     <button type="button" class="btn btn-success col-3 float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
         Custom Receipt
     </button> --}}
-
 
     <th class="text-center">No</th>
     <th class="text-center">Company Name</th>
