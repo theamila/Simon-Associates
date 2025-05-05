@@ -47,8 +47,10 @@
         <!-- partial:partials/_navbar.html -->
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                <a class="navbar-brand brand-logo" href=""><h3 class="text-muted">
-                    Dashboard</h3></a>
+                <a class="navbar-brand brand-logo" href="">
+                    <h3 class="text-muted">
+                        Dashboard</h3>
+                </a>
                 <a class="navbar-brand brand-logo-mini" href="#"><img
                         src="{{ asset('admin/assets/images/logo-mini.svg') }}" alt="logo" /></a>
             </div>
@@ -69,8 +71,8 @@
                 </div>
                 <ul class="navbar-nav navbar-nav-right">
                     <li class="nav-item nav-profile dropdown">
-                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#" data-bs-toggle="dropdown"
-                            aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" id="profileDropdown" href="#"
+                            data-bs-toggle="dropdown" aria-expanded="false">
                             <div class="nav-profile-img">
                                 <img src="{{ asset('admin/assets/images/faces/face1.jpg') }}" alt="image">
                                 <span class="availability-status online"></span>
@@ -159,12 +161,12 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('two-allInvoice') }}">
-                          <span class="menu-title">All Invoices</span>
-                          <i class="material-symbols-outlined mdi menu-icon">receipt_long</i>
+                            <span class="menu-title">All Invoices</span>
+                            <i class="material-symbols-outlined mdi menu-icon">receipt_long</i>
                         </a>
-                      </li>
+                    </li>
 
-                      <li class="nav-item">
+                    <li class="nav-item">
                         <a class="nav-link" href="{{ route('rejectInvoiceUserTwo') }}">
                             <span class="menu-title">Rejected Invoices</span>
                             <i class="material-symbols-outlined mdi menu-icon">
@@ -191,10 +193,10 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="/aging/report">
-                          <span class="menu-title">Aging Report</span>
-                          <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+                            <span class="menu-title">Aging Report</span>
+                            <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
                         </a>
-                      </li>
+                    </li>
 
 
                     <li class="nav-item">
@@ -243,59 +245,56 @@
                     @yield('content')
 
 
-                <!-- content-wrapper ends -->
-                <!-- partial:partials/_footer.html -->
+                    <!-- content-wrapper ends -->
+                    <!-- partial:partials/_footer.html -->
 
-                <!-- partial -->
+                    <!-- partial -->
+                </div>
+                <!-- main-panel ends -->
             </div>
-            <!-- main-panel ends -->
+            <!-- page-body-wrapper ends -->
         </div>
-        <!-- page-body-wrapper ends -->
-    </div>
-    <!-- container-scroller -->
-    <!-- plugins:js -->
+        <!-- container-scroller -->
+        <!-- plugins:js -->
 
 
-    <script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page -->
-    <script src="{{ asset('admin/assets/vendors/chart.js/Chart.min.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
-    <!-- End plugin js for this page -->
-    <!-- inject:js -->
-    <script src="{{ asset('admin/assets/js/off-canvas.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/hoverable-collapse.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/misc.js') }}"></script>
-    <!-- endinject -->
-    <!-- Custom js for this page -->
-    <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
-    <script src="{{ asset('admin/assets/js/todolist.js') }}"></script>
+        <script src="{{ asset('admin/assets/vendors/js/vendor.bundle.base.js') }}"></script>
+        <!-- endinject -->
+        <!-- Plugin js for this page -->
+        <script src="{{ asset('admin/assets/vendors/chart.js/Chart.min.js') }}"></script>
+        <script src="{{ asset('admin/assets/js/jquery.cookie.js') }}" type="text/javascript"></script>
+        <!-- End plugin js for this page -->
+        <!-- inject:js -->
+        <script src="{{ asset('admin/assets/js/off-canvas.js') }}"></script>
+        <script src="{{ asset('admin/assets/js/hoverable-collapse.js') }}"></script>
+        <script src="{{ asset('admin/assets/js/misc.js') }}"></script>
+        <!-- endinject -->
+        <!-- Custom js for this page -->
+        <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
+        <script src="{{ asset('admin/assets/js/todolist.js') }}"></script>
 
-    <script>
-    $(document).ready(function() {
-        $('#example').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'excelHtml5',
-                // 'pdfHtml5',
-            ]
-        });
-    });
+        <script>
+            $(document).ready(function() {
+                $('#example').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'excelHtml5',
+                        // 'pdfHtml5',
+                    ]
+                });
+            });
 
-    $(document).ready(function() {
-        $('#exampleTwo').DataTable({
-            dom: 'Bfrtip',
-            buttons: [
-                'excelHtml5',
-                // 'pdfHtml5',
-            ]
-        });
-    });
-
-
-
-    </script>
-    <!-- End custom js for this page -->
+            $(document).ready(function() {
+                $('#exampleTwo').DataTable({
+                    dom: 'Bfrtip',
+                    buttons: [
+                        'excelHtml5',
+                        // 'pdfHtml5',
+                    ]
+                });
+            });
+        </script>
+        <!-- End custom js for this page -->
 </body>
 
 </html>

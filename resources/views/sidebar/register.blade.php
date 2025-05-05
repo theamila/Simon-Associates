@@ -190,6 +190,12 @@
                         </a>
                     </li>
 
+                    <li class="nav-item">
+                        <a class="nav-link" href="/aging/report/user">
+                            <span class="menu-title">Aging Report</span>
+                            <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+                        </a>
+                    </li>
 
                     </li>
                     <li class="nav-item">

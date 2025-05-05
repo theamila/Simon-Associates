@@ -270,6 +270,8 @@ Route::get('/deactivate/fix/{id}', [groupReceiptController::class, 'deactivate']
 
 Route::get('/aging/report/', [userTwoController::class, 'agingReport']);
 
+Route::get('/aging/report/user', [userTwoController::class, 'agingReportuser']);
+
 Route::get('/aging/report/user3', [userTwoController::class, 'agingReport3']);
 
 Route::get('/user/one/delete/invoice/{invoiceNumber}', [userTwoController::class, 'userOneDeleteOngoingInvoice']);
