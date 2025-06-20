@@ -121,7 +121,7 @@ class NavisionController extends Controller
     public function Receipt()
     {
 
-        $data = Modelreceipt::orderByDesc('id')->paginate(30);
+        $data = Modelreceipt::orderByDesc('id')->get();
         $ComData = Invoice::all();
 
         return view('User1.Receipt', compact('data', 'ComData'));
