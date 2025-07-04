@@ -18,7 +18,7 @@
 @section('tbody')
     @php
         $no = 0;
-        $invoices = App\Models\Modelreceipt::orderBy('id', 'desc')->paginate(100);
+        $invoices = App\Models\Modelreceipt::orderBy('id', 'desc')->get();
     @endphp
 
     @if ($invoices->count() > 0)
@@ -67,9 +67,9 @@
     @endif
 
 @endsection
-<div class="d-flex justify-content-center">
+{{-- <div class="d-flex justify-content-center">
     {{ $invoices->links('pagination::bootstrap-4') }}
-</div>
+</div> --}}
 
 
 
