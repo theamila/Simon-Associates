@@ -28,8 +28,9 @@ class NavisionController extends Controller
 
     public function twoallInvoice()
     {
-        $data = Invoice::orderBy('id', 'desc')->paginate(100);
+        $data = Invoice::orderBy('id', 'desc')->get();
 
+        
         return view('User2.allInvoice', compact('data'));
     }
 
