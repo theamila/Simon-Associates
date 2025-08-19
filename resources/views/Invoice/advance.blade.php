@@ -115,9 +115,16 @@
 <body>
 
     <div class="container mt-2 mb-2">
-        <a href="/2/outstanding" class="btn btn-danger"><i class="fa-solid fa-angle-left"></i>Back</a>
-        <button id="printPdfBtn" class="btn btn-primary"><i class="fa-solid fa-print"></i>Print</button>
-        <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button>
+        @if ($back)
+            <a href="/2/outstanding/view" class="btn btn-danger"><i class="fa-solid fa-angle-left"></i>Back</a>
+        @else
+            <a href="#" class="btn btn-danger" onclick="window.close(); return false;">
+                <i class="fa-solid fa-angle-left"></i> Back
+            </a>
+        @endif
+        <button id="printPdfBtn" class="btn btn-primary" onclick="return window.print()"><i
+                class="fa-solid fa-print"></i>Print</button>
+        {{-- <button id="downloadPdfBtn" class="btn btn-success"><i class="fa-solid fa-download"></i>Download</button> --}}
 
         {{-- <button type="button" class="btn btn-dark" data-bs-toggle="modal" data-bs-target="#priceModal">
             Enter Price
@@ -133,14 +140,15 @@
                     <h2 class="text-start">RECEIPT</h2>
                     <div class="row">
                         <div class="col-6 r-No">Date</div>
-                        <div class="col-6 r-No" contenteditable="true">
-                            {{ now()->format('d/m/Y') }}
+                        <div class="col-6 r-No">
+                            {{ $get->payment_date }}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-7 r-No">Receipt No</div>
                         <div class="col-5 r-No">
-                            {{ 'R ' . $formattedNumber }}
+                            {{ 'R ' . $get->receiptNo }}
+                            {{-- {{ 'R ' . $formattedNumber }} --}}
                         </div>
                     </div>
                 </div>
@@ -175,60 +183,30 @@
             <table>
                 <thead>
                     <tr>
-                        <th style="width: 150px;">
-                            Invoice No
-                        </th>
+                        @if (isset($get->invoiceId))
+                            <th style="width: 150px;">
+                                Invoice No
+                            </th>
+                        @endif
                         <th style="">Description</th>
                         <th style="width: 110px;">Method</th>
-                        <th style="width: 180px;">Amount</th>
+                        <th style="width: 180px;">Amount ( {{ $get->currency }} )</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @php
-                        $maintotal = 0;
-                        $invo_list = [];
-                        $firstdec = '';
-                    @endphp
+                    <tr>
+                        @if (isset($get->invoiceId))
+                            <td class="text-center">{{ $get->invoiceId  }}</td>
+                        @endif
+                        <td class="text-start" contenteditable="true" style="color: #00008B">
+                            {{ $get->description }}
+                        </td>
+                        <td class="text-center">
+                            {{ $get->payment_method == 'online_transfer' ? 'TRF' : ($get->payment_method == 'cheque' ? 'Chq' : $get->payment_method) }}
+                        </td>
+                        <td class="text-end" id="priceCell">{{ number_format($get->amount, 2) }}</td>
 
-                    @if ($invoice_data->count() > 0)
-                        @foreach ($invoice_data as $key => $get)
-                            @php
-                                if ($key == 0) {
-                                    $firstdec = $get->description;
-                                }
-                            @endphp
-                            @if (!in_array($get->invoiceNumber, $invo_list))
-                                @php
-                                    $invo_list[] = $get->invoiceNumber;
-                                    $total = 0;
-                                @endphp
-                            @endif
-                            @if ($get->currency == 1)
-                                @php
-                                    $convertedPrice = $get->price * $get->dollarRate;
-                                    $total += $convertedPrice;
-                                    $maintotal += $convertedPrice;
-                                @endphp
-                            @else
-                                @php
-                                    $total += $get->price;
-                                    $maintotal += $get->price;
-                                @endphp
-                            @endif
-                            @if ($loop->last || $get->invoiceNumber != $invoice_data[$loop->index + 1]->invoiceNumber)
-                                <tr>
-
-                                    <td class="text-center">{{ $get->invoiceNumber }}</td>
-                                    <td class="text-start" contenteditable="true" style="color: #00008B">
-                                        {{ $firstdec }}</td>
-                                    <td class="text-center">
-                                        {{ $method == 'online Transfer' ? 'TRF' : ($method == 'Cheque' ? 'Chq' : $method) }}
-                                    </td>
-                                    <td class="text-end">{{ number_format($total, 2) }}</td>
-                                </tr>
-                            @endif
-                        @endforeach
-                    @endif
+                    </tr>
                 </tbody>
             </table>
         </div>
@@ -241,7 +219,7 @@
             </div>
         </div>
 
-        <div class="total-row fw-bold">
+        {{-- <div class="total-row fw-bold">
             <div class="row">
                 <div class="col-8"></div>
                 <div class="col-2">
@@ -273,7 +251,7 @@
                 <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
                     {{ number_format($balance, 2) }}</div>
             </div>
-        </div>
+        </div> --}}
         <div class="notes">
             <div class="row p-2">
                 <div class="note-topic">
@@ -296,7 +274,7 @@
         </div>
     </div>
 
-    <input type="hidden" name="price" id="price" Value="{{ $maintotal }}">
+    {{-- <input type="hidden" name="price" id="price" Value="{{ $maintotal }}"> --}}
 
     <script src="{{ asset('sidebar/css/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/js/numberToWords.min.js') }}"></script>
@@ -304,7 +282,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            var totalPrice = parseFloat(document.getElementById('price').value);
+            var totalPrice = parseFloat(document.getElementById('priceCell').innerText.replace(/,/g, ''));
 
             var dollars = Math.floor(totalPrice);
             var cents = Math.round((totalPrice - dollars) * 100);
@@ -312,12 +290,15 @@
             var dollarsInWords = numberToWords.toWords(dollars);
             var centsInWords = numberToWords.toWords(cents);
 
-            document.getElementById('totalInWords').value = "Rupees " + dollarsInWords + ' and ' + centsInWords +
+            document.getElementById('totalInWords').value = dollarsInWords + ' and ' + centsInWords +
                 ' cents';
+
+                console.log(numberToWords);
+
         });
     </script>
 
-    <script>
+    {{-- <script>
         document.getElementById("downloadPdfBtn").addEventListener("click", function() {
 
 
@@ -404,9 +385,11 @@
         document.getElementById("printPdfBtn").addEventListener("click", function() {
             window.print();
         });
-    </script>
+    </script> --}}
 
 </body>
+
+
 <script>
     var shouldBlockRefresh = true;
 

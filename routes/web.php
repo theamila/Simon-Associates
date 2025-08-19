@@ -13,6 +13,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\userTwoController;
 use App\Http\Controllers\userTreeController;
+use App\Http\Controllers\utilitController;
 use App\Http\Middleware\CheckRole;
 use App\Models\User;
 
@@ -141,6 +142,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
         Route::get('/delete/receipt/{id}', [PaymentController::class, 'deleteReceipt'])->name('delete.receipt');
+        Route::get('/preview/advance/{id}', [utilitController::class, 'previewAdvance']);
+        Route::get('/advance/delete/{id}', [utilitController::class, 'deleteAdvance']);
 
     });
 
@@ -275,5 +278,7 @@ Route::get('/aging/report/user', [userTwoController::class, 'agingReportuser']);
 Route::get('/aging/report/user3', [userTwoController::class, 'agingReport3']);
 
 Route::get('/user/one/delete/invoice/{invoiceNumber}', [userTwoController::class, 'userOneDeleteOngoingInvoice']);
+
+Route::get('/advancePayment', [utilitController::class, 'advancePayment']);
 
 // Route::get('/api/settle/outstanding', [Receipt::class, 'processPrice']);

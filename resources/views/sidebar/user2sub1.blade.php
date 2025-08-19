@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}" />
+    @stack('styles')
 </head>
 
 <body>
@@ -270,7 +271,7 @@
     <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('admin/assets/js/todolist.js') }}"></script>
     <!-- End custom js for this page -->
-
+    @stack('scripts')
 </body>
 
 </html>

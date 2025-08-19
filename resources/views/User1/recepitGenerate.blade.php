@@ -25,14 +25,14 @@
         @endphp
         @csrf
         <div class="row justify-content-end mb-2 mt-4 mr-2">
-            <div class="col">
+            <div class="col-3">
                 <select id="payment" name="payment" class="form-select">
                     <option value="online Transfer" selected>Online Transfer</option>
                     <option value="cash">Cash</option>
                     <option value="cheque">Cheque</option>
                 </select>
             </div>
-            <div class="col">
+            <div class="col-2">
                 <input type="number" name="balance" id="balance" class="form-control" placeholder="Payed amount"
                     step="0.01" required>
 
@@ -41,7 +41,7 @@
                 @enderror
             </div>
 
-            <div class="col">
+            <div class="col-2">
                 <input type="text" name="additionalcharges" id="balance" class="form-control"
                     placeholder="Additional Costs">
                 @error('additionalcharges')
@@ -49,7 +49,7 @@
                 @enderror
             </div>
 
-            <div class="col">
+            <div class="col-3">
                 <input type="text" name="receiptNo" id="receiptNo" class="form-control" placeholder="Receipt No"
                     required>
                 @error('receiptNo')
@@ -57,7 +57,14 @@
                 @enderror
             </div>
 
-            <button type="submit" class="btn btn-sm btn-success col">Generate a Receipt</button>
+            {{-- <div class="col-2">
+                <div class="form-check">
+                    <input type="checkbox" name="advance" id="advance" class="form-check-input">
+                    <label for="advance" class="form-check-label">Is Advance Payment</label>
+                </div>
+            </div> --}}
+
+            <button type="submit" class="btn btn-sm btn-success col-2">Generate a Receipt</button>
         </div>
 
     @endsection
@@ -119,4 +126,48 @@
         <!-- Hidden input to store invoice number -->
         <input type="hidden" name="invoiceNumber" value="{{ $invoiceNumber }}">
     @endsection
+
+
+    <div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card shadow" style="border-radius: 15px">
+            <div class="card-body">
+                <h4>Advance Payments</h4>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th class="text-center">Select</th>
+                                <th>Payment Date</th>
+                                <th>Amount</th>
+                                <th>Invoice No</th>
+                                <th>Receipt No</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($advances as $ad)
+                            <tr>
+                                <td class="text-center">
+                                    <input type="checkbox"
+                                           name="selected_advances[]"
+                                           value="{{ $ad->id }}"
+                                           class="form-check-input">
+                                </td>
+                                <td>{{ $ad->payment_date }}</td>
+                                <td>{{ number_format($ad->amount, 2) }}</td>
+                                <td>{{ $ad->invoiceId }}</td>
+                                <td>{{ $ad->receiptNo }}</td>
+                                <td>{{ $ad->description }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @endsection
