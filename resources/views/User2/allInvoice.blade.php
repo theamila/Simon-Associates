@@ -54,7 +54,7 @@
             </td>
         </tr>
     @endif
-
+{{-- 
 @section('paginate')
 
     <div class="d-flex justify-content-center mt-4">
@@ -78,7 +78,7 @@
             </ul>
         </nav>
     </div>
-@endsection
+@endsection --}}
 @endsection
 
 @endsection

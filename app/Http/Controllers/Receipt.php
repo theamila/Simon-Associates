@@ -1,16 +1,14 @@
 <?php
-
 namespace App\Http\Controllers;
 
+use Alert;
+use App\Models\advancePayment;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
 use App\Models\Modelreceipt;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
-use Alert;
 use Carbon\Carbon;
-use Dompdf\Dompdf;
+use Illuminate\Http\Request;
 
 class Receipt extends Controller
 {
@@ -24,7 +22,7 @@ class Receipt extends Controller
     public function generateReceiptForm($id)
     {
         try {
-            $company_data = Invoice::findOrFail($id);
+            $company_data  = Invoice::findOrFail($id);
             $customerRefId = $company_data->customerRefId;
 
             // Fetch related invoices and details in a single query
@@ -33,25 +31,27 @@ class Receipt extends Controller
                 Invoice::where('customerRefId', $customerRefId)->pluck('invoiceNumber')
             )->get();
 
+            $advances = advancePayment::where('customer_id', $customerRefId)->where('is_applied', 0)->get();
+
             return view('User1.recepitGenerate', [
-                'company_data' => $company_data,
-                'invoice_data' => $invoice_data,
+                'company_data'  => $company_data,
+                'invoice_data'  => $invoice_data,
                 'invoiceNumber' => $company_data->invoiceNumber,
+                'advances'      => $advances,
             ]);
         } catch (\Exception $e) {
             return back()->with('error', 'Invoice not found.');
         }
     }
 
-
     public function receiptSettlement(Request $request)
     {
         $request->validate([
             'description' => 'required',
-            'id' => 'required',
+            'id'          => 'required',
         ]);
 
-        $id = $request->input('id');
+        $id          = $request->input('id');
         $description = $request->input('description');
 
         $data = findOrFail::InvoiceDetails($id);
@@ -108,9 +108,9 @@ class Receipt extends Controller
             'balance' => 'required|numeric',
         ]);
 
-        $payment = $request->input('balance', []);
+        $payment       = $request->input('balance', []);
         $selectedItems = $request->input('selected_items', []);
-        $method = $request->input('payment');
+        $method        = $request->input('payment');
 
         if (empty($selectedItems)) {
             Alert::error('Error', 'No items selected.')->persistent(true);
@@ -121,8 +121,8 @@ class Receipt extends Controller
         $invoice_data = InvoiceDetails::whereIn('id', $selectedItems)->get();
 
         foreach ($invoice_data as $data) {
-            $invo_data = InvoiceDetails::findOrFail($data->id);
-            $invo_data->status = 1;
+            $invo_data            = InvoiceDetails::findOrFail($data->id);
+            $invo_data->status    = 1;
             $invo_data->isReceipt = 1; // 1 = generate but not in receipt.
             $invo_data->save();
         }
@@ -137,7 +137,7 @@ class Receipt extends Controller
 
         $Invoice = Invoice::where('invoiceNumber', $firstInvoiceNumber)->first();
 
-        if (!$Invoice) {
+        if (! $Invoice) {
             Alert::error('Error', 'Invoice not found for the retrieved invoice number.');
             return redirect()->back()->with('bad', 'Invoice not found for the retrieved invoice number.');
         }
@@ -159,7 +159,7 @@ class Receipt extends Controller
             $additional = 0;
         }
         $receipt->additional = $additional;
-        $receipt->payedDate = Carbon::now();
+        $receipt->payedDate  = Carbon::now();
 
         $receipt->save();
 
@@ -199,11 +199,20 @@ class Receipt extends Controller
             'balance' => 'required|numeric',
         ]);
 
-        $payment = $request->input('balance', []);
-        $selectedItems = $request->input('selected_items', []);
-        $method = $request->input('payment');
+        $payment         = $request->input('balance', []);
+        $selectedItems   = $request->input('selected_items', []);
+        $method          = $request->input('payment');
         $formattedNumber = $request->input('receiptNo');
-        $payAmount = $request->input('balance');
+        $payAmount       = $request->input('balance');
+        $selectedAdvances = $request->input('selected_advances', []);
+
+        foreach ($selectedAdvances as $advanceId) {
+            $advance = advancePayment::find($advanceId);
+            if ($advance) {
+                $advance->is_applied = true; // or any flag
+                $advance->save();
+            }
+        }
 
         if (empty($selectedItems)) {
             Alert::error('Error', 'No items selected.')->persistent(true);
@@ -241,7 +250,7 @@ class Receipt extends Controller
 
         $Invoice = Invoice::where('invoiceNumber', $firstInvoiceNumber)->first();
 
-        if (!$Invoice) {
+        if (! $Invoice) {
             Alert::error('Error', 'Invoice not found for the retrieved invoice number.');
             return redirect()->back()->with('bad', 'Invoice not found for the retrieved invoice number.');
         }
@@ -271,32 +280,18 @@ class Receipt extends Controller
         if ($additional == '') {
             $additional = 0;
         }
-        $receipt->additional = $additional;
-        $receipt->payedDate = Carbon::now('Asia/Colombo')->format('Y-m-d');
+        $receipt->additional  = $additional;
+        $receipt->payedDate   = Carbon::now('Asia/Colombo')->format('Y-m-d');
         $receipt->payedAmount = $payAmount;
 
         $receipt->save();
-
-        // $html = view('Invoice.pdfReceipt', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber'))->render();
-
-        // $dompdf = new Dompdf();
-
-        // $dompdf->loadHtml($html);
-
-        // $dompdf->setPaper('A4', 'portrait');
-
-        // $dompdf->render();
-
-        // $filename = str_replace('/', '-', $formattedNumber) . '.pdf';
-
-        // file_put_contents(public_path('pdfs/' . $formattedNumber), $dompdf->output());
 
         return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber', 'companyID'));
     }
 
     public function generateReceipt(Request $request)
     {
-        $selected_invoice = $request->input('selected_invoice', []);
+        $selected_invoice         = $request->input('selected_invoice', []);
         $selected_invoice_details = InvoiceDetails::whereIn('invoiceNumber', $selected_invoice)->get();
 
         return view('User1.recepitGenerate', compact('selected_invoice_details'));
@@ -348,12 +343,12 @@ class Receipt extends Controller
     public function paymentSubmit(Request $request)
     {
         try {
-            $payment = $request->input('payment');
-            $id = $request->input('companyID');
-            $formattedNumber = $request->input('billNo');
+            $payment            = $request->input('payment');
+            $id                 = $request->input('companyID');
+            $formattedNumber    = $request->input('billNo');
             $OldformattedNumber = $request->input('OldbillNo');
 
-            $oldReceiptNo = Modelreceipt::where('receiptNumber', $OldformattedNumber)->first();
+            $oldReceiptNo                = Modelreceipt::where('receiptNumber', $OldformattedNumber)->first();
             $oldReceiptNo->receiptNumber = $formattedNumber;
             $oldReceiptNo->save();
 
@@ -373,12 +368,10 @@ class Receipt extends Controller
         }
     }
 
-
-
     public function processPrice(Request $request)
     {
         // Retrieve the price and companyId from the query parameters
-        $price = $request->query('price');
+        $price     = $request->query('price');
         $companyId = $request->query('companyId');
 
         // Log the input values for debugging
@@ -386,7 +379,7 @@ class Receipt extends Controller
         Log::info('CompanyId: ' . $companyId);
 
         // Example validation and processing
-        if (is_numeric($price) && !empty($companyId)) {
+        if (is_numeric($price) && ! empty($companyId)) {
             // Find the company data using the company ID
             $data = CompanyDetails::find($companyId);
 

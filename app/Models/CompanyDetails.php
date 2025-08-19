@@ -15,4 +15,10 @@ class CompanyDetails extends Model
         'handleBy',
         'outstanding',
     ];
+
+    public function payments()
+{
+    return $this->hasMany(advancePayment::class);
+}
+
 }

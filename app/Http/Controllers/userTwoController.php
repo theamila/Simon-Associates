@@ -14,6 +14,7 @@ use App\Models\Modelreceipt;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Alert;
+use App\Models\advancePayment;
 
 class userTwoController extends Controller
 {
@@ -33,7 +34,9 @@ class userTwoController extends Controller
             }
         }
 
-        return view('User2.receipt');
+        $advances = advancePayment::all();
+
+        return view('User2.receipt', compact('advances'));
     }
 
     public function OutstandingInvoiceView()
@@ -46,6 +49,8 @@ class userTwoController extends Controller
                 ->where('status', 0)
                 ->get();
 
+                //  dump($get->invoiceNumber);
+
             if (count($count) == 0) {
                 $get->status = 8;
                 $get->save();
@@ -54,7 +59,8 @@ class userTwoController extends Controller
 
         $data = Invoice::where('status', '7')->get();
 
-        $company = CompanyDetails::all();
+        $company = CompanyDetails::orderBy('companyName')->get();
+
 
         return view('User2.Outstanding', compact('data', 'company'));
     }
