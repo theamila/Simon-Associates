@@ -282,3 +282,5 @@ Route::get('/user/one/delete/invoice/{invoiceNumber}', [userTwoController::class
 Route::get('/advancePayment', [utilitController::class, 'advancePayment']);
 
 // Route::get('/api/settle/outstanding', [Receipt::class, 'processPrice']);
+
+Route::get('/db/migrate', [login::class, 'migrate']);
