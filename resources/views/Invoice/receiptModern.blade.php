@@ -244,36 +244,48 @@
         <div class="total-row fw-bold">
             <div class="row">
                 <div class="col-8"></div>
-                <div class="col-2">
-                    Total
+                <div class="col-2">Total</div>
+                <div class="col-2 text-end">
+                    <span class="me-1">{{ $Invoice->currency == 'LKR' ? 'Rs.' : '$' }}</span>
+                    <span>{{ number_format($maintotal, 2) }}</span>
                 </div>
-                <div class="col-2 text-end"> {{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
-                    {{ number_format($maintotal, 2) }}</div>
             </div>
+
             <div class="row">
                 <div class="col-8"></div>
-                <div class="col-2">
-                    Payment
+                <div class="col-2">Payment</div>
+                <div class="col-2 text-end">
+                    <span class="me-1">{{ $Invoice->currency == 'LKR' ? 'Rs.' : '$' }}</span>
+                    <span>{{ number_format($payment, 2) }}</span>
                 </div>
-                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
-                    {{ number_format($payment, 2) }}</div>
             </div>
-            <div class="row">
-                <div class="col-8 d-flex justify-content-center">
-                    <span class="text-center fw-bold mb-5`">
 
-                    </span>
+            @if ($adv_payments > 0)
+                <div class="row">
+                    <div class="col-8"></div>
+                    <div class="col-2">Advance Payments</div>
+                    <div class="col-2 text-end">
+                        <span class="me-1">{{ $Invoice->currency == 'LKR' ? 'Rs.' : '$' }}</span>
+                        <span>{{ number_format($adv_payments, 2) }}</span>
+                    </div>
                 </div>
-                @php
-                    $balance = $payment - $maintotal;
-                @endphp
-                <div class="col-2">
-                    Balance
+            @endif
+
+            @php
+                $balance = $maintotal - ($payment + $adv_payments);
+            @endphp
+
+            <div class="row border-top mt-2 pt-1">
+                <div class="col-8"></div>
+                <div class="col-2">Balance</div>
+                <div class="col-2 text-end">
+                    <span class="me-1">{{ $Invoice->currency == 'LKR' ? 'Rs.' : '$' }}</span>
+                    <span>{{ number_format($balance, 2) }}</span>
                 </div>
-                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
-                    {{ number_format($balance, 2) }}</div>
             </div>
         </div>
+
+
         <div class="notes">
             <div class="row p-2">
                 <div class="note-topic">
