@@ -35,4 +35,12 @@ class login extends Controller
             return back();
         }
     }
+
+    public function migrate()
+    {
+
+        \Artisan::call('migrate');
+
+        return response()->json(['message' => 'Database migration completed successfully.']);
+    }
 }
