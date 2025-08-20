@@ -206,11 +206,15 @@ class Receipt extends Controller
         $payAmount       = $request->input('balance');
         $selectedAdvances = $request->input('selected_advances', []);
 
+        $adv_payments= 0;
+
         foreach ($selectedAdvances as $advanceId) {
             $advance = advancePayment::find($advanceId);
             if ($advance) {
                 $advance->is_applied = true; // or any flag
                 $advance->save();
+
+                $adv_payments += $advance->amount; // Assuming 'amount' is the field for the advance payment amount
             }
         }
 
@@ -286,7 +290,7 @@ class Receipt extends Controller
 
         $receipt->save();
 
-        return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber', 'companyID'));
+        return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber', 'companyID', 'adv_payments'));
     }
 
     public function generateReceipt(Request $request)
