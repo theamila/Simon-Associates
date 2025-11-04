@@ -199,14 +199,15 @@ class Receipt extends Controller
             'balance' => 'required|numeric',
         ]);
 
-        $payment         = $request->input('balance', []);
-        $selectedItems   = $request->input('selected_items', []);
-        $method          = $request->input('payment');
-        $formattedNumber = $request->input('receiptNo');
-        $payAmount       = $request->input('balance');
+        $payment          = $request->input('balance', []);
+        $selectedItems    = $request->input('selected_items', []);
+        $method           = $request->input('payment');
+        $formattedNumber  = $request->input('receiptNo');
+        $payAmount        = $request->input('balance');
         $selectedAdvances = $request->input('selected_advances', []);
 
-        $adv_payments= 0;
+        $invoice_details = InvoiceDetails::whereIn('id', $selectedItems)->get();
+        $adv_payments    = 0;
 
         foreach ($selectedAdvances as $advanceId) {
             $advance = advancePayment::find($advanceId);
@@ -290,7 +291,9 @@ class Receipt extends Controller
 
         $receipt->save();
 
-        return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber', 'companyID', 'adv_payments'));
+        $invoice_details = InvoiceDetails::whereIn('id', $selectedItems)->get();
+
+        return view('Invoice.receiptModern', compact('invoice_data', 'Invoice', 'method', 'payment', 'formattedNumber', 'companyID', 'adv_payments', 'invoice_details'));
     }
 
     public function generateReceipt(Request $request)
