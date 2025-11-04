@@ -145,7 +145,7 @@
                                 <select id="invoiceNo" class="form-select" name="invoiceNo"  style="width: 100%">
                                 <option value="">Select an Invoice</option>
                                @foreach ($data as $i)
-                               <option value="{{ $i->invoiceNumber }}">{{ $i->invoiceNumber }}</option>
+                               <option value="{{ $i->id }}">{{ $i->invoiceNumber }}</option>
                                @endforeach
                             </select>
                         </div>
