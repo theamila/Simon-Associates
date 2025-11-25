@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Alert;
+use App\Models\advancePayment;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
@@ -128,7 +129,8 @@ class invoiceController extends Controller
             $invoice_data = InvoiceDetails::where('invoiceNumber', $company_data->invoiceNumber)->get();
             $bank = payment::all();
 
-            return view('User1.generateInvoice', compact('invoice_data', 'company_data', 'invoiceNumber', 'outdata', 'bank'));
+            $advancePayments = advancePayment::where('customer_id', $company_data->customerRefId)->where('is_applied', 0)->get();
+            return view('User1.generateInvoice', compact('invoice_data', 'company_data', 'invoiceNumber', 'outdata', 'bank', 'advancePayments'));
         } catch (\Exception $e) {
             return back()->with('bad', 'Something Wrong.');
         }

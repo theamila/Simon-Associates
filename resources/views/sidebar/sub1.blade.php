@@ -222,6 +222,8 @@
 
           @yield('custom')
 
+          @yield('advancePaymentSection')
+
           <div class="row">
             <div class="col-12 grid-margin">
               <div class="card shadow" style="border-radius: 15px;">

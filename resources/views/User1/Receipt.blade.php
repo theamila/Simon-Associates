@@ -9,7 +9,79 @@
 @section('icon', 'fa-solid fa-angle-left')
 
 @section('pageTitle', 'Receipt')
+@section('advancePaymentSection')
+
+    <div class="row">
+        <div class="col-12 grid-margin">
+            <div class="card shadow" style="border-radius: 15px">
+                <div class="card-body">
+
+                    <h4 class="card-title">Advance Payments</h4>
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">No</th>
+                                    <th class="text-center">Company Name</th>
+                                    <th class="text-center">Receipt No</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                                @if ($advances->count() > 0)
+                                    @foreach ($advances as $no => $get)
+                                        <tr>
+                                            <td class="text-center">{{ $no + 1 }}</td>
+
+
+                                            <td class="text-center">
+
+
+
+                                                {{ $get->customer->companyName }}
+                                            </td>
+                                            <td class="text-center">{{ $get->receiptNo }}</td>
+                                            <td class="text-center">
+                                                @if ($get->offline == 0)
+                                                    {{-- <a href="{{ Storage::url('pdfs/' . $get->receiptNumber . '.pdf') }}"
+                                                        class="btn btn-sm btn-success" download title="download"><i
+                                                            class="material-symbols-outlined">download</i></a> --}}
+
+                                                    <a href="/preview/advance/{{ $get->id }}" target="_blank"
+                                                        class="btn btn-sm btn-info" title="preview"><i
+                                                            class="material-symbols-outlined">visibility</i></a>
+
+                                                   
+                                                @else
+                                                    <a href="#" class="btn btn-secondary btn-sm align-items-center"><i
+                                                            class="material-symbols-outlined">steppers</i></a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="4" class="text-center fw-bold">
+                                            No Records Found...
+                                        </td>
+                                    </tr>
+                                @endif
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+@endsection
+
 @section('content')
+
 
 
 @section('Ttopic', 'New Invoice')
@@ -67,7 +139,7 @@
             </td>
         </tr>
     @endif
-{{-- 
+{{--
 @section('paginate')
 
     <div class="d-flex justify-content-center mt-4">

@@ -57,7 +57,7 @@
                             'type' => 'invoice',
                         ];
 
-                        
+
                         $receipts = App\Models\Modelreceipt::where('invoiceNumber', $item->invoiceNumber)->get();
                         if (!$receipts->isEmpty()) {
                             foreach ($receipts as $rvalue) {
@@ -71,7 +71,25 @@
                                 ];
                             }
                         }
+
+
                     }
+
+                    $advanced = App\Models\advancePayment::where('customer_id', $data[0]->customerRefId)->get();
+                        // dd($advanced);
+
+                        if (!$advanced->isEmpty()) {
+                            foreach ($advanced as $rvalue) {
+
+                                $transactions[] = [
+                                    'date' => $rvalue->payment_date,
+                                    'details' => $rvalue->receiptNo,
+                                    'invoicesValue' => null,
+                                    'receiptsValue' => $rvalue->amount,
+                                    'type' => 'advanced payment',
+                                ];
+                            }
+                        }
 
                     // Sort transactions by date
                     usort($transactions, function ($a, $b) {

@@ -161,8 +161,7 @@
 
                                                         $price = $get->price - $get->price * ($get->discount / 100);
 
-                                                        if(!$get->Reimbursables == 1)
-                                                        {
+                                                        if (!$get->Reimbursables == 1) {
                                                             $invoicePrice += $price;
                                                         }
                                                     @endphp
@@ -358,11 +357,61 @@
                                 class="text-success">{{ number_format($totalTablePrice, 2) }}</span></span>
                     </div>
 
+                @if(isset($advancePayments) && $advancePayments->count() > 0)
+    <h4 class="text-primary fw-bold mb-3 text-center">Advance Payments</h4>
+
+    <div class="container px-4">
+
+        <!-- Scrollable wrapper -->
+        <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+            <table class="table table-hover table-bordered align-middle text-center">
+                <thead class="table-primary sticky-top">
+                    <tr>
+                        <th>Description</th>
+                        <th>Receipt No</th>
+                        <th>Invoice Number</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($advancePayments as $item)
+                        <tr>
+                            <td class="fw-semibold">
+                                {{ $item->description ?? '-' }}
+                            </td>
+
+                            <td class="fw-semibold">
+                                {{ $item->receiptNo ?? '-' }}
+                            </td>
+
+                            <td class="fw-semibold">
+                                @if($item->invoiceId)
+                                    {{ $item->invoice->invoiceNumber ?? '-' }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+
+                            <td class="fw-semibold">
+                                {{ $item->currency ?? '' }} {{ number_format($item->amount, 2) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+@endif
+
+
 
                     @php $invoiceNumber = str_replace('/', '-', $invoiceNumber); @endphp
 
                     @if ($totalTablePrice > 0)
-                    <a onclick="return confirm('Are you sure..?')" id="sendToApproverBtn" href="#" class="btn btn-inverse-success btn-fw">Send To Approver</a>
+                        <a onclick="return confirm('Are you sure..?')" id="sendToApproverBtn" href="#"
+                            class="btn btn-inverse-success btn-fw">Send To Approver</a>
                     @endif
                 </div>
             </div>
