@@ -47,6 +47,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('/login-check', [login::class, 'loginCheck'])->name('Login-check');
+ Route::get('/preview/advance/{id}', [utilitController::class, 'previewAdvance']);
 
 Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_USER]], function () {
@@ -142,7 +143,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/change/bank', [invoiceController::class, 'changeBank'])->name('change.bank');
 
         Route::get('/delete/receipt/{id}', [PaymentController::class, 'deleteReceipt'])->name('delete.receipt');
-        Route::get('/preview/advance/{id}', [utilitController::class, 'previewAdvance']);
+
         Route::get('/advance/delete/{id}', [utilitController::class, 'deleteAdvance']);
 
     });

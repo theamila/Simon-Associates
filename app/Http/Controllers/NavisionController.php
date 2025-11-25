@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Mail\approverMail;
+use App\Models\advancePayment;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
 use App\Models\InvoiceDetails;
@@ -30,7 +31,7 @@ class NavisionController extends Controller
     {
         $data = Invoice::orderBy('id', 'desc')->get();
 
-        
+
         return view('User2.allInvoice', compact('data'));
     }
 
@@ -65,7 +66,7 @@ class NavisionController extends Controller
 
     public function dashboard()
     {
-        $data = Invoice::orderByDesc('id')->paginate(10);
+        $data = Invoice::orderByDesc('id')->paginate(100);
 
         $sa = [2, 3, 4, 5];
         $apr_cnt = Invoice::where('status', 6)->count();
@@ -124,8 +125,9 @@ class NavisionController extends Controller
 
         $data = Modelreceipt::orderByDesc('id')->get();
         $ComData = Invoice::all();
+        $advances = advancePayment::all();
 
-        return view('User1.Receipt', compact('data', 'ComData'));
+        return view('User1.Receipt', compact('data', 'ComData', 'advances'));
     }
 
     public function dashboardUserTwo()
@@ -161,7 +163,7 @@ class NavisionController extends Controller
 
     public function user2()
     {
-        $data = Invoice::orderByDesc('id')->paginate(10);
+        $data = Invoice::orderByDesc('id')->paginate(100);
 
         $sa = [2, 3, 4, 5];
         $apr_cnt = Invoice::where('status', 6)->count();
