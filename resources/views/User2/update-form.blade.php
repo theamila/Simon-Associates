@@ -13,6 +13,7 @@
     }
 </style>
 
+
 @section('content')
 
     @include('sweetalert::alert')
@@ -110,6 +111,72 @@
 
 
 @endsection
+
+
+<div class="row">
+    <div class="col-12 grid-margin">
+        <div class="card shadow" style="border-radius: 15px">
+            <div class="card-body">
+                <h4 class="card-title">Customers List
+                </h4>
+                <div class="table-responsive">
+                    <table class="table" id="customersTable">
+
+                        <thead>
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th class="text-center">Customer Name</th>
+                                <th class="text-center">Email</th>
+                                <th class="text-center">Phone</th>
+                                <th class="text-center">Address</th>
+                                <th class="text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (count($customersList) > 0)
+                                @foreach ($customersList as $get)
+                                    <tr>
+                                        <td class="text-center">
+                                            {{ $get->id }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->companyName }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->email }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->phone }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ $get->address }}
+                                        </td>
+                                        <td class="text-center">
+                                            @if ($get->state)
+                                                <a href="{{ route('customer.off', $get->id) }}"
+                                                    class="btn btn-inverse-success fs-4">
+                                                    <i class="material-symbols-outlined">toggle_on</i>
+                                                </a>
+                                            @else
+                                                <a href="{{ route('customer.on', $get->id) }}"
+                                                    class="btn btn-inverse-danger">
+                                                    <i class="material-symbols-outlined fs-4">toggle_off</i>
+                                                </a>
+                                            @endif
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            @endif
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
 
 <div class="modal fade" id="addBankModal" tabindex="-1" aria-labelledby="addBankModalLabel" aria-hidden="true">
     <!-- Modal content for adding new bank details -->
@@ -313,63 +380,21 @@
 
 
 
-<div class="row">
-    <div class="col-12 grid-margin">
-        <div class="card shadow" style="border-radius: 15px">
-            <div class="card-body">
-                <h4 class="card-title">Customers List
-                </h4>
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">Customer Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">Address</th>
-                                <th class="text-center">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @if (count($customersList) > 0)
-                                @foreach ($customersList as $get)
-                                    <tr>
-                                        <td class="text-center">
-                                            {{ $get->id }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ $get->companyName }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ $get->email }}
-                                        </td>
-                                        <td class="text-center">
-                                            {{ $get->address }}
-                                        </td>
-                                        <td class="text-center">
-                                            @if ($get->state)
-                                            <a href="{{ route('customer.off', $get->id) }}"
-                                                class="btn btn-inverse-success fs-4">
-                                                <i class="material-symbols-outlined">toggle_on</i>
-                                            </a>
-                                            @else
-                                            <a href="{{ route('customer.on', $get->id) }}"
-                                                class="btn btn-inverse-danger">
-                                                <i class="material-symbols-outlined fs-4">toggle_off</i>
-                                            </a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                            @endif
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
 
-</div>
-
+<script>
+    $(document).ready(function() {
+        $('#customersTable').DataTable({
+            "pageLength": 10,
+            "lengthMenu": [5, 10, 25, 50, 100],
+            "ordering": true,
+            "searching": true,
+            "autoWidth": true,
+            "language": {
+                "search": "Search Customers:",
+                "lengthMenu": "Show _MENU_ entries"
+            }
+        });
+    });
+</script>
 
 @endsection

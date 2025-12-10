@@ -25,8 +25,8 @@
         {{-- <a href="{{ Route('send-to-user-3', $invoiceNumber) }}" class="btn btn-success" id="sendToApproverBtn">Send To
             Approver</a> --}}
 
-            <a href="/sent/user/3/{{$invoiceNumber}}/false" class="btn btn-success" id="sendToApproverBtn">Send To
-                Approver</a>
+        <a href="/sent/user/3/{{ $invoiceNumber }}/false" class="btn btn-success" id="sendToApproverBtn">Send To
+            Approver</a>
 
 
         <div class="form-check d-inline-block ms-5">
@@ -230,19 +230,70 @@
             </td>
         </tr>
     @endif
-
-
     {{-- Nofity approver --}}
 
     @php
-    $invoiceNumber = str_replace('/', '-', $invoiceNumber);
-@endphp
+        $invoiceNumber = str_replace('/', '-', $invoiceNumber);
+        $totalAdvanceAmount = 0;
+    @endphp
+
+    @if (isset($advancePayments) && $advancePayments->count() > 0)
+
+        <h4 class="text-primary fw-bold mb-3 text-center">Advance Payments</h4>
+
+        <div class="container px-4">
+
+            <!-- Scrollable wrapper -->
+            <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                <table class="table table-hover table-bordered align-middle text-center">
+                    <thead class="table-primary sticky-top">
+                        <tr>
+                            <th>Description</th>
+                            <th>Receipt No</th>
+                            <th>Invoice Number</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($advancePayments as $item)
+                            <tr>
+                                <td class="fw-semibold">
+                                    {{ $item->description ?? '-' }}
+                                </td>
+
+                                <td class="fw-semibold">
+                                    {{ $item->receiptNo ?? '-' }}
+                                </td>
+
+                                <td class="fw-semibold">
+                                    @if ($item->invoiceId)
+                                        {{ $item->invoice->invoiceNumber ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                @php
+                                    $totalAdvanceAmount += $item->amount;
+                                @endphp
+                                <td class="fw-semibold">
+                                    {{ $item->currency ?? '' }} {{ number_format($item->amount, 2) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    @endif
 
 
     <script>
         document.getElementById('notifyApprover').addEventListener('change', function() {
             let sendBtn = document.getElementById('sendToApproverBtn');
-            let baseUrl = "{{ Route('send-to-user-3', ['invoiceNumber' => $invoiceNumber, 'notify' => 'false']) }}";
+            let baseUrl =
+            "{{ Route('send-to-user-3', ['invoiceNumber' => $invoiceNumber, 'notify' => 'false']) }}";
 
             if (this.checked) {
                 // Update URL with 'notify' when checkbox is checked

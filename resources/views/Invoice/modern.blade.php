@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="{{ asset('sidebar/css/bootstrap.min.css') }}">
     <link rel="stylesheet"
         href="{{ asset('sidebar/css/.bank-box {
-                                                                                display: flex;
-                                                                                justify-content: space-between;
-                                                                                margin-top: 15px;
-                                                                            }.css') }}">
+                                                                                        display: flex;
+                                                                                        justify-content: space-between;
+                                                                                        margin-top: 15px;
+                                                                                    }.css') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -143,34 +143,35 @@
                 margin: 1cm;
             }
         }
+
         .header-row {
-    margin-bottom: 20px;
-}
+            margin-bottom: 20px;
+        }
 
-.header-row h2 {
-    margin-bottom: 10px;
-}
+        .header-row h2 {
+            margin-bottom: 10px;
+        }
 
-.header-row .text-end {
-    text-align: end;
-}
+        .header-row .text-end {
+            text-align: end;
+        }
 
-.header-row .company-name {
-    margin: 0;
-    padding: 0;
-    font-size: 1em; /* Adjust font size as needed */
-    font-weight: bold; /* Make it bold if desired */
-}
+        .header-row .company-name {
+            margin: 0;
+            padding: 0;
+            font-size: 1em;
+            /* Adjust font size as needed */
+            font-weight: bold;
+            /* Make it bold if desired */
+        }
 
-.header-row .sender-address {
-    text-align: end;
-}
+        .header-row .sender-address {
+            text-align: end;
+        }
 
-.header-row .r-No {
-    padding: 4px 0;
-}
-
-
+        .header-row .r-No {
+            padding: 4px 0;
+        }
     </style>
 </head>
 
@@ -245,7 +246,7 @@
                             Description
                         </th>
                         <th class="text-center text-light" style="width: 150px;">
-                            {{ $currency != "USD" ? 'Rs.' : '$ USD' }}
+                            {{ $currency != 'USD' ? 'Rs.' : '$ USD' }}
                         </th>
                     </tr>
                 </thead>
@@ -279,13 +280,47 @@
                         @endforeach
                     @endif
 
+
+
+                @php
+                    $totalAdvanceAmount = 0;
+                @endphp
+
+                @if (isset($advancePayments) && $advancePayments->count() > 0)
+
+
+                    @foreach ($advancePayments as $item)
+                        @php
+                            $no += 1;
+                        @endphp
+                        <tr>
+                            <td class="text-center">
+                                {{ $no }}
+                            </td>
+                            <td class="fw-semibold">
+                                Advance Payment / Overpayment
+                            </td>
+
+
+                            @php
+                                $totalAdvanceAmount += $item->amount;
+                            @endphp
+                            <td class="fw-semibold text-end">
+                                {{ number_format($item->amount, 2) }}
+                            </td>
+                        </tr>
+                    @endforeach
+
+                    @endif
+
+
                     @if ($ft == 2)
                         <tr>
                             <td colspan="2" class='fw-bold text-center'>
                                 Total
                             </td>
                             <td class="fw-bold text-end">
-                                {{ number_format($total, 2) }}
+                                {{ number_format($total - $totalAdvanceAmount, 2) }}
                             </td>
                         </tr>
                     @endif
@@ -341,7 +376,8 @@
             <div class="row payment-row">
                 <div class="col-12 bank-payment">
                     <div class="gray">
-                        Payment to be made by Crossed Cheque in favour of"Secretarius (Pvt) Ltd" Or Remittances to be made
+                        Payment to be made by Crossed Cheque in favour of"Secretarius (Pvt) Ltd" Or Remittances to be
+                        made
                         to the undernoted Account.
                     </div>
                     <div class="bank-details">

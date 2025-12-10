@@ -97,7 +97,6 @@ class userTwoController extends Controller
         $cudata = CompanyDetails::all();
 
         $table2 = $cudata;
-        // $table2 = CompanyDetails::all();
 
         $customerID = 0;
 
@@ -265,7 +264,8 @@ class userTwoController extends Controller
     public function reporttwo()
     {
         // $data = Invoice::whereNotIn('status', [1,9])->orderBy('id', 'desc')->paginate(15);
-        return view('User2.reportTwo');
+        return view('User2.reportTwoAgin');
+        // return view('User2.reportTwo');
     }
 
     public function reporttwoView($id, $crn)

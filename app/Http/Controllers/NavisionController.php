@@ -212,7 +212,11 @@ class NavisionController extends Controller
 
         $bankAccount = payment::where('id', $invoice->bankId)->first();
 
-        return view('User2.generateInvoice', compact('invoice_data', 'invoiceNumber', 'invoice', 'bankAccount'));
+        $company_data = Invoice::where('invoiceNumber', $invoiceNumberModify)->first();
+        // dd($company_data);
+        $advancePayments = advancePayment::where('customer_id', $company_data->customerRefId)->where('is_applied', 0)->get();
+
+        return view('User2.generateInvoice', compact('invoice_data', 'invoiceNumber', 'invoice', 'bankAccount', 'advancePayments'));
     }
 
     public function sendUsertree($invoiceNumber, $notify)

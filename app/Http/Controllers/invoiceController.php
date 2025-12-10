@@ -59,6 +59,7 @@ class invoiceController extends Controller
         $data = new CompanyDetails();
         $data->to = $request->input('to');
         $data->email = $request->input('email');
+        $data->phone = $request->input('phone');
         $data->companyName = $request->input('companyName');
         $data->address = $request->input('address');
         $data->handleBy = $request->input('handlBy');
@@ -211,7 +212,9 @@ class invoiceController extends Controller
 
             $bank = payment::all();
 
-            return view('User1.Invoice', compact('company_data', 'invoice_data', 'invoiceNumber', 'bank'));
+            $advancePayments = advancePayment::where('customer_id', $company_data->customerRefId)->where('is_applied', 0)->get();
+
+            return view('User1.Invoice', compact('company_data', 'invoice_data', 'invoiceNumber', 'bank', 'advancePayments'));
         } catch (\Exception $e) {
             return back()->with('error', 'Invoice not found.');
         }
@@ -285,6 +288,9 @@ class invoiceController extends Controller
 
             $company_data = Invoice::where('invoiceNumber', $invoiceNumber)->firstOrFail();
 
+
+            $advancePayments = advancePayment::where('customer_id', $company_data->customerRefId)->where('is_applied', 0)->get();
+
             try {
                 $txt = 'Account Name : ' . $bank->acName . ', Account Number : ' . $bank->accountNo . ', Bank Name : ' . $bank->bankName . ',  Bank Address : ' . $bank->bankAddress . ', Swift Code : ' . $bank->swiftCode;
 
@@ -295,7 +301,7 @@ class invoiceController extends Controller
 
             // =================================================
 
-            $html = view('Invoice.pdfinvoice', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr'))->render();
+            $html = view('Invoice.pdfinvoice', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr','advancePayments'))->render();
 
             $dompdf = new Dompdf();
 
@@ -322,8 +328,12 @@ class invoiceController extends Controller
             file_put_contents($directoryPath . '/' . $filename, $dompdf->output());
             // =================================================================
 
+            foreach($advancePayments as $a){
+                $a->is_applied = 1;
+                $a->save();
+            }
 
-            return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr', 'currency'));
+            return view('Invoice.modern', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data', 'bank', 'qr', 'currency', 'advancePayments'));
 
             // return view('Invoice.Invoice', compact('invoiceNumber', 'company_data', 'date', 'dollarRate', 'invoice_data'));
         } catch (\Exception $e) {

@@ -3,22 +3,29 @@
 use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\customerController;
 use App\Http\Controllers\groupReceiptController;
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\NavisionController;
 use App\Http\Controllers\invoiceController;
-use App\Http\Controllers\Madem3;
-use App\Http\Controllers\Receipt;
 use App\Http\Controllers\login;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\Madem3;
+use App\Http\Controllers\NavisionController;
 use App\Http\Controllers\PaymentController;
-use App\Http\Controllers\userTwoController;
+use App\Http\Controllers\Receipt;
 use App\Http\Controllers\userTreeController;
+use App\Http\Controllers\userTwoController;
 use App\Http\Controllers\utilitController;
-use App\Http\Middleware\CheckRole;
 use App\Models\User;
+use Illuminate\Support\Facades\Route;
+
+use App\Mail\approverMail;
+use Illuminate\Support\Facades\Mail;
 
 Route::get('/', function () {
     return view('home.home');
+});
+
+Route::get('/test/email', function () {
+    Mail::to('anushka@osi.lk')->send(new approverMail('es'));
+
 });
 
 // Route::get('/otp/view', function () {
@@ -27,7 +34,6 @@ Route::get('/', function () {
 
 Route::get('/otp/view', [LoginController::class, 'otpView'])->name('otp.view');
 
-
 Route::get('/password/reset', [LoginController::class, 'passwordReset'])->name('passwordReset');
 
 Route::post('/password/reset/send', [LoginController::class, 'passwordResetSend'])->name('password-reset-send');
@@ -35,8 +41,6 @@ Route::post('/password/reset/send', [LoginController::class, 'passwordResetSend'
 Route::match(['get', 'post'], '/verify/otp', [LoginController::class, 'verifyotp'])->name('verify-otp');
 
 Route::post('/new/password', [LoginController::class, 'newPassword'])->name('new-password');
-
-
 
 Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register']);
@@ -47,7 +51,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::post('/login-check', [login::class, 'loginCheck'])->name('Login-check');
- Route::get('/preview/advance/{id}', [utilitController::class, 'previewAdvance']);
+Route::get('/preview/advance/{id}', [utilitController::class, 'previewAdvance']);
 
 Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_USER]], function () {
@@ -58,7 +62,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/edit/invoice/number/{id}', [invoiceController::class, 'editInvoiceNumber'])->name('edit.invoice.number');
 
         Route::post('/edit/new/invoice/number/{id}', [invoiceController::class, 'editnewInvoiceNumber'])->name('edit.new.invoice.number');
-
 
         Route::get('/reject/Invoice', [NavisionController::class, 'RejectInvoice'])->name('rejectInvoice');
 
@@ -74,18 +77,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/recent/home/{invoiceNumber}', [invoiceController::class, 'recentHome'])->name('recent.home');
 
-
-
         Route::get('/search/customer', [invoiceController::class, 'SearchCustomer'])->name('search.customer');
-
-
 
         Route::get('recent/delete/{id}', [invoiceController::class, 'recentDelete'])->name('recent.delete');
 
         Route::put('/update/company', [CompanyController::class, 'update'])->name('update.company');
 
         Route::get('reject/invoice/re/send/{invoiceNumber}', [invoiceController::class, 'rejectResend']);
-
 
     });
 
@@ -153,17 +151,13 @@ Route::middleware(['auth'])->group(function () {
     Route::group(['middleware' => ['App\Http\Middleware\CheckRole:' . User::ROLE_APPROVER]], function () {
         Route::get('/user3', [Madem3::class, 'home'])->name('Home');
 
-
         Route::get('/reject/Invoice/View/Three/{id}', [userTreeController::class, 'RejectInvoiceView'])->name('view-reject-Invoice-Three');
 
-
         Route::get('/Three/rejected/invoice', [userTreeController::class, 'rejectInvoiceUser'])->name('rejectInvoiceUserThree');
-
 
         Route::get('3/outstanding', [userTreeController::class, 'OutstandingInvoice'])->name('tree-Outstanding-invoice');
 
         Route::get('3/all/Invoices', [NavisionController::class, 'treeAllInvoices'])->name('tree-allinvoice');
-
 
         Route::get('3/outstanding/view', [userTreeController::class, 'OutstandingInvoiceView'])->name('tree-Outstanding-view');
 
@@ -213,7 +207,6 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('/generateInvoice/{id}', [NavisionController::class, 'generateInvoice'])->name('generateInvoice');
 
     Route::get('/generateInvoice/{id}', [NavisionController::class, 'generateInvoice'])->name('generateInvoice');
-
 
     Route::post('/invoiceDataAdd', [invoiceController::class, 'invoiceDataAdd'])->name('invoiceDataAdd');
 

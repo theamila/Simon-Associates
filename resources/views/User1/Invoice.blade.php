@@ -63,7 +63,8 @@
         <input type="hidden" name="invoiceNo" value="{{ $invoiceNumber }}">
 
         <div class="col">
-            <input onclick="return confirm('Are you sure you want to generate the invoice?');" type="submit" value="Generate Invoice" class="btn btn-primary form-control text-light">
+            <input onclick="return confirm('Are you sure you want to generate the invoice?');" type="submit"
+                value="Generate Invoice" class="btn btn-primary form-control text-light">
         </div>
     </div>
 
@@ -120,20 +121,76 @@
         </tr>
     @endif
 
+
+    @php
+        $totalAdvanceAmount = 0;
+    @endphp
+
+
+
+    @if (isset($advancePayments) && $advancePayments->count() > 0)
+
+        <h4 class="text-primary fw-bold mb-3 text-center">Advance Payments</h4>
+
+        <!-- Scrollable wrapper -->
+        <div class="table-responsive" style="max-height: 320px; overflow-y: auto; mb-3">
+            <table class="table table-hover table-bordered align-middle text-center">
+                <thead class="table-primary sticky-top">
+                    <tr>
+                        <th>Description</th>
+                        <th>Receipt No</th>
+                        <th>Invoice Number</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @foreach ($advancePayments as $item)
+                        <tr>
+                            <td class="fw-semibold">
+                                {{ $item->description ?? '-' }}
+                            </td>
+
+                            <td class="fw-semibold">
+                                {{ $item->receiptNo ?? '-' }}
+                            </td>
+
+                            <td class="fw-semibold">
+                                @if ($item->invoiceId)
+                                    {{ $item->invoice->invoiceNumber ?? '-' }}
+                                @else
+                                    -
+                                @endif
+                            </td>
+                            @php
+                                $totalAdvanceAmount += $item->amount;
+                            @endphp
+                            <td class="fw-semibold">
+                                {{ $item->currency ?? '' }} {{ number_format($item->amount, 2) }}
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+
+    @endif
+
+    <div class="row mb-3 mt-2 text-dark" style="font-size: 12pt;">
+        <div class="row d-flex justify-content-around text-center text-success fw-bold">
+            <div class="col">{{ number_format($invoiceTotal, 2) }}</div>
+            <div class="col">{{ number_format($Total - $totalAdvanceAmount, 2) }}</div>
+        </div>
+        <div class="row d-flex justify-content-around text-danger text-center fw-bold">
+            <div class="col">Invoice Total Price</div>
+            <div class="col">Total Price</div>
+        </div>
+    </div>
+
+    <input type="hidden" name="id_array" Value="{{ json_encode($id_array) }}">
+
+    </form>
 @endsection
 
-<div class="row mb-3 mt-2 text-dark" style="font-size: 12pt;">
-    <div class="row d-flex justify-content-around text-center text-success fw-bold">
-        <div class="col">{{ number_format($invoiceTotal, 2) }}</div>
-        <div class="col">{{ number_format($Total, 2) }}</div>
-    </div>
-    <div class="row d-flex justify-content-around text-danger text-center fw-bold">
-        <div class="col">Invoice Total Price</div>
-        <div class="col">Total Price</div>
-    </div>
-</div>
 
-<input type="hidden" name="id_array" Value="{{ json_encode($id_array) }}">
-
-</form>
 @endsection
