@@ -350,62 +350,67 @@
                         Approver</a> --}}
 
 
+@php
+                            $totalAdvanceAmount = 0;
+                        @endphp
+
+                    @if (isset($advancePayments) && $advancePayments->count() > 0)
+
+                        <h4 class="text-primary fw-bold mb-3 text-center">Advance Payments</h4>
+
+                        <div class="container px-4">
+
+                            <!-- Scrollable wrapper -->
+                            <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                                <table class="table table-hover table-bordered align-middle text-center">
+                                    <thead class="table-primary sticky-top">
+                                        <tr>
+                                            <th>Description</th>
+                                            <th>Receipt No</th>
+                                            <th>Invoice Number</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        @foreach ($advancePayments as $item)
+                                            <tr>
+                                                <td class="fw-semibold">
+                                                    {{ $item->description ?? '-' }}
+                                                </td>
+
+                                                <td class="fw-semibold">
+                                                    {{ $item->receiptNo ?? '-' }}
+                                                </td>
+
+                                                <td class="fw-semibold">
+                                                    @if ($item->invoiceId)
+                                                        {{ $item->invoice->invoiceNumber ?? '-' }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
+                                                @php
+                                                    $totalAdvanceAmount += $item->amount;
+                                                @endphp
+                                                <td class="fw-semibold">
+                                                    {{ $item->currency ?? '' }} {{ number_format($item->amount, 2) }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    @endif
+
                     <div class="my-4 px-5" style="display: flex; justify-content: space-around;">
                         <span class="text-danger fw-bold">Invoice Price - <span
                                 class="text-success">{{ number_format($invoicePrice, 2) }}</span></span>
-                        <span class="text-danger fw-bold">Total Amount - <span
-                                class="text-success">{{ number_format($totalTablePrice, 2) }}</span></span>
+                        <span class="text-danger fw-bold">Total Payable Amount - <span
+                                class="text-success">{{ number_format($totalTablePrice - $totalAdvanceAmount, 2) }}</span></span>
                     </div>
-
-                @if(isset($advancePayments) && $advancePayments->count() > 0)
-    <h4 class="text-primary fw-bold mb-3 text-center">Advance Payments</h4>
-
-    <div class="container px-4">
-
-        <!-- Scrollable wrapper -->
-        <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
-            <table class="table table-hover table-bordered align-middle text-center">
-                <thead class="table-primary sticky-top">
-                    <tr>
-                        <th>Description</th>
-                        <th>Receipt No</th>
-                        <th>Invoice Number</th>
-                        <th>Amount</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    @foreach ($advancePayments as $item)
-                        <tr>
-                            <td class="fw-semibold">
-                                {{ $item->description ?? '-' }}
-                            </td>
-
-                            <td class="fw-semibold">
-                                {{ $item->receiptNo ?? '-' }}
-                            </td>
-
-                            <td class="fw-semibold">
-                                @if($item->invoiceId)
-                                    {{ $item->invoice->invoiceNumber ?? '-' }}
-                                @else
-                                    -
-                                @endif
-                            </td>
-
-                            <td class="fw-semibold">
-                                {{ $item->currency ?? '' }} {{ number_format($item->amount, 2) }}
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-
-    </div>
-@endif
-
-
 
                     @php $invoiceNumber = str_replace('/', '-', $invoiceNumber); @endphp
 

@@ -55,9 +55,10 @@
 @endsection
 
 @section('tbody')
-    @php $no = 1;
+    @php
+    $no = 1;
 
-    $totalPrice = 0;
+        $totalPrice = 0;
     @endphp
 
     @if ($invoice_data->count() > 0)
@@ -138,103 +139,14 @@
                     </div>
                 </div>
             </div>
-
-
-            <!-- =============================================================================== -->
-            <!-- Modal -->
-
-
-            {{-- <div class="modal fade" id="exampleModal{{ $get->id }}" tabindex="-1" aria-labelledby="exampleModalLabel"
-                aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Edit Invoice Data</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-
-                            <form action="{{ route('invoiceEditDataSave', ['id' => $get->id]) }}" method="post">
-
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="description" class="form-label text-dark fw-bold">Description</label>
-                                    <textarea class="form-control border" id="description" name="description" placeholder="Enter description" rows="5"
-                                        required>{{ $get->description }}</textarea>
-                                    @error('description')
-                                        <span class="text-danger mt-2">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col">
-                                        <label for="sdate" class="form-label text-dark fw-bold">Start Date</label>
-                                        <input type="date" class="border form-control" id="sdate" name="sdate"
-                                            value="{{ $get->sdate }}">
-                                    </div>
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col">
-                                        <label for="nomModal" class="form-label">No of Month</label>
-                                        <input type="number" class="border form-control" id="nomModal" name="NOM"
-                                            placeholder="Number of month" value="{{ $get->nom }}">
-                                    </div>
-                                    <div class="col">
-                                        <label for="MonthPriceModal" class="form-label">Price of a
-                                            Month</label>
-                                        <input type="number" class="border form-control" id="MonthPriceModal"
-                                            name="POM" placeholder="Price of a month" value="{{ $get->pom }}">
-                                    </div>
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="price" class="form-label text-dark fw-bold">Price</label>
-                                    <input type="text" class="form-control border" id="price" name="price"
-                                        placeholder="Enter price" value='{{ $get->price }}' required>
-                                    @error('price')
-                                        <span class="text-danger mt-2">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3">
-                                    <label for="discount" class="form-label text-dark fw-bold">Discount %</label>
-                                    <input type="text" class="form-control border" id="discount" name="discount"
-                                        placeholder="Enter Discount" value="{{ $get->discount }}" required>
-                                    @error('discount')
-                                        <span class="text-danger mt-2">{{ $message }}</span>
-                                    @enderror
-                                </div>
-
-                                <div class="mb-3 d-flex align-items-start justify-content-start">
-                                    <span class="fw-bold text-dark mr-3">Reimbursable</span>
-                                    <label class="csswitch" for="toggle">
-                                        <input type="checkbox" style="width: 20px; height: 20px; margin-left: 10px;"
-                                            name="cstoggle" {{ $get->Reimbursables === '1' ? 'checked' : '' }}>
-                                    </label>
-                                </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary">Save</button>
-                        </div>
-                        @php
-                            $invoiceNumber = str_replace('-', '/', $invoiceNumber);
-                        @endphp
-                        <input type="hidden" name="invoiceNumber" value="{{ $invoiceNumber }}">
-                        </form>
-                    </div>
-                </div>
-            </div> --}}
-
-            <!-- ============================================================================== -->
-        @endforeach
+            @endforeach
 
         <tr>
             <td class="fw-bold text-center" colspan="4">Total</td>
-        <td class="fw-bold text-end" style="font-size: 12pt;">
-            {{ $company_data->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($totalPrice, 2)}}
-        </td>
-        <td></td>
+            <td class="fw-bold text-end" style="font-size: 12pt;">
+                {{ $company_data->currency == 'LKR' ? 'Rs. ' : '$' }} {{ number_format($totalPrice, 2) }}
+            </td>
+            <td></td>
         </tr>
     @else
         <tr>
@@ -277,7 +189,69 @@
 
 @endsection
 
+
 @section('bankDetails')
+
+
+
+
+    @php
+        $totalAdvanceAmount = 0;
+    @endphp
+
+    @if (isset($advancePayments) && $advancePayments->count() > 0)
+
+        <h4 class="text-primary fw-bold mb-3 text-center">Advance Payments</h4>
+
+        <div class="container px-4">
+
+            <!-- Scrollable wrapper -->
+            <div class="table-responsive" style="max-height: 320px; overflow-y: auto;">
+                <table class="table table-hover table-bordered align-middle text-center">
+                    <thead class="table-primary sticky-top">
+                        <tr>
+                            <th>Description</th>
+                            <th>Receipt No</th>
+                            <th>Invoice Number</th>
+                            <th>Amount</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach ($advancePayments as $item)
+                            <tr>
+                                <td class="fw-semibold">
+                                    {{ $item->description ?? '-' }}
+                                </td>
+
+                                <td class="fw-semibold">
+                                    {{ $item->receiptNo ?? '-' }}
+                                </td>
+
+                                <td class="fw-semibold">
+                                    @if ($item->invoiceId)
+                                        {{ $item->invoice->invoiceNumber ?? '-' }}
+                                    @else
+                                        -
+                                    @endif
+                                </td>
+                                @php
+                                    $totalAdvanceAmount += $item->amount;
+                                @endphp
+                                <td class="fw-semibold">
+                                    {{ $item->currency ?? '' }} {{ number_format($item->amount, 2) }}
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    @endif
+
+
+    
     <div class="bank-details text-secondary py-3">
         <div class="bank-box fs-6">
             <div class="box-1">

@@ -12,6 +12,14 @@
 
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/dataTables.bootstrap5.min.css">
+
+
+
+
     <link rel="stylesheet" href="{{ asset('admin/assets/css/style.css') }}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('admin/assets/images/favicon.ico') }}" />
@@ -172,10 +180,10 @@
 
                     <li class="nav-item">
                         <a class="nav-link" href="/aging/report">
-                          <span class="menu-title">Aging Report</span>
-                          <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
+                            <span class="menu-title">Aging Report</span>
+                            <i class="material-symbols-outlined mdi menu-icon">monitoring</i>
                         </a>
-                      </li>
+                    </li>
 
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('update') }}">
@@ -270,6 +278,10 @@
     <!-- Custom js for this page -->
     <script src="{{ asset('admin/assets/js/dashboard.js') }}"></script>
     <script src="{{ asset('admin/assets/js/todolist.js') }}"></script>
+
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.bootstrap5.min.js"></script>
+
     <!-- End custom js for this page -->
     @stack('scripts')
 </body>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\advancePayment;
 use Illuminate\Http\Request;
 use App\Models\CompanyDetails;
 use App\Models\Invoice;
@@ -12,7 +13,7 @@ class Madem3 extends Controller
 {
     public function home()
     {
-        $data = Invoice::orderByDesc('id')->paginate(10);
+        $data = Invoice::orderByDesc('id')->paginate(100);
 
         $sa = [2,3,4,5];
         $apr_cnt = Invoice::where('status', 6)->count();
@@ -37,8 +38,9 @@ class Madem3 extends Controller
         $bank = payment::where('id', $invoice->bankId)->first();
 
         $company_data = Invoice::where('invoiceNumber', $invoiceNumberModify)->firstOrFail();
+        $advancePayments = advancePayment::where('customer_id', $company_data->customerRefId)->where('is_applied', 0)->get();
 
-        return view('User3.generateInvoice', compact('invoice_data', 'invoiceNumber', 'bank', 'company_data'));
+        return view('User3.generateInvoice', compact('invoice_data', 'invoiceNumber', 'bank', 'company_data', 'advancePayments'));
     }
 
     public function sentBack($invoiceNumber)

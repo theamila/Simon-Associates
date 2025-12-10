@@ -87,18 +87,18 @@ class groupReceiptController extends Controller
 
 
 
-                $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceData->invoiceNumber)->get();
+                // $invoiceDetails = InvoiceDetails::where('invoiceNumber', $invoiceData->invoiceNumber)->get();
                 // dd($invoiceDetails);
-                $totalAmount = 0.00;
-                foreach ($invoiceDetails as $item) {
-                    $totalAmount += $item->price;
-                }
+                // $totalAmount = 0.00;
+                // foreach ($invoiceDetails as $item) {
+                //     $totalAmount += $item->price;
+                // }
                 // dd($totalAmount);
 
-                if ($amount >= $totalAmount) {
+                // if ($amount >= $totalAmount) {
                     $invoiceData->status = 8;
                     $invoiceData->save();
-                }
+                // }
 
 
 

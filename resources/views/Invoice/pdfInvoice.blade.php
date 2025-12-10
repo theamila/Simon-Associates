@@ -103,20 +103,56 @@
                                 <td class="text-wrap text-break">
                                     {{ $get->description }}
                                 </td>
-                                <td class="text-end">
-                                    {{ number_format(($get->price / $dollarRate), 2) }}
+                                <td class="text-right">
+                                    {{ number_format($get->price / $dollarRate, 2) }}
                                 </td>
                             </tr>
                         @endif
                     @endforeach
                 @endif
 
+
+
+
+                @php
+                    $totalAdvanceAmount = 0;
+                @endphp
+
+                @if (isset($advancePayments) && $advancePayments->count() > 0)
+
+
+                    @foreach ($advancePayments as $item)
+                        @php
+                            $no += 1;
+                        @endphp
+                        <tr>
+                            <td class="text-center">
+                                {{ $no }}
+                            </td>
+                            <td class="fw-semibold">
+                                Advance Payment / Overpayment
+                            </td>
+
+
+                            @php
+                                $totalAdvanceAmount += $item->amount;
+                            @endphp
+                            <td class="fw-semibold text-right">
+                                {{ number_format($item->amount, 2) }}
+                            </td>
+                        </tr>
+                    @endforeach
+
+
+                @endif
+
+
                 <tr>
                     <td colspan="2" class='fw-bold text-center'>
                         Total
                     </td>
-                    <td class="fw-bold text-end">
-                        {{ number_format($total, 2) }}
+                    <td class="fw-bold text-right">
+                        {{ number_format($total - $totalAdvanceAmount, 2) }}
                     </td>
                 </tr>
 

@@ -25,6 +25,12 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="email" class="form-label">Phone No</label>
+                        <input type="text" class="border form-control" id="phone" name="phone"
+                            placeholder="Enter phone no" required>
+                    </div>
+
+                    <div class="mb-3">
                         <label for="companyName" class="form-label">Company Name</label>
                         <input type="text" class="border form-control" id="companyName" name="companyName"
                             placeholder="Enter Company Name" required>
@@ -59,7 +65,7 @@
 
 
     @php
-        $customers = App\Models\CompanyDetails::where('state', true)->get();
+        $customers = App\Models\CompanyDetails::where('state', true)->orderByDesc('id')->get();
     @endphp
 
     <div class="row">
@@ -74,6 +80,7 @@
                                 <tr>
                                     <th class="text-center">To</th>
                                     <th class="text-center">Emails</th>
+                                    <th class="text-center">Phone No</th>
                                     <th class="text-center">Name</th>
                                     <th class="text-center">Address</th>
                                     <th class="text-center">Action</th>
@@ -84,14 +91,16 @@
 
                                 @foreach ($customers as $cData)
                                     <tr>
-                                        <td class="text-center">{{ $cData->to }}</td>
-                                        <td class="text-center">{{ $cData->email }}</td>
-                                        <td class="text-center">{{ $cData->companyName }}</td>
-                                        <td class="text-center">{{ $cData->address }}</td>
+                                        <td class="">{{ $cData->to }}</td>
+                                        <td class="">{{ $cData->email }}</td>
+                                        <td class="">{{ $cData->phone }}</td>
+                                        <td class="">{{ $cData->companyName }}</td>
+                                        <td class="">{{ $cData->address }}</td>
                                         <td class="text-center">
-                                            <button class="btn btn-sm btn-info" data-toggle="modal" data-target="#updateModal"
-                                                data-id="{{ $cData->id }}" data-to="{{ $cData->to }}"
-                                                data-email="{{ $cData->email }}"
+                                            <button class="btn btn-sm btn-info" data-toggle="modal"
+                                                data-target="#updateModal" data-id="{{ $cData->id }}"
+                                                data-to="{{ $cData->to }}" data-email="{{ $cData->email }}"
+                                                data-to="{{ $cData->phone }}" data-phone="{{ $cData->phone }}"
                                                 data-companyname="{{ $cData->companyName }}"
                                                 data-address="{{ $cData->address }}"
                                                 data-handleby="{{ $cData->handleBy }}">
@@ -135,6 +144,12 @@
                             <label for="email">Email</label>
                             <input type="text" class="form-control" id="email" name="email" required>
                         </div>
+
+                        <div class="form-group">
+                            <label for="email">Phone No</label>
+                            <input type="text" class="form-control" id="phone" name="phone" required>
+                        </div>
+
                         <div class="form-group">
                             <label for="companyName">Company Name</label>
                             <input type="text" class="form-control" id="companyName" name="companyName" required>
@@ -148,15 +163,15 @@
                             $ServiceBy = App\Models\handler::all();
                         @endphp
 
-<div class="form-group">
-    <label for="handleBy">Service By</label>
-    <select name="handleBy" id="handleBy" class="form-control">
-        <option value="">Select Service</option>
-        @foreach ($ServiceBy as $service)
-            <option value="{{ $service->id }}">{{ $service->name }}</option>
-        @endforeach
-    </select>
-</div>
+                        <div class="form-group">
+                            <label for="handleBy">Service By</label>
+                            <select name="handleBy" id="handleBy" class="form-control">
+                                <option value="">Select Service</option>
+                                @foreach ($ServiceBy as $service)
+                                    <option value="{{ $service->id }}">{{ $service->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
 
 
                     </div>
@@ -171,11 +186,12 @@
 
 
     <script>
-        $('#updateModal').on('show.bs.modal', function (event) {
+        $('#updateModal').on('show.bs.modal', function(event) {
             var button = $(event.relatedTarget); // Button that triggered the modal
             var id = button.data('id'); // Extract info from data-* attributes
             var to = button.data('to');
             var email = button.data('email');
+            var phone = button.data('phone');
             var companyName = button.data('companyname');
             var address = button.data('address');
             var handleBy = button.data('handleby'); // Extract handleBy
@@ -184,6 +200,7 @@
             modal.find('.modal-body #companyId').val(id);
             modal.find('.modal-body #to').val(to);
             modal.find('.modal-body #email').val(email);
+            modal.find('.modal-body #phone').val(phone);
             modal.find('.modal-body #companyName').val(companyName);
             modal.find('.modal-body #address').val(address);
 

@@ -10,6 +10,7 @@ class CompanyDetails extends Model
     protected $fillable = [
         'to',
         'email',
+        'phone',
         'companyName',
         'address',
         'handleBy',

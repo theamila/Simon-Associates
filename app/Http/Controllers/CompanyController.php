@@ -23,6 +23,7 @@ class CompanyController extends Controller
         $company->update([
             'to' => $request->to,
             'email' => $request->email,
+            'phone' => $request->phone,
             'companyName' => $request->companyName,
             'address' => $request->address,
             'handleBy' => $request->handleBy,
