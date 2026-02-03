@@ -64,8 +64,8 @@
                 <td class="text-center">
                     @php $invNum = str_replace('/', '-', $get->invoiceNumber); @endphp
 
-                    <a href="/settle/invoice/manual/{{ $get->id }}" class="btn btn-sm btn-success"
-                        onclick="return confirm('Settle this invoice?')"><i class="material-symbols-outlined">check</i></a>
+                    {{-- <a href="/settle/invoice/manual/{{ $get->id }}" class="btn btn-sm btn-success"
+                        onclick="return confirm('Settle this invoice?')"><i class="material-symbols-outlined">check</i></a> --}}
 
                     <a href="{{ Storage::url("invoices/{$invNum}.pdf") }}" target="_blank" class="btn btn-sm btn-info"><i
                             class="material-symbols-outlined">visibility</i></a>
