@@ -68,12 +68,21 @@
                 display: none;
             }
 
+            .main {
+                display: block !important;
+            }
+
             .notes {
+                margin-top: 20px !important;
+                margin-bottom: 0 !important;
+            }
+
+            /* .notes {
                 margin-top: auto;
                 width: 100%;
                 margin-bottom: 40px;
                 /* Adjust as needed */
-            }
+            /* } */
 
             @page {
                 size: A4;
@@ -196,7 +205,7 @@
                 <tbody>
                     <tr>
                         @if (isset($get->invoiceId))
-                            <td class="text-center">{{ $get->invoiceId  }}</td>
+                            <td class="text-center">{{ $get->invoiceId }}</td>
                         @endif
                         <td class="text-start" contenteditable="true" style="color: #00008B">
                             {{ $get->description }}
@@ -219,39 +228,7 @@
             </div>
         </div>
 
-        {{-- <div class="total-row fw-bold">
-            <div class="row">
-                <div class="col-8"></div>
-                <div class="col-2">
-                    Total
-                </div>
-                <div class="col-2 text-end"> {{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
-                    {{ number_format($maintotal, 2) }}</div>
-            </div>
-            <div class="row">
-                <div class="col-8"></div>
-                <div class="col-2">
-                    Payment
-                </div>
-                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
-                    {{ number_format($payment, 2) }}</div>
-            </div>
-            <div class="row">
-                <div class="col-8 d-flex justify-content-center">
-                    <span class="text-center fw-bold mb-5`">
 
-                    </span>
-                </div>
-                @php
-                    $balance = $payment - $maintotal;
-                @endphp
-                <div class="col-2">
-                    Balance
-                </div>
-                <div class="col-2 text-end">{{ $Invoice->currency == 'LKR' ? 'Rs. ' : '$' }}
-                    {{ number_format($balance, 2) }}</div>
-            </div>
-        </div> --}}
         <div class="notes">
             <div class="row p-2">
                 <div class="note-topic">
@@ -293,99 +270,11 @@
             document.getElementById('totalInWords').value = dollarsInWords + ' and ' + centsInWords +
                 ' cents';
 
-                console.log(numberToWords);
+            console.log(numberToWords);
 
         });
     </script>
 
-    {{-- <script>
-        document.getElementById("downloadPdfBtn").addEventListener("click", function() {
-
-
-            // ===============================
-
-
-            function uploadPDF(pdfBlob, invoiceNumber) {
-                var formData = new FormData();
-                formData.append('pdf', pdfBlob, invoiceNumber + '.pdf');
-                formData.append('invoiceNumber', invoiceNumber);
-
-                fetch('{{ route('upload-pdf') }}', {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                        },
-                        body: formData
-                    }).then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            console.log('PDF uploaded successfully!');
-                            // Optionally, you can show a success message here.
-                        } else {
-                            console.warn('Failed to upload PDF, retrying...');
-                            uploadPDF(pdfBlob, invoiceNumber); // Retry the upload
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error uploading PDF:', error);
-                        // Retry the upload in case of an error
-                        uploadPDF(pdfBlob, invoiceNumber);
-                    });
-            }
-
-            var container = document.querySelector('.main');
-            var invoiceNumber = '{{ $formattedNumber }}';
-
-            html2pdf().from(container).set({
-                margin: 10,
-                filename: invoiceNumber + '.pdf',
-                image: {
-                    type: 'jpeg',
-                    quality: 0.98
-                },
-                html2canvas: {
-                    dpi: 192,
-                    letterRendering: true
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            }).outputPdf('blob').then(function(pdfBlob) {
-                uploadPDF(pdfBlob, invoiceNumber); // Start the upload process
-            });
-
-
-
-
-
-            // ====================================
-            var container = document.querySelector('.main');
-
-            html2pdf(container, {
-                margin: 10,
-                filename: '{{ $formattedNumber }}',
-                image: {
-                    type: 'jpeg',
-                    quality: 0.98
-                },
-                html2canvas: {
-                    dpi: 192,
-                    letterRendering: true
-                },
-                jsPDF: {
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                }
-            });
-        });
-
-        document.getElementById("printPdfBtn").addEventListener("click", function() {
-            window.print();
-        });
-    </script> --}}
 
 </body>
 
