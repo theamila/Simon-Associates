@@ -194,7 +194,7 @@
                     <tr>
                         @if (isset($get->invoiceId))
                             <th style="width: 150px;">
-                                Invoice No
+                                Job No
                             </th>
                         @endif
                         <th style="">Description</th>

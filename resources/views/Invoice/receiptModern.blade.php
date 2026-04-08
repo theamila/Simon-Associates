@@ -176,7 +176,7 @@
                 <thead>
                     <tr>
                         <th style="width: 150px;">
-                            Invoice No
+                            Job No
                         </th>
                         <th style="">Description</th>
                         <th style="width: 110px;">Method</th>
