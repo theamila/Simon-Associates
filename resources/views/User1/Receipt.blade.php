@@ -52,7 +52,7 @@
                                                         class="btn btn-sm btn-info" title="preview"><i
                                                             class="material-symbols-outlined">visibility</i></a>
 
-                                                   
+
                                                 @else
                                                     <a href="#" class="btn btn-secondary btn-sm align-items-center"><i
                                                             class="material-symbols-outlined">steppers</i></a>
@@ -105,11 +105,12 @@
                 <td class="text-center">{{ $no }}</td>
                 {{-- <td class="text-center">{{ $get->invoiceNumber }}</td> --}}
                 <td>
-                    @foreach ($ComData as $cget)
+                    {{$get->invoice->companyName ?? 'N/A'}}
+                    {{-- @foreach ($ComData as $cget)
                         @if ($get->invoiceNumber == $cget->invoiceNumber)
                             {{ $cget->companyName }}
                         @endif
-                    @endforeach
+                    @endforeach --}}
                 </td>
                 <td class="text-center">{{ $get->created_at->format('Y-m-d') }}</td>
                 <td class="text-center">{{ $get->receiptNumber }}</td>
@@ -139,31 +140,33 @@
             </td>
         </tr>
     @endif
-{{--
-@section('paginate')
 
-    <div class="d-flex justify-content-center mt-4">
-        <nav>
-            <ul class="pagination">
-                <li class="page-item {{ $data->currentPage() == 1 ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $data->previousPageUrl() }}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                @for ($i = 1; $i <= $data->lastPage(); $i++)
-                    <li class="page-item {{ $data->currentPage() == $i ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $data->url($i) }}">{{ $i }}</a>
+    {{-- {{ $data->links() }} --}}
+
+    @section('paginate')
+
+        <div class="d-flex justify-content-center mt-4">
+            <nav>
+                <ul class="pagination">
+                    <li class="page-item {{ $data->currentPage() == 1 ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $data->previousPageUrl() }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
                     </li>
-                @endfor
-                <li class="page-item {{ $data->currentPage() == $data->lastPage() ? 'disabled' : '' }}">
-                    <a class="page-link" href="{{ $data->nextPageUrl() }}" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-@endsection --}}
+                    @for ($i = 1; $i <= $data->lastPage(); $i++)
+                        <li class="page-item {{ $data->currentPage() == $i ? 'active' : '' }}">
+                            <a class="page-link" href="{{ $data->url($i) }}">{{ $i }}</a>
+                        </li>
+                    @endfor
+                    <li class="page-item {{ $data->currentPage() == $data->lastPage() ? 'disabled' : '' }}">
+                        <a class="page-link" href="{{ $data->nextPageUrl() }}" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    @endsection
 @endsection
 
 @endsection

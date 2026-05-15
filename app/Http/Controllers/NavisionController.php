@@ -123,11 +123,12 @@ class NavisionController extends Controller
     public function Receipt()
     {
 
-        $data = Modelreceipt::orderByDesc('id')->get();
-        $ComData = Invoice::all();
+        $data = Modelreceipt::with('invoice')->orderByDesc('id')->paginate(500);
+        // dd($data);
+        // $ComData = Invoice::all();
         $advances = advancePayment::all();
 
-        return view('User1.Receipt', compact('data', 'ComData', 'advances'));
+        return view('User1.Receipt', compact('data', 'advances'));
     }
 
     public function dashboardUserTwo()

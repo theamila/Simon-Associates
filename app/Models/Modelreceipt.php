@@ -16,4 +16,9 @@ class Modelreceipt extends Model
         'offline',
         'payedAmount'
     ];
+
+    public function invoice()
+    {
+        return $this->belongsTo(Invoice::class, 'invoiceNumber', 'invoiceNumber');
+    }
 }
