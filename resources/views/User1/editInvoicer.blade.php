@@ -10,7 +10,14 @@
     @php
         $issu_count = 0;
         $no = 1;
+
+        $issu_count = 0;
+        $no = 1;
+        $invoicePrice = 0.0;
+        $totalPrice = 0.0;
+
     @endphp
+
 
 @section('custom')
     <div class="container">
@@ -50,10 +57,10 @@
 @endsection
 @section('tbody')
     @if ($invoice_data->count() > 0)
-        @php
+        {{-- @php
             $invoicePrice = 0.0;
             $totalPrice = 0.0;
-        @endphp
+        @endphp --}}
         @foreach ($invoice_data as $get)
             <tr>
 
@@ -118,6 +125,7 @@
                             <span>Fixed</span>
                         </a>
                     </td>
+                </tr>
             @endif
 
             <!-- =============================================================================== -->
@@ -195,8 +203,10 @@
 @endsection
 
 <div class="d-flex mb-3" style="justify-content: space-around;">
-    <span class="text-danger fw-bold">Invoce Amount - <span class="text-success fw-bold">{{ number_format($invoicePrice, 2) }}</span></span>
-    <span class="text-danger fw-bold">Total Amount - <span class="text-success fw-bold">{{ number_format($totalPrice, 2) }}</span></span>
+    <span class="text-danger fw-bold">Invoce Amount - <span
+            class="text-success fw-bold">{{ number_format($invoicePrice, 2) }}</span></span>
+    <span class="text-danger fw-bold">Total Amount - <span
+            class="text-success fw-bold">{{ number_format($totalPrice, 2) }}</span></span>
 </div>
 
 @php
@@ -207,17 +217,17 @@
 @if ($issu_count == 0 && $invoice->status == 4)
     <a href="{{ Route('send-invoice', $invoiceNumber) }} " class="btn btn-primary mb-3">Finalize Invoice</a>
 @elseif($issu_count == 0 && $invoice->status == 6)
-<p>Invoice Finalized..</p>
+    <p>Invoice Finalized..</p>
     {{-- <a href="{{ Route('send-invoice-last', $invoiceNumber) }} " class="btn btn-primary mb-3">Re-Send Invoice</a> --}}
 @elseif($issu_count == 0 && $invoice->status == 7)
-<p>Invoice Finalized..</p>
+    <p>Invoice Finalized..</p>
 @elseif($issu_count != 0)
     <p>Fixl issues.</p>
 @elseif ($invoice->status == 2)
 @else
-<p>Waiting for approve.</p>
+    <p>Waiting for approve.</p>
 @endif
-<a href="/invoice/{{$invoiceNumber}}" class="btn btn-danger">Edit</a>
+<a href="/invoice/{{ $invoiceNumber }}" class="btn btn-danger">Edit</a>
 </div>
 
 @endsection
